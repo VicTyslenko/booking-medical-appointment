@@ -2,6 +2,8 @@ import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './fun
 
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 
+
+
 // змінні для тестування роботи функцій
 let testKey;
 let cardId; 
@@ -9,8 +11,7 @@ let cardId;
 //Тестова асинхронна функція для перевірки 
 const authorize = async () => {
     // авторизація, запис токена у глобальну змінну testKey
-    await getToken(API, 'test123@mail.com', '123').then(token => testKey = token);
-    
+    await getToken(API, '20059997@i.ua', '333').then(token => testKey = token);
     // карток нема
     await getCards(API, testKey).then(cardsList => console.log(cardsList))
     

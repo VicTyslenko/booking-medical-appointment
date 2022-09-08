@@ -16,6 +16,7 @@ const sendRequest = async (API, point = '', method = 'GET', config) => {
     })
 }
 
+
 // функція авторизації, повертає проміс із токеном
 const getToken = (API, email, password) => sendRequest(API, '/login', 'POST',    {
     headers: {
