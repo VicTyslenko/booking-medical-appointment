@@ -1,4 +1,5 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
+import {Modal, ModalLogin} from './classes/modal.js';
 
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 
@@ -56,3 +57,9 @@ const authorize = async () => {
 authorize();
 
 
+// let testmodal = new Modal();
+    
+// testmodal.render()
+
+// let testmodal = new ModalLogin();
+// testmodal.render()
