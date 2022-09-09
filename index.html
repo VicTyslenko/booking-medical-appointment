@@ -27,25 +27,27 @@
             </div>
         </nav> 
             <!-- Main-content -->
-    <div class="main-content container d-flex justify-content-center">
-        <input type="text" class="form-control"placeholder='search by title'>
-         <div class="dropdown">
-            <button class="btn btn-info btn-lg dropdown-toggle mx-3" data-toggle="dropdown">Status<span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li>open</li>
-                    <li>done</li>
-                </ul>
-            </div>
-        <div class="dropdown">
-            <button class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown">Urgency<span class="caret"></span></button>
-             <ul class="dropdown-menu">
-                <li>high</li>
-                <li>normal</li>
-                <li>low</li>
-             </ul>
-            </div>
-        </div>
-    </section>
+            <section class="main-section pt-3 container">
+
+                <form class="d-flex main-form ">
+                  
+                     <input type="text" class="form-control" id="" placeholder="search by title">
+                     <select class="form-select" aria-label="Default select example">
+                         <option selected>Status</option>
+                         <option value="1">open</option>
+                         <option value="2">done</option>
+                    </select>
+                    <select class="form-select" aria-label="Default select example">
+                            <option selected>Urgency</option>
+                            <option value="1">high</option>
+                            <option value="2">middle</option>
+                            <option value="3">low</option>
+                 </select>
+                  
+                </form>
+               
+             </section>
+ 
 </body>
 </html>
 

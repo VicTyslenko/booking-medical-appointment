@@ -6,13 +6,15 @@
         background-color: #a7eaf9;
         border-radius: 10px;
     }
-    /* .main-content{
+
+    .main-section{
+        background-color: aquamarine;
         height: 70vh;
-        background-color:#b2d7b0;
         border-radius: 10px;
-    } */
-    .dropdown-toggle{
-    background-color:#5bd5ff;
-    border: none;
+    
+    }
+    .main-form{
+        gap: 40px;
+     
     }
     
