@@ -17,4 +17,6 @@
         gap: 40px;
      
     }
-    
+    .search{
+        outline: none;
+    }
