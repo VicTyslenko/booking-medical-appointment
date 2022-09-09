@@ -19,7 +19,7 @@
        <nav class="navbar">
           <div class="container head-wrapp px-3 py-2">
              <div class="navbar-header container-fluid d-flex justify-content-between align-items-center">
-                <a href="https://helsi.me/" target="_blank"><img src="./img/helsi-logo.svg" alt=""></a> 
+                <a href="https://helsi.me/" target="_blank"><img width="100px" src="./img/helsi-logo.svg" alt=""></a> 
                 
                     <button class="btn btn-primary btn-lg">Entry</button>
                 </div>
@@ -28,21 +28,29 @@
             <!-- Main-content -->
             <section class="main-section pt-3 container">
 
-                <form class="d-flex main-form ">
-                  
-                     <input type="text" class="form-control-lg search" id="" placeholder="search by title">
-                     <select class="form-select" aria-label="Default select example">
-                         <option selected>Status</option>
-                         <option value="1">open</option>
-                         <option value="2">done</option>
-                    </select>
-                    <select class="form-select" aria-label="Default select example">
-                            <option selected>Urgency</option>
-                            <option value="1">high</option>
-                            <option value="2">middle</option>
-                            <option value="3">low</option>
-                 </select>
-                  
+                <form class=" main-form ">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-8 col-sm-12">
+                                <input type="text" class="form-control search" id="" placeholder="search by title">
+                            </div>
+                            <div class="col-md-2 col-sm-12">
+                                <select class="form-select" aria-label="Status">
+                                    <option selected value="all">Status</option>
+                                    <option value="open">Open</option>
+                                    <option value="done">Done</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 col-sm-12">
+                                <select class="form-select" aria-label="Urgency">
+                                    <option selected value="all">Urgency</option>
+                                    <option value="high">High</option>
+                                    <option value="middle">Middle</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </form>
                 <p class="text-uppercase fs-5 fw-semibold text-center mt-5 text-white">No items have been added</p>
              </section>
