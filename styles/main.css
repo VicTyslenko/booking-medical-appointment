@@ -1,3 +1,7 @@
+.hidden {
+    display: none;
+}
+
 .btn-primary{
     padding: 10px 35px;
         color: white;
@@ -17,7 +21,7 @@
     }
     .main-form{
         gap: 40px;
-     display: none;
+     /* display: none; */
     }
     .search{
         outline: none;
