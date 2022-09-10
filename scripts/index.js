@@ -59,3 +59,5 @@ const authorize = async () => {
 authorize();
 validation()
 
+import {Visit, VisitCardiologist, VisitDentist, VisitTherapist, renderCards} from "./cards.js"
+renderCards()
