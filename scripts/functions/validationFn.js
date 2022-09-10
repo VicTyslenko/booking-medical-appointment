@@ -1,3 +1,4 @@
+import {cardsWrapper, Visit, VisitCardiologist, VisitDentist, VisitTherapist, renderCards} from "../cards.js"
 const validation = () =>{
     const headWrapp = document.querySelector('.head-wrapp')
     const entryButton = document.querySelector('#entry-btn')
@@ -18,6 +19,18 @@ const validation = () =>{
 </form>
   `)
         
+    const validForm = document.querySelector('.valid-form')
+    console.log(validForm);
+    validForm.addEventListener("click", (e) => {
+        e.preventDefault()
+        const confirm = e.target.closest(".btn-success")
+        // console.log(confirm);
+        if (e.target === confirm) {
+          validForm.style.display = "none";
+          entryButton.style.display = "none";
+          renderCards(cardsWrapper)
+        }
+      })
     });
 
 

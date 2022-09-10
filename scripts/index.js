@@ -1,9 +1,8 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
 
 import { validation } from './functions/validationFn.js';
+import {cardsWrapper, Visit, VisitCardiologist, VisitDentist, VisitTherapist, renderCards} from "./cards.js"
 const API = 'https://ajax.test-danit.com/api/v2/cards';
-
-
 
 // змінні для тестування роботи функцій
 let testKey;
@@ -56,8 +55,7 @@ const authorize = async () => {
 }
 
 
-authorize();
+// authorize();
 validation()
 
-import {Visit, VisitCardiologist, VisitDentist, VisitTherapist, renderCards} from "./cards.js"
-renderCards()
+// renderCards(cardsWrapper)

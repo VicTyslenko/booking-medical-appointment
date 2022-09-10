@@ -2,7 +2,7 @@ import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from './f
 let token = 'ea86ac58-76f5-487a-95bd-ed2022f2148f';
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 
-const root = document.querySelector('.main-section')
+export const cardsWrapper = document.querySelector('.main-section')
 
 //Основний клас карток візитів
 export class Visit {
@@ -56,7 +56,7 @@ export class Visit {
 
         this.elem.card.dataset.id = this.id;
         this.elem.card.style.minWidth = "250px";
-        this.elem.card.style.height = "45%";
+        this.elem.card.style.height = "50%";
         
         this.elem.cardItems.append(this.elem.priority, this.elem.purpose, this.elem.desc)
         console.log(this.elem.cardItems);
@@ -230,4 +230,3 @@ export function renderCards(container) {
         });
 }
 
-renderCards(root)
