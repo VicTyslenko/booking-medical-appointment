@@ -6,6 +6,7 @@
     .head-wrapp{
         background-color: #a7eaf9;
         border-radius: 10px;
+        position: relative;
     }
 
     .main-section{
@@ -16,8 +17,13 @@
     }
     .main-form{
         gap: 40px;
-     
+     display: none;
     }
     .search{
         outline: none;
+    }
+    .valid-form{
+        position: absolute;
+        top: 105px;
+        right: 23px;
     }

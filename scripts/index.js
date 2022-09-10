@@ -1,5 +1,6 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
 
+import { validation } from './functions/validationFn.js';
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 
 
@@ -54,6 +55,7 @@ const authorize = async () => {
 
 }
 
-authorize();
 
+authorize();
+validation()
 
