@@ -1,0 +1,29 @@
+.btn-primary{
+    padding: 10px 35px;
+        color: white;
+        font-weight: 600;
+    }
+    .head-wrapp{
+        background-color: #a7eaf9;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .main-section{
+        background-color:#4db0e5;
+        height: 70vh;
+        border-radius: 10px;
+    
+    }
+    .main-form{
+        gap: 40px;
+     display: none;
+    }
+    .search{
+        outline: none;
+    }
+    .valid-form{
+        position: absolute;
+        top: 105px;
+        right: 23px;
+    }
