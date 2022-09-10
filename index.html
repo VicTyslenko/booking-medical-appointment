@@ -4,11 +4,64 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="./styles/main.css">
     <link rel="shortcut icon" href="./img/favicon.ico">
     <script type="module" src="./scripts/index.js"></script>
     <title>Step Project Cards</title>
 </head>
 <body>
-    
-</body>
+   <!-- Header-section -->
+   
+    <section>
+       <nav class="navbar">
+          <div class="container head-wrapp px-3 py-2">
+             <div class="navbar-header container-fluid d-flex justify-content-between align-items-center">
+                <a href="https://helsi.me/" target="_blank"><img width="100px" src="./img/helsi-logo.svg" alt=""></a> 
+                
+                    <button id="entry-btn" class="btn btn-primary btn-lg">Entry</button>
+                </div>
+            </div>
+        </nav> 
+            <!-- Main-content -->
+            <section class="main-section pt-3 container">
+
+                <form class=" main-form ">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-8 col-sm-12">
+                                <input type="text" class="form-control search" id="" placeholder="search by title">
+                            </div>
+                            <div class="col-md-2 col-sm-12">
+                                <select class="form-select" aria-label="Status">
+                                    <option selected value="all">Status</option>
+                                    <option value="open">Open</option>
+                                    <option value="done">Done</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 col-sm-12">
+                                <select class="form-select" aria-label="Urgency">
+                                    <option selected value="all">Urgency</option>
+                                    <option value="high">High</option>
+                                    <option value="middle">Middle</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- <p class="text-uppercase fs-5 fw-semibold text-center mt-5 text-white">No items have been added</p> -->
+             </section>
+
+      
 </html>
+
+        
+
+  
+
+
+                     
+
