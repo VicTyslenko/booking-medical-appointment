@@ -21,7 +21,7 @@ export class Visit {
             priority: document.createElement("li"),
             purpose: document.createElement("li"),
             desc: document.createElement("li"),
-            buttons: document.createElement("div"),
+            topButtons: document.createElement("div"),
             showMoreBtn: document.createElement("button"),
             hideBtn: document.createElement("button"),
             editBtn: document.createElement("button"),
@@ -39,28 +39,31 @@ export class Visit {
         this.elem.showMoreBtn.textContent = "Показати";
         this.elem.hideBtn.textContent = "Приховати";
         this.elem.hideBtn.style.display = 'none';
-        this.elem.editBtn.textContent = "Редагувати";
-        this.elem.deleteBtn.textContent = "Видалити";
+        this.elem.editBtn.textContent = "Edit";
+        // this.elem.deleteBtn.textContent = "Видалити";
 
-        this.elem.card.classList.add("card","w-25", "p-3", "container-sm", "overflow-auto");
+        this.elem.card.classList.add("card","w-25", "p-3", "container-sm", "position-relative");
         this.elem.cardItems.classList.add("list-group", "list-group-flush")
-        this.elem.fullName.classList.add("card-title");
+        this.elem.fullName.classList.add("card-title", "mt-10");
         this.elem.doctor.classList.add("card-subtitle", "mb-2");
         this.elem.priority.classList.add("list-group-item");
         this.elem.purpose.classList.add("list-group-item");
         this.elem.desc.classList.add("list-group-item");
         this.elem.showMoreBtn.classList.add("btn", "btn-light");
         this.elem.hideBtn.classList.add("btn", "btn-light");
-        this.elem.editBtn.classList.add("btn", "btn-light");
-        this.elem.deleteBtn.classList.add("btn", "btn-light");
+        this.elem.topButtons.classList.add("d-flex", "align-items-center", "justify-content-end")
+        this.elem.editBtn.classList.add("btn", "btn-light", "w-25", "inline");
+        this.elem.deleteBtn.classList.add("btn-close", "inline-block");
 
         this.elem.card.dataset.id = this.id;
         this.elem.card.style.minWidth = "250px";
         this.elem.card.style.height = "50%";
-        
+        this.elem.card.style.overflow = "overlay";
+
         this.elem.cardItems.append(this.elem.priority, this.elem.purpose, this.elem.desc)
         console.log(this.elem.cardItems);
-        this.elem.card.append(this.elem.fullName, this.elem.doctor, this.elem.showMoreBtn, this.elem.hideBtn, this.elem.editBtn, this.elem.deleteBtn);
+        this.elem.topButtons.append(this.elem.editBtn, this.elem.deleteBtn)
+        this.elem.card.append(this.elem.topButtons, this.elem.fullName, this.elem.doctor, this.elem.showMoreBtn, this.elem.hideBtn,);
 
     }
 
@@ -210,22 +213,22 @@ export function renderCards(container) {
                 noItem.id = "empty";
                 container.append(noItem);
             } else {
-                let visitsObjects = data.map(visit => {
+                 data.map(visit => {
                     if (visit.doctor === "Дантист" || visit.doctor === "Dentist") {
                         const visitCard = new VisitDentist(visit);
                         visitCard.render(container);
-                        return visitCard;
+                        
                     } else if (visit.doctor === "Кардіолог" || visit.doctor === "Cardiologist") {
                         const visitCard = new VisitCardiologist(visit);
                         visitCard.render(container);
-                        return visitCard;
+                        
                     } else if (visit.doctor === "Терапевт" || visit.doctor === "Therapist") {
                         const visitCard = new VisitTherapist(visit);
                         visitCard.render(container);
-                        return visitCard;
+                        
                     }
                 });
-                return visitsObjects;
+                
             }
         });
 }
