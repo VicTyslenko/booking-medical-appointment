@@ -20,11 +20,20 @@ export class Modal {
             </div>
         </div>
         `);
-        const modal = new bootstrap.Modal('#myModal');
-        modal.show();
-        modal._element.addEventListener('hidden.bs.modal', event => event.target.remove());
+        // додаємо в об'єкт класу змінну (з документації bootstrap), яка керує модальним вікном
+        this.modal = new bootstrap.Modal('#myModal', { 
+            keyboard: false
+        });
+        // викликаємо модальне вікно
+        this.modal.show();
+        // видалення елементу вікна з DOM після його закривання
+        this.modal._element.addEventListener('hidden.bs.modal', event => event.target.remove());
     }
     
+    close() {
+        // метод закривання вікна
+        this.modal.hide();
+    }
 }
 
 
@@ -36,12 +45,12 @@ export class ModalLogin extends Modal {
         this.body = `
         <form id="login-form">
             <div class="mb-3 form-floating">
-                <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="name@example.com" value="${this.email}">
-                <label for="InputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="name@example.com" required value="${this.email}">
+                <label for="inputEmail" class="form-label">Email address</label>
             </div>
             <div class="mb-3 form-floating">
-                <input type="password" class="form-control" id="InputPassword1" value="${this.password}" placeholder="password" autocomplete="on">
-                <label for="InputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="inputPassword" value="${this.password}" placeholder="password" required autocomplete="on">
+                <label for="inputPassword" class="form-label">Password</label>
             </div>
             <div class="mb-3 d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
