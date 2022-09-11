@@ -1,8 +1,8 @@
 import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from './functions/send-request.js';
-let token = 'ea86ac58-76f5-487a-95bd-ed2022f2148f';
+import { keyToken } from './index.js';
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 
-export const cardsWrapper = document.querySelector('.main-section')
+const cardsWrapper = document.querySelector('.main-cards');
 
 //Основний клас карток візитів
 export class Visit {
@@ -13,80 +13,73 @@ export class Visit {
         this.desc = visit.desc;
         this.priority = visit.priority;
         this.fullName = visit.fullName;
-        this.elem = {
-            card: document.createElement("div"),
-            cardItems: document.createElement("ul"),
-            fullName: document.createElement("h5"),
-            doctor: document.createElement("h6"),
-            priority: document.createElement("li"),
-            purpose: document.createElement("li"),
-            desc: document.createElement("li"),
-            topButtons: document.createElement("div"),
-            showMoreBtn: document.createElement("button"),
-            hideBtn: document.createElement("button"),
-            editBtn: document.createElement("button"),
-            deleteBtn: document.createElement("button")
-        };
+        this.card = document.createElement('div')
     }
 
     //Відображення карток на сторінці
     render(parent) {
-        this.elem.fullName.textContent = `ПІБ: ${this.fullName}`;
-        this.elem.doctor.textContent = `Лікар: ${this.doctor}`;
-        this.elem.priority.textContent = `Терміновість: ${this.priority}`;
-        this.elem.purpose.textContent = `Ціль візиту: ${this.purpose}`;
-        this.elem.desc.textContent = `Короткий опис візиту: ${this.desc}`;
-        this.elem.showMoreBtn.textContent = "Показати";
-        this.elem.hideBtn.textContent = "Приховати";
-        this.elem.hideBtn.style.display = 'none';
-        this.elem.editBtn.textContent = "Edit";
-        // this.elem.deleteBtn.textContent = "Видалити";
-
-        this.elem.card.classList.add("card","w-25", "p-3", "container-sm", "position-relative");
-        this.elem.cardItems.classList.add("list-group", "list-group-flush")
-        this.elem.fullName.classList.add("card-title", "mt-10");
-        this.elem.doctor.classList.add("card-subtitle", "mb-2");
-        this.elem.priority.classList.add("list-group-item");
-        this.elem.purpose.classList.add("list-group-item");
-        this.elem.desc.classList.add("list-group-item");
-        this.elem.showMoreBtn.classList.add("btn", "btn-light");
-        this.elem.hideBtn.classList.add("btn", "btn-light");
-        this.elem.topButtons.classList.add("d-flex", "align-items-center", "justify-content-end")
-        this.elem.editBtn.classList.add("btn", "btn-light", "w-25", "inline");
-        this.elem.deleteBtn.classList.add("btn-close", "inline-block");
-
-        this.elem.card.dataset.id = this.id;
-        this.elem.card.style.minWidth = "250px";
-        this.elem.card.style.height = "50%";
-        this.elem.card.style.overflow = "overlay";
-
-        this.elem.cardItems.append(this.elem.priority, this.elem.purpose, this.elem.desc)
-        console.log(this.elem.cardItems);
-        this.elem.topButtons.append(this.elem.editBtn, this.elem.deleteBtn)
-        this.elem.card.append(this.elem.topButtons, this.elem.fullName, this.elem.doctor, this.elem.showMoreBtn, this.elem.hideBtn,);
-
+        this.card.insertAdjacentHTML('beforeend', `
+        <div class="d-flex justify-content-end align-items-center">
+            <button type="button" class="btn btn-light">Edit</button>
+            <button type="button" class="deleteBtn btn-close" aria-label="Close"></button>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">${this.fullName}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">${this.doctor}</h6>
+            <ul class="card-list list-group list-group-flush collapse">
+                <li class="list-group-item">${this.priority}</li>
+                <li class="list-group-item">${this.purpose}</li>
+                <li class="list-group-item">${this.desc}</li>
+            </ul>
+            <button class="showMoreBtn btn btn-light">Show more</button>
+            <button class="hideBtn btn btn-light collapse">Hide</button>
+       </div>
+        `)
+    
+        this.cardList = this.card.querySelector('.card-list')
+        this.card.dataset.id = this.id;
+        this.card.style.minWidth = "250px";
+        this.card.classList.add('visit-card', 'card')
     }
 
     showMore() {
-        const info = [];
+        console.log(this.card);
 
-        for (let key in this.elem) {
-            if (key === "cardItems") {
-                info.push(this.elem[key]);
+        this.card.addEventListener('click', (e) => {
+            const showMoreBtn = this.card.querySelector('.showMoreBtn');
+            const hideBtn = this.card.querySelector('.hideBtn')
+            
+            if (e.target === showMoreBtn) {
+                this.cardList.classList.remove('collapse');
+                showMoreBtn.classList.add('collapse')
+                hideBtn.classList.remove('collapse')
+            } 
+            if (e.target === hideBtn) {
+                this.cardList.classList.add('collapse')
+                showMoreBtn.classList.remove('collapse')
+                hideBtn.classList.add('collapse')
             }
-        }
-       
-        info.forEach(item => {
-            this.elem.card.insertBefore(item, this.elem.showMoreBtn);
-        });
-
-        this.elem.showMoreBtn.style.display = 'none';
-        this.elem.hideBtn.style.display = 'inline-block';
+        })
     }
-    hide() {
-        this.elem.card.removeChild(this.elem.cardItems);
-        this.elem.hideBtn.style.display = 'none';
-        this.elem.showMoreBtn.style.display = 'inline-block';
+   
+    delete() {
+
+        this.card.addEventListener("click", async (e) => {
+            const deleteBtn = this.card.querySelector('.deleteBtn ')
+            if(e.target === deleteBtn) {
+                const response = await deleteCard(API, keyToken, this.id);
+                if (response.ok) {
+                    this.card.remove();
+                    const allVisits = document.querySelectorAll(".visit-card");
+                    if (!allVisits || allVisits.length === 0) {
+                        const noItem = document.createElement('p');
+                        noItem.id = "empty";
+                        noItem.textContent = "No item has been added";
+                        parent.append(noItem);
+                    }
+                }
+            }
+        });
     }
 }
 
@@ -96,29 +89,18 @@ export class VisitDentist extends Visit {
         super(visit);
         this.lastDateVisit = visit.lastDateVisit;
     }
-
     //Відображення Дантиста на сторінці
     render(parent) {
         super.render(parent);
-        this.elem.lastDateVisit = document.createElement("li");
-
-        this.elem.lastDateVisit.textContent = `Дата останнього візиту: ${this.lastDateVisit}`;
-
-        this.elem.lastDateVisit.classList.add("list-group-item");
-
-        this.elem.cardItems.append(this.elem.lastDateVisit)
-
-        this.elem.showMoreBtn.addEventListener("click", () => {
-            this.showMore();
-        });
-        this.elem.hideBtn.addEventListener("click", () => {
-            this.hide();
-        });
+        
+        this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">${this.lastDateVisit}</li>`)
+        this.showMore()
+        this.delete()
 
         if (parent) {
-            parent.append(this.elem.card);
+            parent.append(this.card);
         } else {
-            return this.elem.card;
+            return this.card;
         }
     }
 }
@@ -133,25 +115,15 @@ export class VisitTherapist extends Visit {
     //Відображення Терапевтa на сторінці
     render(parent) {
         super.render(parent);
-        this.elem.age = document.createElement("li");
 
-        this.elem.age.textContent = `Вік: ${this.age}`;
+        this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">${this.age}</li>`)
+        this.showMore()
+        this.delete()
 
-        this.elem.age.classList.add("list-group-item");
-
-        this.elem.cardItems.append(this.elem.age)
-
-        this.elem.showMoreBtn.addEventListener("click", () => {
-            this.showMore();
-        });
-        this.elem.hideBtn.addEventListener("click", () => {
-            this.hide();
-        });
-        
         if (parent) {
-            parent.append(this.elem.card);
+            parent.append(this.card);
         } else {
-            return this.elem.card;
+            return this.card;
         }
     }
 }
@@ -169,41 +141,27 @@ export class VisitCardiologist extends Visit {
     //Відображення Кардіолога на сторінці
     render(parent) {
         super.render(parent);
-        this.elem.bp = document.createElement("li");
-        this.elem.weight = document.createElement("li");
-        this.elem.heartIllness = document.createElement("li");
-        this.elem.age = document.createElement("li");
 
-        this.elem.age.textContent = `Вік: ${this.age}`;
-        this.elem.bp.textContent = `Середній тиск: ${this.bp}`;
-        this.elem.weight.textContent = `Вага: ${this.weight}кг`;
-        this.elem.heartIllness.textContent = `Раніше перенесені серцево-судинні захворювання: ${this.heartIllness}`;
-
-        this.elem.age.classList.add("list-group-item");
-        this.elem.bp.classList.add("list-group-item");
-        this.elem.weight.classList.add("list-group-item");
-        this.elem.heartIllness.classList.add("list-group-item");
-
-        this.elem.cardItems.append(this.elem.age, this.elem.bp, this.elem.weight, this.elem.heartIllness)
-
-        this.elem.showMoreBtn.addEventListener("click", () => {
-            this.showMore();
-        });
-        this.elem.hideBtn.addEventListener("click", () => {
-            this.hide();
-        });
+        this.cardList.insertAdjacentHTML("beforeend", `
+        <li class="list-group-item">${this.bp}</li>
+        <li class="list-group-item">${this.weight}</li>
+        <li class="list-group-item">${this.heartIllness}</li>
+        <li class="list-group-item">${this.age}</li>
+        `)
+        this.showMore()
+        this.delete()
 
         if (parent) {
-            parent.append(this.elem.card);
+            parent.append(this.card);
         } else {
-            return this.elem.card;
+            return this.card;
         }
     }
 }
 
-// Функція для відображення карток візитів із сервера
-export function renderCards(container) {
-    getCards(API, token)
+// Функція відображення усіх карток користувача з сервера
+export function renderCards() {
+    getCards(API, keyToken)
         .then(data => {
             console.log(data);
 
@@ -211,25 +169,21 @@ export function renderCards(container) {
                 const noItem = document.createElement('p');
                 noItem.innerText = "No item has been added";
                 noItem.id = "empty";
-                container.append(noItem);
+                cardsWrapper.append(noItem);
+
             } else {
-                 data.map(visit => {
-                    if (visit.doctor === "Дантист" || visit.doctor === "Dentist") {
+                data.map(visit => {
+                    if (visit.doctor === "Дантист" || visit.doctor === "Dantist") {
                         const visitCard = new VisitDentist(visit);
-                        visitCard.render(container);
-                        
+                        visitCard.render(cardsWrapper);
                     } else if (visit.doctor === "Кардіолог" || visit.doctor === "Cardiologist") {
                         const visitCard = new VisitCardiologist(visit);
-                        visitCard.render(container);
-                        
+                        visitCard.render(cardsWrapper);
                     } else if (visit.doctor === "Терапевт" || visit.doctor === "Therapist") {
-                        const visitCard = new VisitTherapist(visit);
-                        visitCard.render(container);
-                        
+                        const visitCard = new Visit(visit);
+                        visitCard.render(cardsWrapper);
                     }
                 });
-                
             }
         });
 }
-
