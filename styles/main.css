@@ -31,3 +31,7 @@
         top: 105px;
         right: 23px;
     }
+
+    .visit-card {
+        min-width: 250px;
+    }

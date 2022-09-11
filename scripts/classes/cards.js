@@ -38,7 +38,6 @@ export class Visit {
     
         this.cardList = this.card.querySelector('.card-list')
         this.card.dataset.id = this.id;
-        this.card.style.minWidth = "250px";
         this.card.classList.add('visit-card', 'card')
     }
 
