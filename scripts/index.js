@@ -1,6 +1,6 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
 import {Modal, ModalLogin} from './classes/modal.js';
-import {renderCards } from './cards.js';
+import {renderCards } from './classes/cards.js';
 
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';

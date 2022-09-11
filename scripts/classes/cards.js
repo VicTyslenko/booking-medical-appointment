@@ -1,5 +1,5 @@
-import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from './functions/send-request.js';
-import { keyToken } from './index.js';
+import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from '../functions/send-request.js';
+import { keyToken } from '../index.js';
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 
 const cardsWrapper = document.querySelector('.main-cards');
@@ -75,7 +75,7 @@ export class Visit {
                         const noItem = document.createElement('p');
                         noItem.id = "empty";
                         noItem.textContent = "No item has been added";
-                        parent.append(noItem);
+                        cardsWrapper.append(noItem);
                     }
                 }
             }
