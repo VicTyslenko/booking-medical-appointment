@@ -1,6 +1,5 @@
 import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from '../functions/send-request.js';
-import { keyToken } from '../index.js';
-const API = 'https://ajax.test-danit.com/api/v2/cards';
+import { keyToken, API } from '../index.js';
 
 const cardsWrapper = document.querySelector('.main-cards');
 
@@ -27,9 +26,9 @@ export class Visit {
             <h5 class="card-title">${this.fullName}</h5>
             <h6 class="card-subtitle mb-2 text-muted">${this.doctor}</h6>
             <ul class="card-list list-group list-group-flush collapse">
-                <li class="list-group-item">${this.priority}</li>
-                <li class="list-group-item">${this.purpose}</li>
-                <li class="list-group-item">${this.desc}</li>
+                <li class="list-group-item">Терміновість: ${this.priority}</li>
+                <li class="list-group-item">Ціль візиту: ${this.purpose}</li>
+                <li class="list-group-item">Короткий опис візиту: ${this.desc}</li>
             </ul>
             <button class="showMoreBtn btn btn-light">Show more</button>
             <button class="hideBtn btn btn-light collapse">Hide</button>
@@ -92,7 +91,7 @@ export class VisitDentist extends Visit {
     render(parent) {
         super.render(parent);
         
-        this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">${this.lastDateVisit}</li>`)
+        this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Дата останнього візиту: ${this.lastDateVisit}</li>`)
         this.showMore()
         this.delete()
 
@@ -115,7 +114,7 @@ export class VisitTherapist extends Visit {
     render(parent) {
         super.render(parent);
 
-        this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">${this.age}</li>`)
+        this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Вік: ${this.age}</li>`)
         this.showMore()
         this.delete()
 
@@ -142,10 +141,10 @@ export class VisitCardiologist extends Visit {
         super.render(parent);
 
         this.cardList.insertAdjacentHTML("beforeend", `
-        <li class="list-group-item">${this.bp}</li>
-        <li class="list-group-item">${this.weight}</li>
-        <li class="list-group-item">${this.heartIllness}</li>
-        <li class="list-group-item">${this.age}</li>
+        <li class="list-group-item">Звичайний тиск: ${this.bp}</li>
+        <li class="list-group-item">Вага: ${this.weight}</li>
+        <li class="list-group-item">Раніше перенесені серцево-судинні захворювання: ${this.heartIllness}</li>
+        <li class="list-group-item">Вік: ${this.age}</li>
         `)
         this.showMore()
         this.delete()
@@ -172,7 +171,7 @@ export function renderCards() {
 
             } else {
                 data.map(visit => {
-                    if (visit.doctor === "Дантист" || visit.doctor === "Dantist") {
+                    if (visit.doctor === "Дантист" || visit.doctor === "Dentist") {
                         const visitCard = new VisitDentist(visit);
                         visitCard.render(cardsWrapper);
                     } else if (visit.doctor === "Кардіолог" || visit.doctor === "Cardiologist") {

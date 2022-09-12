@@ -51,7 +51,7 @@ document.addEventListener('click', async (e) => {
 
 
 })
-export {keyToken}
+export {keyToken, API}
 // Залишив старий код з функціями щоб можна було підглядати в разі потреби
 
 /*
