@@ -1,6 +1,6 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
 import {Modal, ModalLogin} from './classes/modal.js';
-
+import {renderCards } from './classes/cards.js';
 
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
@@ -32,7 +32,7 @@ document.addEventListener('click', async (e) => {
             await getToken(API, login, password)
             .then(token => {
                     keyToken = token;
-                    
+                    renderCards()
                 })
                 .catch(e => console.log(e.message))     // тут буде обробка помилки
                 .finally(() => {entryModal.close()});   // закриваємо модальне вікно після відправки даних
@@ -51,7 +51,7 @@ document.addEventListener('click', async (e) => {
 
 
 })
-
+export {keyToken, API}
 // Залишив старий код з функціями щоб можна було підглядати в разі потреби
 
 /*
