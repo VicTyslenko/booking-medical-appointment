@@ -5,13 +5,13 @@ const cardsWrapper = document.querySelector('.main-cards');
 
 //Основний клас карток візитів
 export class Visit {
-    constructor(visit) {
-        this.id = visit.id;
-        this.doctor = visit.doctor;
-        this.purpose = visit.purpose;
-        this.desc = visit.desc;
-        this.priority = visit.priority;
-        this.fullName = visit.fullName;
+    constructor({id, doctor, purpose, desc, urgency, fullName}) {
+        this.id = id;
+        this.doctor = doctor;
+        this.purpose = purpose;
+        this.desc = desc;
+        this.urgency = urgency;
+        this.fullName = fullName;
         this.card = document.createElement('div')
     }
 
@@ -25,39 +25,26 @@ export class Visit {
         <div class="card-body">
             <h5 class="card-title">${this.fullName}</h5>
             <h6 class="card-subtitle mb-2 text-muted">${this.doctor}</h6>
-            <ul class="card-list list-group list-group-flush collapse">
-                <li class="list-group-item">Терміновість: ${this.priority}</li>
-                <li class="list-group-item">Ціль візиту: ${this.purpose}</li>
-                <li class="list-group-item">Короткий опис візиту: ${this.desc}</li>
-            </ul>
-            <button class="showMoreBtn btn btn-light">Show more</button>
-            <button class="hideBtn btn btn-light collapse">Hide</button>
-       </div>
+            <div class="accordion accordion-flush" id="accordionFlush">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${this.id}" aria-expanded="false" aria-controls="flush-collapseOne">
+                    Show more
+                </button>
+                <div id="collapse-${this.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <ul class="card-list list-group list-group-flush">
+                        <li class="list-group-item">Терміновість: ${this.urgency}</li>
+                        <li class="list-group-item">Ціль візиту: ${this.purpose}</li>
+                        <li class="list-group-item">Короткий опис візиту: ${this.desc}</li>
+                    </ul>
+                </div>
+             </div>
+        </div>
         `)
-    
+
         this.cardList = this.card.querySelector('.card-list')
         this.card.dataset.id = this.id;
         this.card.classList.add('visit-card', 'card')
-    }
-
-    showMore() {
-        console.log(this.card);
-
-        this.card.addEventListener('click', (e) => {
-            const showMoreBtn = this.card.querySelector('.showMoreBtn');
-            const hideBtn = this.card.querySelector('.hideBtn')
-            
-            if (e.target === showMoreBtn) {
-                this.cardList.classList.remove('collapse');
-                showMoreBtn.classList.add('collapse')
-                hideBtn.classList.remove('collapse')
-            } 
-            if (e.target === hideBtn) {
-                this.cardList.classList.add('collapse')
-                showMoreBtn.classList.remove('collapse')
-                hideBtn.classList.add('collapse')
-            }
-        })
+        parent.append(this.card)
+        // console.log(this.card);
     }
    
     delete() {
@@ -83,16 +70,15 @@ export class Visit {
 
 //Дочірній клас візиту Дантист
 export class VisitDentist extends Visit {
-    constructor(visit) {
-        super(visit);
-        this.lastDateVisit = visit.lastDateVisit;
+    constructor({id, doctor, purpose, desc, urgency, fullName, lastDateVisit}) {
+        super({id, doctor, purpose, desc, urgency, fullName});
+        this.lastDateVisit = lastDateVisit;
     }
     //Відображення Дантиста на сторінці
     render(parent) {
         super.render(parent);
         
         this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Дата останнього візиту: ${this.lastDateVisit}</li>`)
-        this.showMore()
         this.delete()
 
         if (parent) {
@@ -105,9 +91,9 @@ export class VisitDentist extends Visit {
 
 //Дочірній клас візиту Терапевт 
 export class VisitTherapist extends Visit {
-    constructor(visit) {
-        super(visit);
-        this.age = visit.age;
+    constructor({id, doctor, purpose, desc, urgency, fullName, age}) {
+        super({id, doctor, purpose, desc, urgency, fullName});
+        this.age = age;
     }
 
     //Відображення Терапевтa на сторінці
@@ -115,7 +101,6 @@ export class VisitTherapist extends Visit {
         super.render(parent);
 
         this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Вік: ${this.age}</li>`)
-        this.showMore()
         this.delete()
 
         if (parent) {
@@ -128,12 +113,12 @@ export class VisitTherapist extends Visit {
 
 //Дочірній клас візиту Кардіолога 
 export class VisitCardiologist extends Visit {
-    constructor(visit) {
-        super(visit);
-        this.bp = visit.bp;
-        this.weight = visit.weight;
-        this.heartIllness = visit.heartIllness;
-        this.age = visit.age;
+    constructor({id, doctor, purpose, desc, urgency, fullName, bp, weight, heartIllness, age}) {
+        super({id, doctor, purpose, desc, urgency, fullName});
+        this.bp = bp;
+        this.weight = weight;
+        this.heartIllness = heartIllness;
+        this.age = age;
     }
 
     //Відображення Кардіолога на сторінці
@@ -146,7 +131,7 @@ export class VisitCardiologist extends Visit {
         <li class="list-group-item">Раніше перенесені серцево-судинні захворювання: ${this.heartIllness}</li>
         <li class="list-group-item">Вік: ${this.age}</li>
         `)
-        this.showMore()
+        
         this.delete()
 
         if (parent) {
@@ -171,13 +156,16 @@ export function renderCards() {
 
             } else {
                 data.map(visit => {
+                    // console.log(visit);
+                    // console.log(visit.doctor);
                     if (visit.doctor === "Дантист" || visit.doctor === "Dentist") {
                         const visitCard = new VisitDentist(visit);
                         visitCard.render(cardsWrapper);
                     } else if (visit.doctor === "Кардіолог" || visit.doctor === "Cardiologist") {
                         const visitCard = new VisitCardiologist(visit);
                         visitCard.render(cardsWrapper);
-                    } else if (visit.doctor === "Терапевт" || visit.doctor === "Therapist") {
+                    } 
+                    else if (visit.doctor === "Терапевт" || visit.doctor === "Therapist") {
                         const visitCard = new Visit(visit);
                         visitCard.render(cardsWrapper);
                     }
