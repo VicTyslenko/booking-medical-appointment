@@ -1,5 +1,5 @@
-import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from '../functions/send-request.js';
-import { keyToken, API } from '../index.js';
+// import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from '../functions/send-request.js';
+// import { keyToken, API } from '../index.js';
 
 const cardsWrapper = document.querySelector('.main-cards');
 
@@ -20,7 +20,7 @@ export class Visit {
         this.card.insertAdjacentHTML('beforeend', `
         <div class="d-flex justify-content-end align-items-center">
             <button type="button" class="btn btn-light">Edit</button>
-            <button type="button" class="deleteBtn btn-close" aria-label="Close"></button>
+            <button type="button" class="deleteBtn btn-close" aria-label="Close" id="deleteBtn"></button>
         </div>
         <div class="card-body">
             <h5 class="card-title">${this.fullName}</h5>
@@ -44,27 +44,7 @@ export class Visit {
         this.card.dataset.id = this.id;
         this.card.classList.add('visit-card', 'card')
         parent.append(this.card)
-        // console.log(this.card);
-    }
-   
-    delete() {
-
-        this.card.addEventListener("click", async (e) => {
-            const deleteBtn = this.card.querySelector('.deleteBtn ')
-            if(e.target === deleteBtn) {
-                const response = await deleteCard(API, keyToken, this.id);
-                if (response.ok) {
-                    this.card.remove();
-                    const allVisits = document.querySelectorAll(".visit-card");
-                    if (!allVisits || allVisits.length === 0) {
-                        const noItem = document.createElement('p');
-                        noItem.id = "empty";
-                        noItem.textContent = "No item has been added";
-                        cardsWrapper.append(noItem);
-                    }
-                }
-            }
-        });
+        console.log(this.card);
     }
 }
 
@@ -79,8 +59,7 @@ export class VisitDentist extends Visit {
         super.render(parent);
         
         this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Дата останнього візиту: ${this.lastDateVisit}</li>`)
-        this.delete()
-
+        
         if (parent) {
             parent.append(this.card);
         } else {
@@ -101,7 +80,6 @@ export class VisitTherapist extends Visit {
         super.render(parent);
 
         this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Вік: ${this.age}</li>`)
-        this.delete()
 
         if (parent) {
             parent.append(this.card);
@@ -113,9 +91,10 @@ export class VisitTherapist extends Visit {
 
 //Дочірній клас візиту Кардіолога 
 export class VisitCardiologist extends Visit {
-    constructor({id, doctor, purpose, desc, urgency, fullName, bp, weight, heartIllness, age}) {
+    constructor({id, doctor, purpose, desc, urgency, fullName, systolic, diastolic, weight, heartIllness, age}) {
         super({id, doctor, purpose, desc, urgency, fullName});
-        this.bp = bp;
+        this.systolic = systolic;
+        this.diastolic = diastolic;
         this.weight = weight;
         this.heartIllness = heartIllness;
         this.age = age;
@@ -126,13 +105,11 @@ export class VisitCardiologist extends Visit {
         super.render(parent);
 
         this.cardList.insertAdjacentHTML("beforeend", `
-        <li class="list-group-item">Звичайний тиск: ${this.bp}</li>
+        <li class="list-group-item">Звичайний тиск: ${this.systolic}/${this.diastolic}</li>
         <li class="list-group-item">Вага: ${this.weight}</li>
         <li class="list-group-item">Раніше перенесені серцево-судинні захворювання: ${this.heartIllness}</li>
         <li class="list-group-item">Вік: ${this.age}</li>
         `)
-        
-        this.delete()
 
         if (parent) {
             parent.append(this.card);
@@ -143,33 +120,29 @@ export class VisitCardiologist extends Visit {
 }
 
 // Функція відображення усіх карток користувача з сервера
-export function renderCards() {
-    getCards(API, keyToken)
-        .then(data => {
-            console.log(data);
+export function renderCards(cardsArray) {
+    // console.log(cardsArray);
 
-            if (data.length === 0) {
-                const noItem = document.createElement('p');
-                noItem.innerText = "No item has been added";
-                noItem.id = "empty";
-                cardsWrapper.append(noItem);
+    if (cardsArray.length === 0) {
+        const noItem = document.createElement('p');
+        noItem.innerText = "No item has been added";
+        noItem.id = "empty";
+        cardsWrapper.append(noItem);
 
-            } else {
-                data.map(visit => {
-                    // console.log(visit);
-                    // console.log(visit.doctor);
-                    if (visit.doctor === "Дантист" || visit.doctor === "Dentist") {
-                        const visitCard = new VisitDentist(visit);
-                        visitCard.render(cardsWrapper);
-                    } else if (visit.doctor === "Кардіолог" || visit.doctor === "Cardiologist") {
+    } else {
+        cardsArray.map(visit => {
+            // console.log(visit);
+            // console.log(visit.doctor);
+            if (visit.doctor === "Дантист" || visit.doctor === "Dentist") {
+                const visitCard = new VisitDentist(visit);
+                visitCard.render(cardsWrapper);
+            } else if (visit.doctor === "Кардіолог" || visit.doctor === "Cardiologist") {
                         const visitCard = new VisitCardiologist(visit);
                         visitCard.render(cardsWrapper);
-                    } 
-                    else if (visit.doctor === "Терапевт" || visit.doctor === "Therapist") {
-                        const visitCard = new Visit(visit);
-                        visitCard.render(cardsWrapper);
-                    }
-                });
+            } else if (visit.doctor === "Терапевт" || visit.doctor === "Therapist") {
+                const visitCard = new Visit(visit);
+                visitCard.render(cardsWrapper);
             }
         });
-}
+    }
+};
