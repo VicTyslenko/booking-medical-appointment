@@ -82,12 +82,12 @@ export class VisitTherapist extends Visit {
 
 //Дочірній клас візиту Кардіолога 
 export class VisitCardiologist extends Visit {
-    constructor({id, doctor, purpose, description, urgency, fullName, systolic, diastolic, weight, heartIllness, age}) {
+    constructor({id, doctor, purpose, description, urgency, fullName, systolicPressure, diastolicPressure, bmi, cardiovascularDiseases, age}) {
         super({id, doctor, purpose, description, urgency, fullName});
-        this.systolic = systolic;
-        this.diastolic = diastolic;
-        this.weight = weight;
-        this.heartIllness = heartIllness;
+        this.systolicPressure = systolicPressure;
+        this.diastolicPressure = diastolicPressure;
+        this.bmi = bmi;
+        this.cardiovascularDiseases = cardiovascularDiseases;
         this.age = age;
     }
 
@@ -96,9 +96,9 @@ export class VisitCardiologist extends Visit {
         super.render(parent);
 
         this.cardList.insertAdjacentHTML("beforeend", `
-        <li class="list-group-item">Basic pressure: ${this.systolic}/${this.diastolic}</li>
-        <li class="list-group-item">Weight: ${this.weight}</li>
-        <li class="list-group-item">Cardiovascular diseases: ${this.heartIllness}</li>
+        <li class="list-group-item">Basic pressure: ${this.systolicPressure}/${this.diastolicPressure}</li>
+        <li class="list-group-item">Weight: ${this.bmi}</li>
+        <li class="list-group-item">Cardiovascular diseases: ${this.cardiovascularDiseases}</li>
         <li class="list-group-item">Age: ${this.age}</li>
         `)
 
