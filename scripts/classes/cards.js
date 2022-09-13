@@ -128,7 +128,7 @@ export function renderCards(cardsArray) {
                 const visitCard = new VisitCardiologist(visit);
                 visitCard.render(cardsWrapper);
             } else if (visit.doctor === "Therapist") {
-                const visitCard = new Visit(visit);
+                const visitCard = new VisitTherapist(visit);
                 visitCard.render(cardsWrapper);
             }
         });
