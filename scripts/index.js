@@ -1,17 +1,18 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
-import {Modal, ModalLogin} from './classes/modal.js';
-import {renderCards } from './classes/cards.js';
+import {Modal, ModalLogin, ModalAddCard} from './classes/modal.js';
+import {renderCards, Visit, VisitCardiologist } from './classes/cards.js';
+import formToObj from './functions/form-to-obj.js';
 
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
+let visitsCollection = [];                                  // масив усіх візитів
+
 
 
 // змінні щоб їх було видно для всіх функцій нижче Типу глобальні змінні, але ще в процесі тестування і можливо їх не буде в фінальному білді
 let entryModal; // обєкт з вікном входу
 let keyToken; // сюди записується токен  Наступні функції запиту на сервер (для отримання карток чи ін) слід викликати з перевіркою if(keyToken)
-
-
-
+let newVisitModal; // обєкт з вікном створення нового візиту
 
 
 
@@ -21,18 +22,17 @@ document.addEventListener('click', async (e) => {
     if (e.target.id === 'entry-btn') {              // якщо нажати кнопку входу
         entryModal = new ModalLogin();
         entryModal.render();
-        console.log(entryModal);
     } else if (e.target.id === 'login-btn') {       //якщо нажати кнопку на формі відправки логіна та пароля
         e.preventDefault();
         let login = document.querySelector('#inputEmail').value;
         let password = document.querySelector('#inputPassword').value;
         // проста валідація введених даних
-        if(login && login.includes('@') && password) {
+        if(login.includes('@') && password) {
             // якщо дані пройшли валідацію, запит на сервер для отримання токена
             await getToken(API, login, password)
             .then(token => {
                     keyToken = token;
-                    renderCards()
+                   
                 })
                 .catch(e => console.log(e.message))     // тут буде обробка помилки
                 .finally(() => {entryModal.close()});   // закриваємо модальне вікно після відправки даних
@@ -41,16 +41,65 @@ document.addEventListener('click', async (e) => {
             console.log('Wrong values!');
         }
         if(keyToken) {
+            // міняємо кнопки
             document.querySelector('#entry-btn').classList.add('invisible');
             document.querySelector('#visit-btn').classList.remove('hidden');
+
+            // показуємо форму пошуку
+            document.querySelector('#sorting-form').classList.remove('hidden');
+
+            // тут також має бути функція отримання всіх карток
+            await getCards(API, keyToken).then(cardsList => {
+                visitsCollection = cardsList;
+            });
+            renderCards(visitsCollection);
+            // і функція рендеру всіх наявних карток, яка приймає масив усіх карток і створює по класу нові картки і виводить їх на екран
+            // щось типу такого visitsRender(visitsCollection)
         }
 
         
-        // тут потім треба додати заміну кнопки входу на кнопку створення нової каркти
+    } else if (e.target.id === 'visit-btn') {                // якщо натиснути кнопку виклику вікна створення нового візиту
+        newVisitModal = new ModalAddCard();
+        newVisitModal.render();
+    } else if (e.target.id === 'create-btn') {                 // якщо натиснути кнопку створити новий візит
+        e.preventDefault();
+        const form = document.querySelector('#newVisitForm');
+        form.classList.add('was-validated');  // клас bs5 для красивих стилів під час валідації
+        // перевіряємо чи всі необхідні поля заповнено
+        if(form.checkValidity()) {
+            // отримуємо дані з форми 
+            let formData = new FormData(form)
+            // обєкт із всіма заповненими полями форми
+            let visitData = formToObj(formData); 
+            // закриваємо модальне вікно
+            newVisitModal.close();
+            
+            // відправляємо створений візит на сервер
+            await sendCard(API, keyToken, visitData).then(card => {
+                visitsCollection.push(card);
+                console.log(visitsCollection);
+                // !!! далі має бути якась функція що відобразить візит на сторінці !!!
+            });
+        }
+        
+    } else if (e.target.id === 'deleteBtn') {
+        const card = e.target.closest('.visit-card')
+        const cardId = card.getAttribute('data-id')
+        await deleteCard(API, keyToken, cardId)
+            .then(response => {
+                if(response) {
+                    visitsCollection.forEach(data => {
+                        const cardIndex = visitsCollection.indexOf(data)
+                        if (data.id == cardId) {
+                            visitsCollection.splice(cardIndex, 1)
+                        }
+                    })
+                    card.remove()
+                }
+            })
     }
-
-
 })
+
 export {keyToken, API}
 
     
