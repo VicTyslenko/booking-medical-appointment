@@ -105,30 +105,32 @@ export class VisitCardiologist extends Visit {
         parent.append(this.card);
     }
 }
+// Функція для відображення тексту при відсутності карток
+export function noItems(cardsArray) {
+    if(cardsArray.length === 0) {
+        const noItem = document.createElement('p');
+        noItem.innerText = "No item has been added";
+        noItem.id = "empty";
+        cardsWrapper.append(noItem);
+    }
+}
 
 // Функція відображення усіх карток користувача з сервера
 export function renderCards(cardsArray) {
     // console.log(cardsArray);
 
-    if (cardsArray.length === 0) {
-        const noItem = document.createElement('p');
-        noItem.innerText = "No item has been added";
-        noItem.id = "empty";
-        cardsWrapper.append(noItem);
-
-    } else {
         cardsArray.forEach(visit => {
-            if (visit.doctor === "dentist") {
+            if (visit.doctor === "Dentist") {
                 const visitCard = new VisitDentist(visit);
                 console.log(visitCard);
                 visitCard.render(cardsWrapper);
-            } else if (visit.doctor === "cardiologist") {
+            } else if (visit.doctor === "Cardiologist") {
                 const visitCard = new VisitCardiologist(visit);
                 visitCard.render(cardsWrapper);
-            } else if (visit.doctor === "therapist") {
+            } else if (visit.doctor === "Therapist") {
                 const visitCard = new Visit(visit);
                 visitCard.render(cardsWrapper);
             }
         });
-    }
+    
 };
