@@ -31,9 +31,9 @@ export class Visit {
                 </button>
                 <div id="collapse-${this.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                     <ul class="card-list list-group list-group-flush">
-                        <li class="list-group-item">Терміновість: ${this.urgency}</li>
-                        <li class="list-group-item">Ціль візиту: ${this.purpose}</li>
-                        <li class="list-group-item">Короткий опис візиту: ${this.desc}</li>
+                        <li class="list-group-item">Urgency: ${this.urgency}</li>
+                        <li class="list-group-item">Purpose: ${this.purpose}</li>
+                        <li class="list-group-item">Description: ${this.desc}</li>
                     </ul>
                 </div>
              </div>
@@ -58,7 +58,7 @@ export class VisitDentist extends Visit {
     render(parent) {
         super.render(parent);
         
-        this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Дата останнього візиту: ${this.lastDateVisit}</li>`)
+        this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Date of last visit: ${this.lastDateVisit}</li>`)
          parent.append(this.card);
         
     }
@@ -75,7 +75,7 @@ export class VisitTherapist extends Visit {
     render(parent) {
         super.render(parent);
 
-        this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Вік: ${this.age}</li>`)
+        this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Age: ${this.age}</li>`)
         parent.append(this.card);
     }
 }
@@ -96,10 +96,10 @@ export class VisitCardiologist extends Visit {
         super.render(parent);
 
         this.cardList.insertAdjacentHTML("beforeend", `
-        <li class="list-group-item">Звичайний тиск: ${this.systolic}/${this.diastolic}</li>
-        <li class="list-group-item">Вага: ${this.weight}</li>
-        <li class="list-group-item">Раніше перенесені серцево-судинні захворювання: ${this.heartIllness}</li>
-        <li class="list-group-item">Вік: ${this.age}</li>
+        <li class="list-group-item">Basic pressure: ${this.systolic}/${this.diastolic}</li>
+        <li class="list-group-item">Weight: ${this.weight}</li>
+        <li class="list-group-item">Cardiovascular diseases: ${this.heartIllness}</li>
+        <li class="list-group-item">Age: ${this.age}</li>
         `)
 
         parent.append(this.card);
@@ -120,13 +120,13 @@ export function renderCards(cardsArray) {
         cardsArray.map(visit => {
             // console.log(visit);
             // console.log(visit.doctor);
-            if (visit.doctor === "Дантист" || visit.doctor === "Dentist") {
+            if (visit.doctor === "Dentist") {
                 const visitCard = new VisitDentist(visit);
                 visitCard.render(cardsWrapper);
-            } else if (visit.doctor === "Кардіолог" || visit.doctor === "Cardiologist") {
+            } else if (visit.doctor === "Cardiologist") {
                         const visitCard = new VisitCardiologist(visit);
                         visitCard.render(cardsWrapper);
-            } else if (visit.doctor === "Терапевт" || visit.doctor === "Therapist") {
+            } else if (visit.doctor === "Therapist") {
                 const visitCard = new Visit(visit);
                 visitCard.render(cardsWrapper);
             }
