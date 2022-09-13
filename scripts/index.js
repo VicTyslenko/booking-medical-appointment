@@ -1,6 +1,7 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
 import {Modal, ModalLogin, ModalAddCard} from './classes/modal.js';
-import {renderCards } from './classes/cards.js';
+import {renderCards, Visit, VisitCardiologist } from './classes/cards.js';
+import formToObj from './functions/form-to-obj.js';
 
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
@@ -12,51 +13,6 @@ let visitsCollection = [];                                  // масив усі
 let entryModal; // обєкт з вікном входу
 let keyToken; // сюди записується токен  Наступні функції запиту на сервер (для отримання карток чи ін) слід викликати з перевіркою if(keyToken)
 let newVisitModal; // обєкт з вікном створення нового візиту
-
-
-// Тест елементів форми
-// // шукаємо форму
-// const form = document.querySelector('#newVisitForm');
-// // шукаємо всі приховані блоки
-// const allDoctorsBlock = form.querySelector('#forAllDoctors');
-// const cardiologistBlock = form.querySelector('#forCardiologist');
-// const dentistBlock = form.querySelector('#forDentist');
-// const therapistBlock = form.querySelector('#forTherapist');
-// const saveBtn = form.querySelector('#create-btn');
-// // навішуємо обробник на форму і по вибору лікаря відкриваємо потрібні поля
-// form.addEventListener('change', (e) => {
-//     if(e.target === form.querySelector('#selectDoctor')) {
-//         console.log(e.target.value);
-//         if(e.target.value === 'cardiologist') {
-//             allDoctorsBlock.classList.remove('hidden');
-//             cardiologistBlock.classList.remove('hidden');
-//             saveBtn.classList.remove('hidden');
-//             dentistBlock.classList.add('hidden');
-//             therapistBlock.classList.add('hidden');
-//         } else if(e.target.value === 'dentist') {
-//             allDoctorsBlock.classList.remove('hidden');
-//             dentistBlock.classList.remove('hidden');
-//             saveBtn.classList.remove('hidden');
-//             cardiologistBlock.classList.add('hidden');
-//             therapistBlock.classList.add('hidden');
-//         } else if(e.target.value === 'therapist') {
-//             allDoctorsBlock.classList.remove('hidden');
-//             therapistBlock.classList.remove('hidden');
-//             saveBtn.classList.remove('hidden');
-//             cardiologistBlock.classList.add('hidden');
-//             dentistBlock.classList.add('hidden');
-//         }
-//     }
-// })
-
-// form.addEventListener('submit', function (event) { 
-//     if (!form.checkValidity()) { 
-//       event.preventDefault()
-//       event.stopPropagation()
-//     }
-
-//     form.classList.add('was-validated')
-//   }, false)
 
 
 
@@ -71,7 +27,7 @@ document.addEventListener('click', async (e) => {
         let login = document.querySelector('#inputEmail').value;
         let password = document.querySelector('#inputPassword').value;
         // проста валідація введених даних
-        if(login && login.includes('@') && password) {
+        if(login.includes('@') && password) {
             // якщо дані пройшли валідацію, запит на сервер для отримання токена
             await getToken(API, login, password)
             .then(token => {
@@ -94,9 +50,9 @@ document.addEventListener('click', async (e) => {
 
             // тут також має бути функція отримання всіх карток
             await getCards(API, keyToken).then(cardsList => {
-                visitsCollection = cardsList
-                renderCards(visitsCollection)
+                visitsCollection = cardsList;
             });
+            renderCards(visitsCollection);
             // і функція рендеру всіх наявних карток, яка приймає масив усіх карток і створює по класу нові картки і виводить їх на екран
             // щось типу такого visitsRender(visitsCollection)
         }
@@ -107,22 +63,24 @@ document.addEventListener('click', async (e) => {
         newVisitModal.render();
     } else if (e.target.id === 'create-btn') {                 // якщо натиснути кнопку створити новий візит
         e.preventDefault();
-        
-        // валідація форми по документації bootstrap
         const form = document.querySelector('#newVisitForm');
-        if (!form.checkValidity()) {  // не впевнений що цей блок працює як треба
-            e.preventDefault()
-            e.stopPropagation()
+        form.classList.add('was-validated');  // клас bs5 для красивих стилів під час валідації
+        // перевіряємо чи всі необхідні поля заповнено
+        if(form.checkValidity()) {
+            // отримуємо дані з форми 
+            let formData = new FormData(form)
+            // обєкт із всіма заповненими полями форми
+            let visitData = formToObj(formData); 
+            // закриваємо модальне вікно
+            newVisitModal.close();
             
-        } 
-        form.classList.add('was-validated')
-
-        
-            // блок ще в роботі)
-            // тут буде функція створення нової картки і відправка на сервер
-            console.log(form);
-
-        
+            // відправляємо створений візит на сервер
+            await sendCard(API, keyToken, visitData).then(card => {
+                visitsCollection.push(card);
+                console.log(visitsCollection);
+                // !!! далі має бути якась функція що відобразить візит на сторінці !!!
+            });
+        }
         
     } else if (e.target.id === 'deleteBtn') {
         const card = e.target.closest('.visit-card')
@@ -140,8 +98,8 @@ document.addEventListener('click', async (e) => {
                 }
             })
     }
-    console.log(visitsCollection);
 })
+
 export {keyToken, API}
 // Залишив старий код з функціями щоб можна було підглядати в разі потреби
 

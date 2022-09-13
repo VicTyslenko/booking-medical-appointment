@@ -117,16 +117,15 @@ export function renderCards(cardsArray) {
         cardsWrapper.append(noItem);
 
     } else {
-        cardsArray.map(visit => {
-            // console.log(visit);
-            // console.log(visit.doctor);
-            if (visit.doctor === "Dentist") {
+        cardsArray.forEach(visit => {
+            if (visit.doctor === "dentist") {
                 const visitCard = new VisitDentist(visit);
+                console.log(visitCard);
                 visitCard.render(cardsWrapper);
-            } else if (visit.doctor === "Cardiologist") {
-                        const visitCard = new VisitCardiologist(visit);
-                        visitCard.render(cardsWrapper);
-            } else if (visit.doctor === "Therapist") {
+            } else if (visit.doctor === "cardiologist") {
+                const visitCard = new VisitCardiologist(visit);
+                visitCard.render(cardsWrapper);
+            } else if (visit.doctor === "therapist") {
                 const visitCard = new Visit(visit);
                 visitCard.render(cardsWrapper);
             }
