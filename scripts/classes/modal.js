@@ -71,9 +71,9 @@ export class ModalAddCard extends Modal {
             <div class="mb-2 col-12">
                 <select id="selectDoctor" class="form-select" aria-label="Status" name="doctor">
                     <option selected disabled>Chose doctor</option>
-                    <option value="cardiologist">Cardiologist</option>
-                    <option value="dentist">Dentist</option>
-                    <option value="therapist">Therapist</option>
+                    <option value="Cardiologist">Cardiologist</option>
+                    <option value="Dentist">Dentist</option>
+                    <option value="Therapist">Therapist</option>
                 </select>
             </div>
             <!-- for all doctors -->
@@ -164,7 +164,7 @@ export class ModalAddCard extends Modal {
         form.addEventListener('change', (e) => {
             if(e.target === form.querySelector('#selectDoctor')) {
                 // відслідковуємо зміну в select 
-                if(e.target.value === 'cardiologist') {
+                if(e.target.value === 'Cardiologist') {
                     allDoctorsBlock.classList.remove('hidden');
                     saveBtn.classList.remove('hidden');
                     // додаємо у форму блок інпутів для кардіолога
@@ -205,7 +205,7 @@ export class ModalAddCard extends Modal {
                             </div>
                         </div>
                     `
-                } else if(e.target.value === 'dentist') {
+                } else if(e.target.value === 'Dentist') {
                     allDoctorsBlock.classList.remove('hidden');
                     saveBtn.classList.remove('hidden');
                     additionalBlock.innerHTML = `
@@ -220,7 +220,7 @@ export class ModalAddCard extends Modal {
                             </div>
                         </div>
                     `
-                } else if(e.target.value === 'therapist') {
+                } else if(e.target.value === 'Therapist') {
                     allDoctorsBlock.classList.remove('hidden');
                     saveBtn.classList.remove('hidden');
                     additionalBlock.innerHTML = `
