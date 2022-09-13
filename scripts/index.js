@@ -1,6 +1,6 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
 import {Modal, ModalLogin, ModalAddCard} from './classes/modal.js';
-import {renderCards, Visit, VisitCardiologist } from './classes/cards.js';
+import {renderCards, Visit, VisitCardiologist, noItems } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
 
 // тут будуть глобальні змінні
@@ -53,6 +53,7 @@ document.addEventListener('click', async (e) => {
                 visitsCollection = cardsList;
             });
             renderCards(visitsCollection);
+            noItems(visitsCollection);
             // і функція рендеру всіх наявних карток, яка приймає масив усіх карток і створює по класу нові картки і виводить їх на екран
             // щось типу такого visitsRender(visitsCollection)
         }
@@ -95,6 +96,7 @@ document.addEventListener('click', async (e) => {
                         }
                     })
                     card.remove()
+                    noItems(visitsCollection);
                 }
             })
     }
