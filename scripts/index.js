@@ -52,6 +52,76 @@ document.addEventListener('click', async (e) => {
 
 })
 export {keyToken, API}
+
+    
+
+let cardiolog = {};
+let terapevt = {};
+const allCards = [
+  cardiolog = {
+    title: 'Візит до кардіолога',
+    description: 'Плановий візит',
+    doctor: 'Cardiologist',
+    bp: '24',
+    age: 23,
+    weight: 70
+},
+terapevt ={  title: 'Візит до терапевта',
+description: 'Плановий візит',
+doctor: 'Cardiologist',
+bp: '24',
+age: 32,
+weight: 70,
+urgency: 'low'
+}
+]
+console.log(allCards);
+
+
+const filterForm = document.querySelector('.main-form');
+const inputTitle = document.getElementById('input-title');
+const status = document.querySelector('.status')
+const urgency = document.querySelector('.urgency')
+const okButton = document.querySelector('.ok-btn')
+
+
+okButton.addEventListener('click',(event)=>{
+    event.preventDefault()
+    if(inputTitle.value === 'cardiologist' && urgency.value === 'high' && status.value === 'open'){
+        
+    }
+// console.log(inputTitle.value);
+
+// console.log(urgency.value);
+// console.log(status.value);
+
+});
+
+
+
+// console.log(filterForm);
+
+         
+        //  urgency.addEventListener('change',()=>{
+        //     console.log(urgency.value);
+        //  })
+
+// filterForm.addEventListener('change',(event)=>{
+//         const inputTitle = document.getElementById('input-title')
+
+// // 
+
+// // if(event.target === inputTitle && event.target === urgency && event.target === status){
+// // alert('yes')
+// // }
+// // else{
+// //     alert('введiть коректнI данi')
+// // }
+// });
+
+
+
+
 // Залишив старий код з функціями щоб можна було підглядати в разі потреби
 
 /*

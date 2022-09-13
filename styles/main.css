@@ -19,13 +19,16 @@
         border-radius: 10px;
     
     }
-    .main-form{
-        gap: 40px;
-     /* display: none; */
+ 
+    .flex-container-form{
+        width: 200px;
+        gap: 10px;
     }
+
     .search{
         outline: none;
     }
+
     .valid-form{
         position: absolute;
         top: 105px;

@@ -29,21 +29,21 @@
 <main>
     <!-- Main-content -->
     <section class="main-section pt-3 container">
-        <form class=" main-form ">
+        <form class=" main-form">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-8 col-sm-12">
-                        <input type="text" class="form-control search" id="" placeholder="search by title">
+                <div class=" d-flex flex-column  flex-container-form">
+                    <div class="col-10">
+                        <input type="text" class="form-control" id="input-title" placeholder="search by title">
                     </div>
-                    <div class="col-md-2 col-sm-12">
-                        <select class="form-select" aria-label="Status">
+                    <div class="col-6">
+                        <select class="form-select status" aria-label="Status">
                             <option selected value="all">Status</option>
                             <option value="open">Open</option>
                             <option value="done">Done</option>
                         </select>
                     </div>
-                    <div class="col-md-2 col-sm-12">
-                        <select class="form-select" aria-label="Urgency">
+                    <div class="col-6">
+                        <select class="form-select urgency" aria-label="Urgency">
                             <option selected value="all">Urgency</option>
                             <option value="high">High</option>
                             <option value="middle">Middle</option>
@@ -52,6 +52,7 @@
                     </div>
                 </div>
             </div>
+            <button id="visit-btn" class="btn btn-primary btn-sm ok-btn">ok</button>
         </form>
         <div class="main-cards d-flex flex-wrap justify-content-center gap-3 p-3 align-items-start"></div>
     </section>
