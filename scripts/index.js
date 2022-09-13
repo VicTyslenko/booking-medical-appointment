@@ -32,7 +32,7 @@ document.addEventListener('click', async (e) => {
             await getToken(API, login, password)
             .then(token => {
                     keyToken = token;
-                    renderCards()
+                   
                 })
                 .catch(e => console.log(e.message))     // тут буде обробка помилки
                 .finally(() => {entryModal.close()});   // закриваємо модальне вікно після відправки даних
@@ -49,7 +49,10 @@ document.addEventListener('click', async (e) => {
             document.querySelector('#sorting-form').classList.remove('hidden');
 
             // тут також має бути функція отримання всіх карток
-            await getCards(API, keyToken).then(cardsList => visitsCollection = cardsList);
+            await getCards(API, keyToken).then(cardsList => {
+                visitsCollection = cardsList
+                renderCards(visitsCollection)
+            });
             // і функція рендеру всіх наявних карток, яка приймає масив усіх карток і створює по класу нові картки і виводить їх на екран
             // щось типу такого visitsRender(visitsCollection)
         }
@@ -76,15 +79,27 @@ document.addEventListener('click', async (e) => {
                 visitsCollection.push(card);
                 console.log(visitsCollection);
                 // !!! далі має бути якась функція що відобразить візит на сторінці !!!
-
             });
-
         }
-
+        
+    } else if (e.target.id === 'deleteBtn') {
+        const card = e.target.closest('.visit-card')
+        const cardId = card.getAttribute('data-id')
+        await deleteCard(API, keyToken, cardId)
+            .then(response => {
+                if(response) {
+                    visitsCollection.forEach(data => {
+                        const cardIndex = visitsCollection.indexOf(data)
+                        if (data.id == cardId) {
+                            visitsCollection.splice(cardIndex, 1)
+                        }
+                    })
+                    card.remove()
+                }
+            })
     }
+    console.log(visitsCollection);
 
-
-})
 
 export {keyToken, API}
 // Залишив старий код з функціями щоб можна було підглядати в разі потреби
