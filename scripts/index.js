@@ -50,9 +50,9 @@ document.addEventListener('click', async (e) => {
 
             // тут також має бути функція отримання всіх карток
             await getCards(API, keyToken).then(cardsList => {
-                visitsCollection = cardsList
-                renderCards(visitsCollection)
+                visitsCollection = cardsList;
             });
+            renderCards(visitsCollection);
             // і функція рендеру всіх наявних карток, яка приймає масив усіх карток і створює по класу нові картки і виводить їх на екран
             // щось типу такого visitsRender(visitsCollection)
         }
@@ -98,8 +98,7 @@ document.addEventListener('click', async (e) => {
                 }
             })
     }
-    console.log(visitsCollection);
-
+})
 
 export {keyToken, API}
 // Залишив старий код з функціями щоб можна було підглядати в разі потреби
