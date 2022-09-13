@@ -85,10 +85,11 @@ const urgency = document.querySelector('.urgency')
 const okButton = document.querySelector('.ok-btn')
 
 
-okButton.addEventListener('click',(event)=>{
+okButton.addEventListener('click',()=>{
     event.preventDefault()
     if(inputTitle.value === 'cardiologist' && urgency.value === 'high' && status.value === 'open'){
-        
+        alert('ok')
+
     }
 // console.log(inputTitle.value);
 
