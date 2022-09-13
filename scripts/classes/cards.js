@@ -59,12 +59,8 @@ export class VisitDentist extends Visit {
         super.render(parent);
         
         this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Дата останнього візиту: ${this.lastDateVisit}</li>`)
+         parent.append(this.card);
         
-        if (parent) {
-            parent.append(this.card);
-        } else {
-            return this.card;
-        }
     }
 }
 
@@ -80,12 +76,7 @@ export class VisitTherapist extends Visit {
         super.render(parent);
 
         this.cardList.insertAdjacentHTML("beforeend", `<li class="list-group-item">Вік: ${this.age}</li>`)
-
-        if (parent) {
-            parent.append(this.card);
-        } else {
-            return this.card;
-        }
+        parent.append(this.card);
     }
 }
 
@@ -111,11 +102,7 @@ export class VisitCardiologist extends Visit {
         <li class="list-group-item">Вік: ${this.age}</li>
         `)
 
-        if (parent) {
-            parent.append(this.card);
-        } else {
-            return this.card;
-        }
+        parent.append(this.card);
     }
 }
 
