@@ -1,6 +1,6 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
 import {Modal, ModalLogin, ModalAddCard} from './classes/modal.js';
-import {renderCards, Visit, VisitCardiologist, noItems } from './classes/cards.js';
+import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
 
 // тут будуть глобальні змінні
@@ -80,6 +80,7 @@ document.addEventListener('click', async (e) => {
                 visitsCollection.push(card);
                 console.log(visitsCollection);
                 // !!! далі має бути якась функція що відобразить візит на сторінці !!!
+                renderNewCard(card)
             });
         }
         
