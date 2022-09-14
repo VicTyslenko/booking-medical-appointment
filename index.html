@@ -29,20 +29,20 @@
 <main>
     <!-- Main-content -->
     <section class="main-section pt-3 container">
-        <form class=" main-form">
+        <form id="sorting-form" class=" main-form hidden">
             <div class="container">
-                <div class=" d-flex flex-column  flex-container-form">
-                    <div class="col-10">
+                <div class=" d-flex flex-container-form">
+                    <div class="col-12">
                         <input type="text" class="form-control" id="input-title" placeholder="search by title">
                     </div>
-                    <div class="col-6">
+                    <div class="col-10">
                         <select class="form-select status" aria-label="Status">
                             <option selected value="all">Status</option>
                             <option value="open">Open</option>
                             <option value="done">Done</option>
                         </select>
                     </div>
-                    <div class="col-6">
+                    <div class="col-10">
                         <select class="form-select urgency" aria-label="Urgency">
                             <option selected value="all">Urgency</option>
                             <option value="high">High</option>
@@ -50,10 +50,12 @@
                             <option value="low">Low</option>
                         </select>
                     </div>
+                    <button id="ok-btn" class="btn btn-success btn-sm ok-btn">ok</button>
                 </div>
             </div>
-            <button id="ok-btn" class="btn btn-primary btn-sm ok-btn">ok</button>
         </form>
+                
+           
         <section class="cards-wrapper">
             <div class="container">
                 <div class="row">

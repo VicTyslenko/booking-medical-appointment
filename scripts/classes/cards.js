@@ -1,7 +1,7 @@
 // import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from '../functions/send-request.js';
 // import { keyToken, API } from '../index.js';
 
-const cardsWrapper = document.querySelector('.main-cards');
+export const cardsWrapper = document.querySelector('.main-cards');
 const noItem = document.createElement('p');
 //Основний клас карток візитів
 export class Visit {
@@ -44,7 +44,7 @@ export class Visit {
         this.card.dataset.id = this.id;
         this.card.classList.add('visit-card', 'card')
         parent.append(this.card)
-        console.log(this.card);
+        // console.log(this.card);
     }
 }
 
@@ -121,7 +121,7 @@ export function renderCards(cardsArray) {
         cardsArray.forEach(visit => {
             if (visit.doctor === "Dentist") {
                 const visitCard = new VisitDentist(visit);
-                console.log(visitCard);
+                // console.log(visitCard);
                 visitCard.render(cardsWrapper);
             } else if (visit.doctor === "Cardiologist") {
                 const visitCard = new VisitCardiologist(visit);

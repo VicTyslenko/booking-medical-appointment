@@ -1,8 +1,10 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
 import {Modal, ModalLogin, ModalAddCard} from './classes/modal.js';
-import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard } from './classes/cards.js';
+import {renderCards, Visit, VisitCardiologist, noItems,renderNewCard, VisitDentist,cardsWrapper } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
-
+import searchFilter from './functions/search-filter.js';
+// import  cardsWrapper  from './classes/cards.js';
+// import  searchFilter  from './functions/search-filter.js';
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 let visitsCollection = [];                                  // масив усіх візитів
@@ -19,6 +21,7 @@ let newVisitModal; // обєкт з вікном створення нового
 // Загальний обробник подій
 // Вішаємо один обробник кліків, який просто перевіряє event.targer і залежно від цього виконує потрібні функції
 document.addEventListener('click', async (e) => {
+    e.preventDefault();
     if (e.target.id === 'entry-btn') {
                   // якщо нажати кнопку входу
         entryModal = new ModalLogin();
@@ -104,45 +107,29 @@ document.addEventListener('click', async (e) => {
     }
     else if(e.target.id ==='ok-btn'){
         e.preventDefault();
-        console.log(visitsCollection);
-        console.log('ok');
-        // const okButton = document.querySelector('.ok-btn')
-        const filterForm = document.querySelector('.main-form');
-        const inputTitle = document.getElementById('input-title');
-        const status = document.querySelector('.status')
-        const urgency = document.querySelector('.urgency')
-        if(inputTitle.value === 'cardiologist' && urgency.value === 'high' && status.value === 'open'){
-            // renderCards(visitsCollection);
-
-        }
-        
+        searchFilter(visitsCollection)
     }
-})
+    }
+    );
+   
+
+ 
+
+
+
+        
+    
+    
+  
+     
+     
+
+   
 
 export {keyToken, API}
 
     
-let cardiolog = {};
-let terapevt = {};
-const allCards = [
-  cardiolog = {
-    title: 'Візит до кардіолога',
-    description: 'Плановий візит',
-    doctor: 'Cardiologist',
-    bp: '24',
-    age: 23,
-    weight: 70
-},
-terapevt ={  title: 'Візит до терапевта',
-description: 'Плановий візит',
-doctor: 'Cardiologist',
-bp: '24',
-age: 32,
-weight: 70,
-urgency: 'low'
-}
-]
-console.log(allCards);
+
 
 
 // const filterForm = document.querySelector('.main-form');
