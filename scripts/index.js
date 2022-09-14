@@ -19,7 +19,8 @@ let newVisitModal; // обєкт з вікном створення нового
 // Загальний обробник подій
 // Вішаємо один обробник кліків, який просто перевіряє event.targer і залежно від цього виконує потрібні функції
 document.addEventListener('click', async (e) => {
-    if (e.target.id === 'entry-btn') {              // якщо нажати кнопку входу
+    if (e.target.id === 'entry-btn') {
+                  // якщо нажати кнопку входу
         entryModal = new ModalLogin();
         entryModal.render();
     } else if (e.target.id === 'login-btn') {       //якщо нажати кнопку на формі відправки логіна та пароля
@@ -100,12 +101,26 @@ document.addEventListener('click', async (e) => {
                 }
             })
     }
+    else if(e.target.id ==='ok-btn'){
+        e.preventDefault();
+        console.log(visitsCollection);
+        console.log('ok');
+        // const okButton = document.querySelector('.ok-btn')
+        const filterForm = document.querySelector('.main-form');
+        const inputTitle = document.getElementById('input-title');
+        const status = document.querySelector('.status')
+        const urgency = document.querySelector('.urgency')
+        if(inputTitle.value === 'cardiologist' && urgency.value === 'high' && status.value === 'open'){
+            // renderCards(visitsCollection);
+
+        }
+        
+    }
 })
 
 export {keyToken, API}
 
     
-
 let cardiolog = {};
 let terapevt = {};
 const allCards = [
@@ -129,47 +144,29 @@ urgency: 'low'
 console.log(allCards);
 
 
-const filterForm = document.querySelector('.main-form');
-const inputTitle = document.getElementById('input-title');
-const status = document.querySelector('.status')
-const urgency = document.querySelector('.urgency')
-const okButton = document.querySelector('.ok-btn')
+// const filterForm = document.querySelector('.main-form');
+// const inputTitle = document.getElementById('input-title');
+// const status = document.querySelector('.status')
+// const urgency = document.querySelector('.urgency')
+// const okButton = document.querySelector('.ok-btn')
 
 
-okButton.addEventListener('click',()=>{
-    event.preventDefault()
-    if(inputTitle.value === 'cardiologist' && urgency.value === 'high' && status.value === 'open'){
-        alert('ok')
+// okButton.addEventListener('click',(event)=>{
+//     event.preventDefault()
+    // if(inputTitle.value === 'cardiologist' && urgency.value === 'high' && status.value === 'open'){
+     
 
-    }
+    // }
 // console.log(inputTitle.value);
 
 // console.log(urgency.value);
 // console.log(status.value);
 
-});
 
 
 
-// console.log(filterForm);
 
-         
-        //  urgency.addEventListener('change',()=>{
-        //     console.log(urgency.value);
-        //  })
 
-// filterForm.addEventListener('change',(event)=>{
-//         const inputTitle = document.getElementById('input-title')
-
-// // 
-
-// // if(event.target === inputTitle && event.target === urgency && event.target === status){
-// // alert('yes')
-// // }
-// // else{
-// //     alert('введiть коректнI данi')
-// // }
-// });
 
 
 
