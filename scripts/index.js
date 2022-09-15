@@ -1,9 +1,9 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
-import {Modal, ModalLogin, ModalAddCard} from './classes/modal.js';
+import {Modal, ModalLogin, ModalAddCard, ModalEditCard} from './classes/modal.js';
 import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
 
-import { filtering } from './filter.js';
+import { filtering } from './functions/filter.js';
 
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
@@ -15,6 +15,7 @@ let visitsCollection = [];                                  // масив усі
 let entryModal; // обєкт з вікном входу
 let keyToken; // сюди записується токен  Наступні функції запиту на сервер (для отримання карток чи ін) слід викликати з перевіркою if(keyToken)
 let newVisitModal; // обєкт з вікном створення нового візиту
+let editVisitModal; // обєкт з вікном редагування нового візиту
 
 
 
@@ -34,7 +35,7 @@ document.addEventListener('click', async (e) => {
             await getToken(API, login, password)
             .then(token => {
                     keyToken = token;
-                   
+                    
                 })
                 .catch(e => console.log(e.message))     // тут буде обробка помилки
                 .finally(() => {entryModal.close()});   // закриваємо модальне вікно після відправки даних
@@ -42,7 +43,7 @@ document.addEventListener('click', async (e) => {
             } else {                       // якщо введено не коректні дані, можна буде потім виводити це повідомлення в межах модального вікна
             console.log('Wrong values!');
         }
-        if(keyToken) {
+        if(typeof keyToken === 'string') {
             // міняємо кнопки
             document.querySelector('#entry-btn').classList.add('invisible');
             document.querySelector('#visit-btn').classList.remove('hidden');
@@ -60,6 +61,8 @@ document.addEventListener('click', async (e) => {
             noItems(visitsCollection);
             
             filtering(visitsCollection)
+
+            console.log(visitsCollection);
             
             // і функція рендеру всіх наявних карток, яка приймає масив усіх карток і створює по класу нові картки і виводить їх на екран
             // щось типу такого visitsRender(visitsCollection)
@@ -86,12 +89,13 @@ document.addEventListener('click', async (e) => {
             await sendCard(API, keyToken, visitData).then(card => {
                 visitsCollection.push(card);
                 console.log(visitsCollection);
-                // !!! далі має бути якась функція що відобразить візит на сторінці !!!
-                renderNewCard(card)
+
+                // Функція що відображає візит на сторінці 
+                renderNewCard(card);
             });
         }
         
-    } else if (e.target.id === 'deleteBtn') {
+    } else if (e.target.id === 'deleteBtn') {                    // якщо натиснути кнопку видалення візиту
         const card = e.target.closest('.visit-card')
         const cardId = card.getAttribute('data-id')
         await deleteCard(API, keyToken, cardId)
@@ -107,7 +111,63 @@ document.addEventListener('click', async (e) => {
                     noItems(visitsCollection);
                 }
             })
-    }
+    } else if (e.target.id === 'editBtn') {                       // якщо натиснути кнопку редагування візиту
+        // Фільтруємо масив візитів по id і отримуємо на виході обєкт візиту, по картці якого клікнули
+        let visit = visitsCollection.filter(visit => visit.id === +e.target.closest('.visit-card').dataset.id)[0];
+        //
+        editVisitModal = new ModalEditCard(visit);
+        editVisitModal.render();
+    } else if (e.target.id === 'saveChanges-btn') {               // якщо натиснути кнопку зберегти зміни
+        e.preventDefault();
+        const form = document.querySelector('#editVisitForm');
+        form.classList.add('was-validated');  
+        // валідація форми
+        if(form.checkValidity()) {
+            let formData = new FormData(form)
+            let visitData = formToObj(formData); 
+            // закриваємо модальне вікно
+            editVisitModal.close();
+            
+            // відправляємо зміни на сервер
+            await editCard(API, keyToken, editVisitModal.id, visitData).then(card => {
+
+                // Код що заміняє візит на редагований
+                // Наче працює, за можливості пошукати простішу альтернативу
+                let editedVidit = visitsCollection.find(visit => visit.id === card.id);
+                let index = visitsCollection.indexOf(editedVidit);
+                visitsCollection[index] = card;
+
+                // Спосіб замінення редагованої картки перерендером всіх карток
+                // Так зберігається порядок карток і виглядає красивіше
+                document.querySelector('.main-cards').innerHTML = '';
+                renderCards(visitsCollection);
+
+                /* 
+                Спосіб замінення редагованої картки без перерендеру всіх карток
+
+                // видалення відредагованої картки з дом
+                document.querySelectorAll('.visit-card').forEach(el => {
+                    if(+el.dataset.id === card.id) {
+                        el.remove();
+                    }
+                })
+
+                // відображення в дом 
+                renderNewCard(card);
+                */
+
+
+            });
+
+
+
+        }
+
+
+
+
+
+    }              
 })
 
 export {keyToken, API}

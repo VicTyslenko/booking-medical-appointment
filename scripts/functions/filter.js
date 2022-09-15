@@ -1,4 +1,4 @@
-import { renderCards } from "./classes/cards.js";
+import { renderCards } from "../classes/cards.js";
 
 
 export function filtering (array) {
