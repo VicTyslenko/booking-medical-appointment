@@ -3,11 +3,10 @@ import {Modal, ModalLogin, ModalAddCard, ModalEditCard} from './classes/modal.js
 import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
 
-import { filtering } from './functions/filter.js';
 
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
-let visitsCollection = [];                                  // масив усіх візитів
+let visitsCollection = [];    // масив усіх візитів
 
 
 
@@ -15,7 +14,7 @@ let visitsCollection = [];                                  // масив усі
 let entryModal; // обєкт з вікном входу
 let keyToken; // сюди записується токен  Наступні функції запиту на сервер (для отримання карток чи ін) слід викликати з перевіркою if(keyToken)
 let newVisitModal; // обєкт з вікном створення нового візиту
-let editVisitModal; // обєкт з вікном редагування нового візиту
+let editVisitModal; // обєкт з вікном редагування візиту
 
 
 
@@ -43,7 +42,7 @@ document.addEventListener('click', async (e) => {
             } else {                       // якщо введено не коректні дані, можна буде потім виводити це повідомлення в межах модального вікна
             console.log('Wrong values!');
         }
-        if(typeof keyToken === 'string') {
+        if(typeof keyToken === 'string') {  // поправив перевірку, бо попередня не працювала
             // міняємо кнопки
             document.querySelector('#entry-btn').classList.add('invisible');
             document.querySelector('#visit-btn').classList.remove('hidden');
@@ -51,8 +50,7 @@ document.addEventListener('click', async (e) => {
             // показуємо форму пошуку
             document.querySelector('#sorting-form').classList.remove('hidden');
 
-            
-            // тут також має бути функція отримання всіх карток
+            // отримання всіх карток
             await getCards(API, keyToken).then(cardsList => {
                 visitsCollection = cardsList;
             });
@@ -60,12 +58,6 @@ document.addEventListener('click', async (e) => {
             renderCards(visitsCollection);
             noItems(visitsCollection);
             
-            filtering(visitsCollection)
-
-            console.log(visitsCollection);
-            
-            // і функція рендеру всіх наявних карток, яка приймає масив усіх карток і створює по класу нові картки і виводить їх на екран
-            // щось типу такого visitsRender(visitsCollection)
         }
 
         
@@ -88,7 +80,6 @@ document.addEventListener('click', async (e) => {
             // відправляємо створений візит на сервер
             await sendCard(API, keyToken, visitData).then(card => {
                 visitsCollection.push(card);
-                console.log(visitsCollection);
 
                 // Функція що відображає візит на сторінці 
                 renderNewCard(card);
@@ -114,10 +105,10 @@ document.addEventListener('click', async (e) => {
     } else if (e.target.id === 'editBtn') {                       // якщо натиснути кнопку редагування візиту
         // Фільтруємо масив візитів по id і отримуємо на виході обєкт візиту, по картці якого клікнули
         let visit = visitsCollection.filter(visit => visit.id === +e.target.closest('.visit-card').dataset.id)[0];
-        //
+        
         editVisitModal = new ModalEditCard(visit);
         editVisitModal.render();
-    } else if (e.target.id === 'saveChanges-btn') {               // якщо натиснути кнопку зберегти зміни
+    } else if (e.target.id === 'saveChanges-btn') {               // якщо натиснути кнопку зберегти зміни під час редагування
         e.preventDefault();
         const form = document.querySelector('#editVisitForm');
         form.classList.add('was-validated');  
@@ -130,9 +121,8 @@ document.addEventListener('click', async (e) => {
             
             // відправляємо зміни на сервер
             await editCard(API, keyToken, editVisitModal.id, visitData).then(card => {
-
-                // Код що заміняє візит на редагований
-                // Наче працює, за можливості пошукати простішу альтернативу
+                // Код що заміняє візит на редагований в масиві
+                // Наче працює як очікувалось, за можливості пошукати простішу альтернативу
                 let editedVidit = visitsCollection.find(visit => visit.id === card.id);
                 let index = visitsCollection.indexOf(editedVidit);
                 visitsCollection[index] = card;
@@ -155,18 +145,8 @@ document.addEventListener('click', async (e) => {
                 // відображення в дом 
                 renderNewCard(card);
                 */
-
-
             });
-
-
-
         }
-
-
-
-
-
     }              
 })
 
