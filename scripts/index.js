@@ -3,6 +3,8 @@ import {Modal, ModalLogin, ModalAddCard} from './classes/modal.js';
 import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
 
+import { filtering } from './filter.js';
+
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 let visitsCollection = [];                                  // масив усіх візитів
@@ -48,12 +50,17 @@ document.addEventListener('click', async (e) => {
             // показуємо форму пошуку
             document.querySelector('#sorting-form').classList.remove('hidden');
 
+            
             // тут також має бути функція отримання всіх карток
             await getCards(API, keyToken).then(cardsList => {
                 visitsCollection = cardsList;
             });
+            
             renderCards(visitsCollection);
             noItems(visitsCollection);
+            
+            filtering(visitsCollection)
+            
             // і функція рендеру всіх наявних карток, яка приймає масив усіх карток і створює по класу нові картки і виводить їх на екран
             // щось типу такого visitsRender(visitsCollection)
         }
@@ -160,3 +167,5 @@ const authorize = async () => {
 authorize();
 
 */
+
+// 
