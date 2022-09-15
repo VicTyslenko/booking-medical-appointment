@@ -82,7 +82,7 @@ document.addEventListener('click', async (e) => {
             // відправляємо створений візит на сервер
             await sendCard(API, keyToken, visitData).then(card => {
                 visitsCollection.push(card);
-                console.log(visitsCollection);
+                // console.log(visitsCollection);
                 // !!! далі має бути якась функція що відобразить візит на сторінці !!!
                 renderNewCard(card)
             });

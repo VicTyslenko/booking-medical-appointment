@@ -38,3 +38,7 @@
     .visit-card {
         width: 250px;
     }
+    .visits-done{
+        font-weight: 600;
+        text-transform: uppercase;
+    }
