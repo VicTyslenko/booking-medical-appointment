@@ -19,7 +19,7 @@ export class Visit {
     render(parent) {
         this.card.insertAdjacentHTML('beforeend', `
         <div class="d-flex justify-content-end align-items-center">
-            <button type="button" class="btn btn-light">Edit</button>
+            <button type="button" class="btn btn-light" id="editBtn">Edit</button>
             <button type="button" class="deleteBtn btn-close" aria-label="Close" id="deleteBtn"></button>
         </div>
         <div class="card-body">
@@ -44,7 +44,6 @@ export class Visit {
         this.card.dataset.id = this.id;
         this.card.classList.add('visit-card', 'card')
         parent.append(this.card)
-        console.log(this.card);
     }
 }
 
@@ -97,7 +96,7 @@ export class VisitCardiologist extends Visit {
 
         this.cardList.insertAdjacentHTML("beforeend", `
         <li class="list-group-item">Basic pressure: ${this.systolicPressure}/${this.diastolicPressure}</li>
-        <li class="list-group-item">Weight: ${this.bmi}</li>
+        <li class="list-group-item">Body mass index: ${this.bmi}</li>
         <li class="list-group-item">Cardiovascular diseases: ${this.cardiovascularDiseases}</li>
         <li class="list-group-item">Age: ${this.age}</li>
         `)
@@ -121,7 +120,6 @@ export function renderCards(cardsArray) {
         cardsArray.forEach(visit => {
             if (visit.doctor === "Dentist") {
                 const visitCard = new VisitDentist(visit);
-                console.log(visitCard);
                 visitCard.render(cardsWrapper);
             } else if (visit.doctor === "Cardiologist") {
                 const visitCard = new VisitCardiologist(visit);

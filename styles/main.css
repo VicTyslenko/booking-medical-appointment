@@ -15,7 +15,7 @@
 
     .main-section{
         background-color:#4db0e5;
-        /* height: 70vh; */
+        min-height: 85vh;
         border-radius: 10px;
     
     }
