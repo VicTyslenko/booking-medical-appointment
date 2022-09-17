@@ -16,7 +16,7 @@ let keyToken; // сюди записується токен  Наступні ф
 let newVisitModal; // обєкт з вікном створення нового візиту
 let editVisitModal; // обєкт з вікном редагування візиту
 
-window.addEventListener("load", async () => { // функція, яка виконується після завантаження сторінки
+window.addEventListener("load", () => { // функція, яка виконується після завантаження сторінки
     keyToken = localStorage.getItem('token'); 
     console.log(keyToken);
     if (keyToken) {
@@ -47,7 +47,7 @@ document.addEventListener('click', async (e) => {
             // якщо дані пройшли валідацію, запит на сервер для отримання токена
             await getToken(API, login, password)
             .then(token => {
-                if (token.includes('-') && !token.includes(' ')) { // перевірка на зміст строки
+                if (token && typeof token !== 'object') { 
                     console.log(token);
                     localStorage.setItem('token', token) // зберегли токен у локальному сховищі
                     keyToken = localStorage.getItem('token') // дістали токен зі сховища та записали у змінну
