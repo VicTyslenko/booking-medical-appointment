@@ -13,6 +13,7 @@ export class Modal {
                         <h5 class="modal-title">${this.title}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <p class="invalid-message text-center text-danger mt-2 mb-0"></p>
                     <div class="modal-body">
                         ${this.body}
                     </div>
@@ -34,6 +35,10 @@ export class Modal {
         // метод закривання вікна
         this.modal.hide();
     }
+
+    invalid() {
+        document.querySelector('.invalid-message').innerHTML= 'Invalid login or password!';
+    }
 }
 
 
@@ -54,7 +59,7 @@ export class ModalLogin extends Modal {
             </div>
             <div class="mb-3 d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" id="login-btn" class="btn btn-primary ms-3">Login</button>
+                <button type="submit" id="login-btn" class="btn btn-primary ms-3">Log in</button>
             </div>
         </form>
         `

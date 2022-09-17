@@ -16,7 +16,7 @@ let keyToken; // сюди записується токен  Наступні ф
 let newVisitModal; // обєкт з вікном створення нового візиту
 let editVisitModal; // обєкт з вікном редагування візиту
 
-window.addEventListener("load", async () => { // функція, яка виконується після завантаження сторінки
+window.addEventListener("load", () => { // функція, яка виконується після завантаження сторінки
     keyToken = localStorage.getItem('token'); 
     console.log(keyToken);
     if (keyToken) {
@@ -47,21 +47,23 @@ document.addEventListener('click', async (e) => {
             // якщо дані пройшли валідацію, запит на сервер для отримання токена
             await getToken(API, login, password)
             .then(token => {
-                if (token.includes('-') && !token.includes(' ')) { // перевірка на зміст строки
-                    console.log(token);
+                
+                if (token && typeof token !== 'object') { // перевірка на зміст токена
                     localStorage.setItem('token', token) // зберегли токен у локальному сховищі
                     keyToken = localStorage.getItem('token') // дістали токен зі сховища та записали у змінну
-                    // console.log(keyToken);
-                } 
-                })
-                .catch(e => console.log(e.message))     // тут буде обробка помилки
-                .finally(() => {entryModal.close()});   // закриваємо модальне вікно після відправки даних
+                    entryModal.close()                       // видаляємо модальне вікно
+                } else {                                     // якщо невірний логін або пароль
+                    // показуємо попередження
+                    entryModal.invalid();
+                }
+            })
+            .catch(e => console.log(e.message))     // тут буде обробка помилки
                 
-            } else {                       // якщо введено не коректні дані, можна буде потім виводити це повідомлення в межах модального вікна
-            console.log('Wrong values!');
+        } else {                       // якщо введено не коректні дані, можна буде потім виводити це повідомлення в межах модального вікна
+            entryModal.invalid();
         }
         // if(typeof keyToken === 'string') {  // поправив перевірку, бо попередня не працювала
-            if(keyToken) {  // можна так, бо localStorage повертає по дефолту строку
+        if(keyToken) {  // можна так, бо localStorage повертає по дефолту строку
             // міняємо кнопки
             document.querySelector('#entry-btn').classList.add('invisible');
             document.querySelector('#visit-btn').classList.remove('hidden');
@@ -74,7 +76,6 @@ document.addEventListener('click', async (e) => {
                 localStorage.setItem('allVisits', JSON.stringify(cardsList)) // явно переводимо масив візитів у строку інакше буде [object Object]
                 // розбираємо строку з localStorage для перетворення у масив з об'єктами та записуємо результат у visitsCollection
                 visitsCollection = JSON.parse(localStorage.getItem('allVisits'))
-                console.log(visitsCollection);
             });
             
             renderCards(visitsCollection);

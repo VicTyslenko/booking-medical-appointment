@@ -24,7 +24,7 @@ export class Visit {
         </div>
         <div class="card-body">
             <h5 class="card-title">${this.fullName}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">${this.doctor}</h6>
+            <h6 class="card-subtitle mb-2 text-muted"><i class="fa-solid fa-user-doctor"></i> ${this.doctor}</h6>
             <div class="accordion accordion-flush" id="accordionFlush">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${this.id}" aria-expanded="false" aria-controls="flush-collapseOne">
                     Show more
