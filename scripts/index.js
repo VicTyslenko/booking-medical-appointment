@@ -16,8 +16,22 @@ let keyToken; // сюди записується токен  Наступні ф
 let newVisitModal; // обєкт з вікном створення нового візиту
 let editVisitModal; // обєкт з вікном редагування візиту
 
+window.addEventListener("load", () => { // функція, яка виконується після завантаження сторінки
+    keyToken = localStorage.getItem('token'); 
+    console.log(keyToken);
+    if (keyToken) {
+        document.querySelector('#entry-btn').classList.add('invisible');
+        document.querySelector('#visit-btn').classList.remove('hidden');
+        document.querySelector('#logout-btn').classList.remove('hidden');
+        document.querySelector('#sorting-form').classList.remove('hidden');
 
-
+        visitsCollection = JSON.parse(localStorage.getItem('allVisits')) 
+        
+        renderCards(visitsCollection);
+        noItems(visitsCollection);
+    } 
+});
+    
 // Загальний обробник подій
 // Вішаємо один обробник кліків, який просто перевіряє event.targer і залежно від цього виконує потрібні функції
 document.addEventListener('click', async (e) => {
@@ -33,8 +47,12 @@ document.addEventListener('click', async (e) => {
             // якщо дані пройшли валідацію, запит на сервер для отримання токена
             await getToken(API, login, password)
             .then(token => {
-                    keyToken = token;
-                    
+                if (token && typeof token !== 'object') { 
+                    console.log(token);
+                    localStorage.setItem('token', token) // зберегли токен у локальному сховищі
+                    keyToken = localStorage.getItem('token') // дістали токен зі сховища та записали у змінну
+                    // console.log(keyToken);
+                } 
                 })
                 .catch(e => console.log(e.message))     // тут буде обробка помилки
                 .finally(() => {entryModal.close()});   // закриваємо модальне вікно після відправки даних
@@ -42,17 +60,21 @@ document.addEventListener('click', async (e) => {
             } else {                       // якщо введено не коректні дані, можна буде потім виводити це повідомлення в межах модального вікна
             console.log('Wrong values!');
         }
-        if(typeof keyToken === 'string') {  // поправив перевірку, бо попередня не працювала
+        // if(typeof keyToken === 'string') {  // поправив перевірку, бо попередня не працювала
+            if(keyToken) {  // можна так, бо localStorage повертає по дефолту строку
             // міняємо кнопки
             document.querySelector('#entry-btn').classList.add('invisible');
             document.querySelector('#visit-btn').classList.remove('hidden');
-
+            document.querySelector('#logout-btn').classList.remove('hidden');
             // показуємо форму пошуку
             document.querySelector('#sorting-form').classList.remove('hidden');
 
             // отримання всіх карток
             await getCards(API, keyToken).then(cardsList => {
-                visitsCollection = cardsList;
+                localStorage.setItem('allVisits', JSON.stringify(cardsList)) // явно переводимо масив візитів у строку інакше буде [object Object]
+                // розбираємо строку з localStorage для перетворення у масив з об'єктами та записуємо результат у visitsCollection
+                visitsCollection = JSON.parse(localStorage.getItem('allVisits'))
+                console.log(visitsCollection);
             });
             
             renderCards(visitsCollection);
@@ -80,6 +102,8 @@ document.addEventListener('click', async (e) => {
             // відправляємо створений візит на сервер
             await sendCard(API, keyToken, visitData).then(card => {
                 visitsCollection.push(card);
+                localStorage['allVisits'] = JSON.stringify(visitsCollection); // перезаписуємо в localStorage наші зміни
+                console.log(visitsCollection);
 
                 // Функція що відображає візит на сторінці 
                 renderNewCard(card);
@@ -96,6 +120,8 @@ document.addEventListener('click', async (e) => {
                         const cardIndex = visitsCollection.indexOf(data)
                         if (data.id == cardId) {
                             visitsCollection.splice(cardIndex, 1)
+                            localStorage['allVisits'] = JSON.stringify(visitsCollection);  // перезаписуємо в localStorage наші зміни
+                            console.log(visitsCollection);
                         }
                     })
                     card.remove()
@@ -127,6 +153,8 @@ document.addEventListener('click', async (e) => {
                 let index = visitsCollection.indexOf(editedVidit);
                 visitsCollection[index] = card;
 
+                localStorage['allVisits'] = JSON.stringify(visitsCollection);  // перезаписуємо в localStorage наші зміни
+                console.log(visitsCollection);
                 // Спосіб замінення редагованої картки перерендером всіх карток
                 // Так зберігається порядок карток і виглядає красивіше
                 document.querySelector('.main-cards').innerHTML = '';
@@ -147,7 +175,10 @@ document.addEventListener('click', async (e) => {
                 */
             });
         }
-    }              
+    } else if (e.target.id === 'logout-btn') { 
+        localStorage.clear();    //стираємо дані з локального сховища   
+        location.reload()       //оновлюємо сторінку
+    }   
 })
 
 export {keyToken, API}
