@@ -2,6 +2,7 @@ import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './fun
 import {Modal, ModalLogin, ModalAddCard, ModalEditCard} from './classes/modal.js';
 import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
+import dragAndDrop from './functions/drag-and-drop.js';
 
 
 // тут будуть глобальні змінні
@@ -20,7 +21,7 @@ window.addEventListener("load", () => { // функція, яка виконує
     keyToken = localStorage.getItem('token'); 
     console.log(keyToken);
     if (keyToken) {
-        document.querySelector('#entry-btn').classList.add('invisible');
+        document.querySelector('#entry-btn').classList.add('hidden');
         document.querySelector('#visit-btn').classList.remove('hidden');
         document.querySelector('#logout-btn').classList.remove('hidden');
         document.querySelector('#sorting-form').classList.remove('hidden');
@@ -29,6 +30,7 @@ window.addEventListener("load", () => { // функція, яка виконує
         
         renderCards(visitsCollection);
         noItems(visitsCollection);
+
     } 
 });
     
@@ -65,7 +67,7 @@ document.addEventListener('click', async (e) => {
         // if(typeof keyToken === 'string') {  // поправив перевірку, бо попередня не працювала
         if(keyToken) {  // можна так, бо localStorage повертає по дефолту строку
             // міняємо кнопки
-            document.querySelector('#entry-btn').classList.add('invisible');
+            document.querySelector('#entry-btn').classList.add('hidden');
             document.querySelector('#visit-btn').classList.remove('hidden');
             document.querySelector('#logout-btn').classList.remove('hidden');
             // показуємо форму пошуку
@@ -80,7 +82,6 @@ document.addEventListener('click', async (e) => {
             
             renderCards(visitsCollection);
             noItems(visitsCollection);
-            
         }
 
         
@@ -156,24 +157,25 @@ document.addEventListener('click', async (e) => {
 
                 localStorage['allVisits'] = JSON.stringify(visitsCollection);  // перезаписуємо в localStorage наші зміни
                 console.log(visitsCollection);
+                /*
                 // Спосіб замінення редагованої картки перерендером всіх карток
                 // Так зберігається порядок карток і виглядає красивіше
-                document.querySelector('.main-cards').innerHTML = '';
-                renderCards(visitsCollection);
-
-                /* 
-                Спосіб замінення редагованої картки без перерендеру всіх карток
-
+                 document.querySelector('.main-cards').innerHTML = '';
+                 renderCards(visitsCollection);
+                 */
+                
+                // Спосіб замінення редагованої картки без перерендеру всіх карток
+            
                 // видалення відредагованої картки з дом
                 document.querySelectorAll('.visit-card').forEach(el => {
                     if(+el.dataset.id === card.id) {
                         el.remove();
                     }
                 })
-
+                
                 // відображення в дом 
                 renderNewCard(card);
-                */
+                
             });
         }
     } else if (e.target.id === 'logout-btn') { 
@@ -182,62 +184,5 @@ document.addEventListener('click', async (e) => {
     }   
 })
 
-export {keyToken, API}
-// Залишив старий код з функціями щоб можна було підглядати в разі потреби
-
-/*
-змінні для тестування роботи функцій
-let testKey;
-let cardId; 
-
-Тестова асинхронна функція для перевірки 
-const authorize = async () => {
-    // авторизація, запис токена у глобальну змінну testKey
-    // await getToken(API, '20059997@i.ua', '333').then(token => testKey = token);
-    // карток нема
-    await getCards(API, testKey).then(cardsList => console.log(cardsList))
-    
-    // створюємо одну картку
-    await sendCard(API, testKey, {
-        title: 'Візит до кардіолога',
-        description: 'Плановий візит',
-        doctor: 'Cardiologist',
-        bp: '24',
-        age: 23,
-        weight: 70
-    }).then(card => cardId = card.id);
-
-    // бачимо її в масиві
-    await getCards(API, testKey).then(cardsList => console.log(cardsList));
-
-    // бачимо картку по id
-    await getCard(API, testKey, cardId).then(response => console.log(response));
-
-    // редагуємо картку
-    await editCard(API, testKey, cardId, {
-        id: cardId,
-        title: 'Візит до стоматолога',
-        description: 'Позачерговий візит',
-        doctor: 'Dantist',
-        bp: '24',
-        age: 23,
-        weight: 70
-    }).then(response => console.log(response));
-
-    // перевіряємо чи змінилась картка
-    await getCards(API, testKey).then(cardsList => console.log(cardsList));
-
-    // видаляємо картку
-    await deleteCard(API, testKey, cardId).then(response => console.log(response));
-    
-    // карток знову нема
-    await getCards(API, testKey).then(cardsList => console.log(cardsList))
-
-
-}
-
-authorize();
-
-*/
-
-// 
+dragAndDrop()
+// export {keyToken, API}
