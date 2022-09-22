@@ -2,16 +2,6 @@
     display: none;
 }
 
-.head-wrapp{
-    /* background-color: #a7eaf9; */
-    border-radius: 10px;
-}
-
-.cards-wrapper {
-    height: 85vh;
-    border-radius: 10px;
-}
-
 .search{
     outline: none;
 }
@@ -27,7 +17,6 @@ i {
 }
 
 .edit-visit-btn {
-    /* color: rgb(21 71 112); */
     opacity: 0.7;
 }
 
@@ -44,7 +33,6 @@ i {
 }
 
 .accordion-button:not(.collapsed) {
-
     color: inherit; 
 }
 
@@ -69,14 +57,12 @@ body {
     background: url(https://i0.wp.com/montanafreepress.org/wp-content/uploads/2022/04/AdobeStock_256618260-scaled.jpeg?fit=1200%2C800&ssl=1);
     background-position: center;
     background-size: cover;
-    background-attachment: fixed;
-    
+    background-attachment:fixed;
+    background-repeat: no-repeat;
 }
 
 main {
     margin-top: 109px;
-    max-height: 91vh;
-    min-height: 75vh;
 }
 
 @media screen and (min-width: 993px) {
@@ -85,4 +71,8 @@ main {
         margin-top: 62px;
     }
     
+}
+
+.main-cards {
+    height: 91vh;
 }
