@@ -9,8 +9,8 @@ import searchFilter from './functions/search-filter.js';
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 let visitsCollection = [];                                  // масив усіх візитів
 
-
-
+const sortingForm = document.querySelector('#sorting-form');
+console.log(sortingForm);
 // змінні щоб їх було видно для всіх функцій нижче Типу глобальні змінні, але ще в процесі тестування і можливо їх не буде в фінальному білді
 let entryModal; // обєкт з вікном входу
 let keyToken; // сюди записується токен  Наступні функції запиту на сервер (для отримання карток чи ін) слід викликати з перевіркою if(keyToken)
@@ -61,6 +61,7 @@ document.addEventListener('click', async (e) => {
             // і функція рендеру всіх наявних карток, яка приймає масив усіх карток і створює по класу нові картки і виводить їх на екран
             // щось типу такого visitsRender(visitsCollection)
         }
+        searchFilter(visitsCollection)
 
         
     } else if (e.target.id === 'visit-btn') {                // якщо натиснути кнопку виклику вікна створення нового візиту
@@ -105,15 +106,17 @@ document.addEventListener('click', async (e) => {
                 }
             })
     }
-    else if(e.target.id ==='ok-btn'){
-        e.preventDefault();
-        searchFilter(visitsCollection)
-    }
-    }
+    // else if(e.target.id === 'sorting-form'){
+    //  console.log('ok');
+    //     // e.preventDefault();
+    //     // searchFilter(visitsCollection)
+    // }
+}
     );
    
 
  
+    export {keyToken, API}
 
 
 
@@ -126,29 +129,11 @@ document.addEventListener('click', async (e) => {
 
    
 
-export {keyToken, API}
 
     
 
 
 
-// const filterForm = document.querySelector('.main-form');
-// const inputTitle = document.getElementById('input-title');
-// const status = document.querySelector('.status')
-// const urgency = document.querySelector('.urgency')
-// const okButton = document.querySelector('.ok-btn')
-
-
-// okButton.addEventListener('click',(event)=>{
-//     event.preventDefault()
-    // if(inputTitle.value === 'cardiologist' && urgency.value === 'high' && status.value === 'open'){
-     
-
-    // }
-// console.log(inputTitle.value);
-
-// console.log(urgency.value);
-// console.log(status.value);
 
 
 
