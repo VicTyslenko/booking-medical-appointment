@@ -2,16 +2,6 @@
     display: none;
 }
 
-.head-wrapp{
-    background-color: #a7eaf9;
-    border-radius: 10px;
-}
-
-.cards-wrapper {
-    height: 85vh;
-    border-radius: 10px;
-}
-
 .search{
     outline: none;
 }
@@ -27,40 +17,62 @@ i {
 }
 
 .edit-visit-btn {
-        /* color: rgb(21 71 112); */
-        opacity: 0.7;
-    }
-    
-    .edit-visit-btn:hover {
-        opacity: 1;
-    }
-    
-    .show-more-btn {
-        opacity: 0.8;
-    }
-    
-    .accordion-button:not(.collapsed)::after {
-        background-image: var(--bs-accordion-btn-icon);
-    }
-    
-    .accordion-button:not(.collapsed) {
-    
-        color: inherit; 
-    }
-    
-    .accordion-button {
-        background-color: #ffffff8a;
-    }
-    
-    .accordion-button:focus {
-        box-shadow: none;
-    }
-    
-    .card-list-item {
-        background-color: var(--bs-accordion-active-bg);
-        opacity: 0.8;
+    opacity: 0.7;
+}
+
+.edit-visit-btn:hover {
+    opacity: 1;
+}
+
+.show-more-btn {
+    opacity: 0.8;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: var(--bs-accordion-btn-icon);
+}
+
+.accordion-button:not(.collapsed) {
+    color: inherit; 
+}
+
+.accordion-button {
+    background-color: #ffffff8a;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.card-list-item {
+    background-color: var(--bs-accordion-active-bg);
+    opacity: 0.8;
 }
 
 #sorting-form select {
     width: 100px;
+}
+
+body {
+    background: url(https://i0.wp.com/montanafreepress.org/wp-content/uploads/2022/04/AdobeStock_256618260-scaled.jpeg?fit=1200%2C800&ssl=1);
+    background-position: center;
+    background-size: cover;
+    background-attachment:fixed;
+    background-repeat: no-repeat;
+}
+
+main {
+    margin-top: 109px;
+}
+
+@media screen and (min-width: 993px) {
+    main {
+        
+        margin-top: 62px;
+    }
+    
+}
+
+.main-cards {
+    height: 91vh;
 }

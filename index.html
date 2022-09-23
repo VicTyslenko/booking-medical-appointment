@@ -13,44 +13,42 @@
     <script type="module" src="./scripts/index.js"></script>
     <title>Step Project Cards</title>
 </head>
-<body>
+<body class="overflow-hidden">
     <!-- Header-section -->
-    <div class="container mt-3">
-        <header class="d-flex flex-wrap align-items-center justify-content-between flex-row py-3 px-2 head-wrapp">
-            <a href="https://helsi.me/" target="_blank"><img width="75px" class="me-lg-4" src="./img/helsi-logo.svg" alt="main logo"></a>
-            <form id="sorting-form" class="main-form hidden col-12 col-md-auto order-1 order-lg-1 flex-grow-1 py-2 mx-lg-4">
-                <div class="d-flex align-items-center">
-                    <input type="text" class="form-control form-control-sm search flex-fill" id="" placeholder="Search by title">
-                    <select class="form-select form-select-sm flex-fill" aria-label="Status">
-                        <option selected value="all">Status</option>
-                        <option value="open">Open</option>
-                        <option value="done">Done</option>
-                    </select>
-                    <select id="sorting-urgency" class="form-select form-select-sm flex-fill urgency-select" aria-label="Urgency">
-                        <option selected value="all">Urgency</option>
-                        <option value="high">High</option>
-                        <option value="middle">Middle</option>
-                        <option value="low">Low</option>
-                    </select>
+    <div class="header-bg fixed-top bg-dark bg-opacity-25">
+        <div class="container">
+            <header class="d-flex flex-wrap align-items-center justify-content-between flex-row py-1 px-1 head-wrapp">
+                <a href="https://helsi.me/" target="_blank"><img width="75px" class="me-lg-4" src="./img/helsi-logo.svg" alt="main logo"></a>
+                <form id="sorting-form" class="main-form hidden col-12 col-md-auto order-1 order-lg-1 flex-grow-1 py-2 mx-lg-4">
+                    <div class="d-flex align-items-center">
+                        <input type="text" class="form-control form-control-sm search flex-fill" id="" placeholder="Search by title">
+                        <select class="form-select form-select-sm flex-fill" aria-label="Status">
+                            <option selected value="all">Status</option>
+                            <option value="open">Open</option>
+                            <option value="done">Done</option>
+                        </select>
+                        <select id="sorting-urgency" class="form-select form-select-sm flex-fill urgency-select" aria-label="Urgency">
+                            <option selected value="all">Urgency</option>
+                            <option value="high">High</option>
+                            <option value="middle">Middle</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                </form>
+                <div class="col-md-auto  text-end order-lg-2 py-2">
+                    <button id="visit-btn" class="col-xs-12 btn btn-primary fw-semibold hidden new-visit-btn">Create new visit <i class="fa-regular fa-calendar-plus"></i></button>
+                    <button id="entry-btn" class="btn btn-primary fw-semibold">Log in <i class="fa-solid fa-right-to-bracket"></i></button>
+                    <button id="logout-btn" class="order-2 btn btn-primary fw-semibold hidden">Log out <i class="fa-solid fa-right-from-bracket"></i></button>
                 </div>
-            </form>
-            <div class="col-md-auto  text-end order-lg-2 py-2">
-                <button id="visit-btn" class="col-xs-12 btn btn-primary fw-semibold hidden new-visit-btn">Create new visit <i class="fa-regular fa-calendar-plus"></i></button>
-                <button id="entry-btn" class="btn btn-primary fw-semibold">Log in <i class="fa-solid fa-right-to-bracket"></i></button>
-                <button id="logout-btn" class="order-2 btn btn-primary fw-semibold hidden">Log out <i class="fa-solid fa-right-from-bracket"></i></button>
-            </div>
-        </header>
+            </header>
+        </div>
     </div>
 
     <!-- Main-content -->
-    <main>
-        <section class="main-section mt-3 ">
-            <div class="container">
-                <div class="cards-wrapper bg-primary bg-opacity-50 overflow-auto ">
-                    <div class="main-cards d-flex flex-wrap justify-content-around gap-3 p-3"></div>
-                    
-                </div>
-            </div>
+    <main class="">
+        <section class="main-section">
+            <div class="main-cards d-flex flex-wrap justify-content-around gap-3 p-4 main-section overflow-auto"></div>
+           
         </section>
     </main>
 

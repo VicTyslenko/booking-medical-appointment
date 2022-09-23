@@ -19,7 +19,6 @@ let editVisitModal; // обєкт з вікном редагування віз�
 
 window.addEventListener("load", () => { // функція, яка виконується після завантаження сторінки
     keyToken = localStorage.getItem('token'); 
-    console.log(keyToken);
     if (keyToken) {
         document.querySelector('#entry-btn').classList.add('hidden');
         document.querySelector('#visit-btn').classList.remove('hidden');
@@ -156,15 +155,16 @@ document.addEventListener('click', async (e) => {
                 visitsCollection[index] = card;
 
                 localStorage['allVisits'] = JSON.stringify(visitsCollection);  // перезаписуємо в localStorage наші зміни
-                console.log(visitsCollection);
+                
                 /*
                 // Спосіб замінення редагованої картки перерендером всіх карток
                 // Так зберігається порядок карток і виглядає красивіше
-                 document.querySelector('.main-cards').innerHTML = '';
-                 renderCards(visitsCollection);
+                document.querySelector('.main-cards').innerHTML = '';
+                renderCards(visitsCollection);
                  */
                 
                 // Спосіб замінення редагованої картки без перерендеру всіх карток
+                // Так не збивається Drag'n'Drop
             
                 // видалення відредагованої картки з дом
                 document.querySelectorAll('.visit-card').forEach(el => {
@@ -185,4 +185,3 @@ document.addEventListener('click', async (e) => {
 })
 
 dragAndDrop()
-// export {keyToken, API}
