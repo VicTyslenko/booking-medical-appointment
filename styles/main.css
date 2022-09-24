@@ -10,6 +10,7 @@
     width: 250px;
     user-select: auto;
     height: max-content;
+    border: none;
 }
 
 i {
@@ -75,4 +76,35 @@ main {
 
 .main-cards {
     height: 91vh;
+}
+
+.card-list {
+    padding: 0 16px 16px;
+}
+
+.card-border-radius {
+    border-radius: 6px 6px 0 0;
+}
+
+.bg-dentist {
+    background-color: #166773bf;
+}
+
+.bg-therapist {
+    background-color: #199126a8;
+}
+
+.bg-cardiologist {
+    background-color: #c73912b8;
+}
+
+.accordion-collapse {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    border-radius: 0 0 6px 6px;
+}
+
+.card-z-index {
+    z-index: 99;
 }
