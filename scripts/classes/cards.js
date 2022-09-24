@@ -26,10 +26,10 @@ export class Visit {
             <h5 class="card-title">${this.fullName}</h5>
             <h6 class="card-subtitle mb-2 text-light"><i class="fa-solid fa-user-doctor text-light"></i> ${this.doctor}</h6>
             <div class="accordion accordion-flush" id="accordionFlush">
-                <button id="showMore" class="accordion-button collapsed rounded-top show-more-btn mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${this.id}" aria-expanded="false" aria-controls="flush-collapseOne">
+                <button id="showMore" class="accordion-button collapsed rounded-top show-more-btn mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${this.id}" aria-expanded="false" aria-controls="flush-collapseOne">
                     Show more
                 </button>
-                <div id="collapse-${this.id}" class="accordion-collapse collapse bg-color-inherit" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div id="collapse-${this.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                     <ul class="card-list list-group list-group-flush rounded-bottom">
                         <li class="card-list-item list-group-item">Urgency: ${this.urgency}</li>
                         <li class="card-list-item list-group-item">Purpose: ${this.purpose}</li>
@@ -39,12 +39,7 @@ export class Visit {
              </div>
         </div>
         `)
-        // position: absolute;
-        // z-index: 6;
-        // width: 100%;
-        // padding: 0px 16px;
-        // left: 0px;
-        // background-color: inherit;
+       
         this.cardList = this.card.querySelector('.card-list')
         this.card.dataset.id = this.id;
         this.card.id = 'visit-card'
