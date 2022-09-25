@@ -182,7 +182,10 @@ document.addEventListener('click', async (e) => {
     } else if (e.target.id === 'logout-btn') { 
         localStorage.clear();    //стираємо дані з локального сховища   
         location.reload()       //оновлюємо сторінку
-    }   
+    }  else if (e.target.id === 'showMore') {
+        e.target.closest('.visit-card').classList.toggle('card-border-radius')
+        e.target.closest('.visit-card').classList.toggle('card-z-index')
+    }
 })
 
 dragAndDrop()

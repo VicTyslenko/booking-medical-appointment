@@ -2,11 +2,17 @@
 //  Фiльтрацiя карток 
 import {cardsWrapper,VisitDentist,VisitCardiologist,VisitTherapist,renderCards, noItems}  from "../classes/cards.js";
 
+const status = document.getElementById('status')
+const urgency = document.getElementById('sorting-urgency')
+const mainSection= document.querySelector('.main-section');
+const inputTitle = document.getElementById('input-title');
+const sortingForm = document.querySelector('#sorting-form');
+
+
 function changeHandle(array){
-    const sortingForm = document.querySelector('#sorting-form');
     if(sortingForm.status.value === 'open'){
         // Терапевт фiльтр
-        if(sortingForm.title.value === 'Therapist'){
+        if(sortingForm.title.value === 'Therapist' || sortingForm.title.value === 'therapist'){
             
 if(sortingForm.urgency.value === 'high'){
     let filteredArray = array.filter(card => card.doctor === 'Therapist' && card.urgency === 'high')
@@ -34,7 +40,7 @@ else if(sortingForm.urgency.value === 'middle'){
 }
 }
                 //    Кардiолог фiльтр
-else if(sortingForm.title.value === 'Cardiologist'){
+else if(sortingForm.title.value === 'Cardiologist' || sortingForm.title.value === 'cardiologist'){
             
     if(sortingForm.urgency.value === 'high'){
         let filteredArray = array.filter(card => card.doctor === 'Cardiologist' && card.urgency === 'high')
@@ -62,7 +68,7 @@ else if(sortingForm.title.value === 'Cardiologist'){
     }
     }
                 //    Дантист фiльтр
-    else if(sortingForm.title.value === 'Dentist'){
+    else if(sortingForm.title.value === 'Dentist' || sortingForm.title.value === 'dentist'){
             
         if(sortingForm.urgency.value === 'high'){
             let filteredArray = array.filter(card => card.doctor === 'Dentist' && card.urgency === 'high')
@@ -104,14 +110,7 @@ alert('done')
 
 
 export default function searchFilter(array){
-    // const newHandler = ()=>{
-    //     changeHandle(array)
-    // }
-    const status = document.getElementById('status')
-    const urgency = document.getElementById('sorting-urgency')
-    const mainSection= document.querySelector('.main-section');
-    const inputTitle = document.getElementById('input-title');
-    const sortingForm = document.querySelector('#sorting-form');
+  
    
      inputTitle.addEventListener('input',()=>{
         changeHandle(array)

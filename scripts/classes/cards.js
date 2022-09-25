@@ -22,11 +22,11 @@ export class Visit {
             <button type="button" class="btn edit-visit-btn" id="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>
             <button type="button" class="deleteBtn btn-close me-2" aria-label="Close" id="deleteBtn"></button>
         </div>
-        <div class="card-body">
+        <div class="card-body pb-0">
             <h5 class="card-title">${this.fullName}</h5>
             <h6 class="card-subtitle mb-2 text-light"><i class="fa-solid fa-user-doctor text-light"></i> ${this.doctor}</h6>
             <div class="accordion accordion-flush" id="accordionFlush">
-                <button id="showMore" class="accordion-button collapsed rounded-top show-more-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${this.id}" aria-expanded="false" aria-controls="flush-collapseOne">
+                <button id="showMore" class="accordion-button collapsed rounded-top show-more-btn mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${this.id}" aria-expanded="false" aria-controls="flush-collapseOne">
                     Show more
                 </button>
                 <div id="collapse-${this.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
@@ -39,7 +39,7 @@ export class Visit {
              </div>
         </div>
         `)
-
+       
         this.cardList = this.card.querySelector('.card-list')
         this.card.dataset.id = this.id;
         this.card.id = 'visit-card'
@@ -59,7 +59,8 @@ export class VisitDentist extends Visit {
     render(parent) {
         super.render(parent);
         
-        this.card.style.backgroundColor = '#166773bf';
+        this.card.classList.add('bg-dentist')
+        this.card.querySelector('.accordion-collapse').classList.add('bg-dentist')
         this.cardList.insertAdjacentHTML("beforeend", `<li class="card-list-item list-group-item">Date of last visit: <br>${this.dateOfLastVisit}</li>`)
          parent.append(this.card);
     }
@@ -76,7 +77,8 @@ export class VisitTherapist extends Visit {
     render(parent) {
         super.render(parent);
 
-        this.card.style.backgroundColor = '#199126a8';
+        this.card.classList.add('bg-therapist')
+        this.card.querySelector('.accordion-collapse').classList.add('bg-therapist')
         this.cardList.insertAdjacentHTML("beforeend", `<li class="card-list-item list-group-item">Age: ${this.age}</li>`)
         parent.append(this.card);
     }
@@ -96,14 +98,14 @@ export class VisitCardiologist extends Visit {
     //Відображення Кардіолога на сторінці
     render(parent) {
         super.render(parent);
-        this.card.style.backgroundColor = '#c73912b8'
+        this.card.classList.add('bg-cardiologist')
+        this.card.querySelector('.accordion-collapse').classList.add('bg-cardiologist')
         this.cardList.insertAdjacentHTML("beforeend", `
         <li class="card-list-item list-group-item">Basic pressure: ${this.systolicPressure}/${this.diastolicPressure}</li>
         <li class="card-list-item list-group-item">Body mass index: ${this.bmi}</li>
         <li class="card-list-item list-group-item">Cardiovascular diseases: ${this.cardiovascularDiseases}</li>
         <li class="card-list-item list-group-item">Age: ${this.age}</li>
         `)
-
         parent.append(this.card);
     }
 }
