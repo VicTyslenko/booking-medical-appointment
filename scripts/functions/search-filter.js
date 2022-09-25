@@ -2,44 +2,67 @@
 //  Фiльтрацiя карток 
 import {cardsWrapper,VisitDentist,VisitCardiologist,VisitTherapist,renderCards}  from "../classes/cards.js";
 
+function changeHandle(){
+    const sortingForm = document.querySelector('#sorting-form');
+    console.log(sortingForm.title.value);
+    console.log(sortingForm.urgency.value);
+    console.log(sortingForm.status.value);
+
+}
+
+
 export default function searchFilter(array){
-    
-    const status = document.querySelector('.status')
-    const urgency = document.querySelector('.urgency')
+    const newHandler = ()=>{
+        changeHandle(array)
+    }
+    const status = document.getElementById('status')
+    const urgency = document.getElementById('sorting-urgency')
     const mainSection= document.querySelector('.main-section');
     const inputTitle = document.getElementById('input-title');
     const sortingForm = document.querySelector('#sorting-form');
+    inputTitle.addEventListener('input',newHandler)
+        status.addEventListener('change',changeHandle)
+        urgency.addEventListener('change',changeHandle)
     
-    sortingForm.addEventListener('change',(event)=>{
-        let target = event.target;
+    };
+    // sortingForm.addEventListener('change',function(event){
+        // console.log(this,event);
+        // let target = event.target;
        
-        if(target === status){
+        // if(target === status){
          
-        if(status.value === 'open'){
+        // if(status.value === 'open'){
 
-        }
+        // }
         
-        };
-        if(target === inputTitle){
+        // };
+        // if(target === inputTitle){
 
-            if(inputTitle.value === 'Cardiologist'){
-                if(urgency.value === 'high'){
-                    let filteredArray = array.filter(card=>card.doctor === 'Cardiologist' && card.urgency === 'high')
-                    console.log(filteredArray);
-                    cardsWrapper.innerHTML = '';
-                 renderCards(filteredArray)
-                }
-            }
+        //     if(inputTitle.value === 'Cardiologist'){
+        //         if(urgency.value === 'high'){
+        //             let filteredArray = array.filter(card=>card.doctor === 'Cardiologist' && card.urgency === 'high')
+        //             console.log(filteredArray);
+        //             cardsWrapper.innerHTML = '';
+        //          renderCards(filteredArray)
+        //         }
+        //     }
 
-        };
-        if(target === urgency){
+        // };
+        // if(target === urgency){
          
-        }
-    })
-};
+        // }
+    // })
 
 
-//    sortingForm.addEventListener('change',(event)=>{
+
+
+
+
+
+
+
+
+//    sortingForm.addEventListener('',(event)=>{
 
 //     if(event.target.value === 'open'){
         
@@ -70,68 +93,68 @@ export default function searchFilter(array){
 //            });
 //        }
 //      }
-// //    //   Терапевт фiльтр
-// //      if(inputTitle.value === 'Therapist'){
-// //        if(urgency.value === 'high'){
-// //            let filteredArray = array.filter(card => card.doctor === 'Therapist' && card.urgency === 'high')
-// //            cardsWrapper.innerHTML = '';
-// //            filteredArray.forEach(card => {
-// //                const visit = new VisitTherapist(card)
-// //                visit.render(cardsWrapper)
-// //            });
-// //        }
-// //        else if(urgency.value === 'middle'){
-// //            let filteredArray = array.filter(card => card.doctor === 'Therapist' && card.urgency === 'middle')
-// //            cardsWrapper.innerHTML = '';
-// //            filteredArray.forEach(card => {
-// //                const visit = new VisitTherapist(card)
-// //                visit.render(cardsWrapper)
-// //            });
-// //        }
-// //        else if(urgency.value === 'low'){
-// //            let filteredArray = array.filter(card => card.doctor === 'Therapist' && card.urgency === 'low')
-// //            cardsWrapper.innerHTML = '';
-// //            filteredArray.forEach(card => {
-// //                const visit = new VisitTherapist(card)
-// //                visit.render(cardsWrapper)
-// //            });
-// //        }
-// //      }
+//    //   Терапевт фiльтр
+//      if(inputTitle.value === 'Therapist'){
+//        if(urgency.value === 'high'){
+//            let filteredArray = array.filter(card => card.doctor === 'Therapist' && card.urgency === 'high')
+//            cardsWrapper.innerHTML = '';
+//            filteredArray.forEach(card => {
+//                const visit = new VisitTherapist(card)
+//                visit.render(cardsWrapper)
+//            });
+//        }
+//        else if(urgency.value === 'middle'){
+//            let filteredArray = array.filter(card => card.doctor === 'Therapist' && card.urgency === 'middle')
+//            cardsWrapper.innerHTML = '';
+//            filteredArray.forEach(card => {
+//                const visit = new VisitTherapist(card)
+//                visit.render(cardsWrapper)
+//            });
+//        }
+//        else if(urgency.value === 'low'){
+//            let filteredArray = array.filter(card => card.doctor === 'Therapist' && card.urgency === 'low')
+//            cardsWrapper.innerHTML = '';
+//            filteredArray.forEach(card => {
+//                const visit = new VisitTherapist(card)
+//                visit.render(cardsWrapper)
+//            });
+//        }
+//      }
    
-// //    //   Дантист фiльтр
-// //      if(inputTitle.value === 'Dentist'){
-// //        if(urgency.value == 'high'){
-// //            let filteredArray = array.filter(card => card.doctor === 'Dentist' && card.urgency === 'high')
-// //            cardsWrapper.innerHTML = '';
-// //            filteredArray.forEach(card => {
-// //                const visit = new VisitDentist(card)
-// //                visit.render(cardsWrapper)
-// //            });
-// //        }
-// //        else if(urgency.value === 'middle'){
-// //            let filteredArray = array.filter(card => card.doctor === 'Dentist' && card.urgency === 'middle')
-// //            cardsWrapper.innerHTML = '';
-// //            filteredArray.forEach(card => {
-// //                const visit = new VisitDentist(card)
-// //                visit.render(cardsWrapper)
-// //            });
-// //        }
-// //        else if(urgency.value === 'low'){
-// //            let filteredArray = array.filter(card => card.doctor === 'Dentist' && card.urgency === 'low')
-// //            cardsWrapper.innerHTML = '';
-// //            filteredArray.forEach(card => {
-// //                const visit = new VisitDentist(card)
-// //                visit.render(cardsWrapper)
-// //            });
-// //        }
-// //      }
+//    //   Дантист фiльтр
+//      if(inputTitle.value === 'Dentist'){
+//        if(urgency.value == 'high'){
+//            let filteredArray = array.filter(card => card.doctor === 'Dentist' && card.urgency === 'high')
+//            cardsWrapper.innerHTML = '';
+//            filteredArray.forEach(card => {
+//                const visit = new VisitDentist(card)
+//                visit.render(cardsWrapper)
+//            });
+//        }
+//        else if(urgency.value === 'middle'){
+//            let filteredArray = array.filter(card => card.doctor === 'Dentist' && card.urgency === 'middle')
+//            cardsWrapper.innerHTML = '';
+//            filteredArray.forEach(card => {
+//                const visit = new VisitDentist(card)
+//                visit.render(cardsWrapper)
+//            });
+//        }
+//        else if(urgency.value === 'low'){
+//            let filteredArray = array.filter(card => card.doctor === 'Dentist' && card.urgency === 'low')
+//            cardsWrapper.innerHTML = '';
+//            filteredArray.forEach(card => {
+//                const visit = new VisitDentist(card)
+//                visit.render(cardsWrapper)
+//            });
+//        }
+//      }
    
-//          }
-//     //      else{
+        //  }
+    //      else{
              
-//     //        cardsWrapper.innerHTML = '<p class="visits-done">all visits are done</p>'
+    //        cardsWrapper.innerHTML = '<p class="visits-done">all visits are done</p>'
    
-//     //    }
+    //    }
 
 //    })
 

@@ -11,43 +11,77 @@
     display: none;
 }
 
-.btn-primary{
-    padding: 10px 35px;
-        color: white;
-        font-weight: 600;
-    }
-    .head-wrapp{
-        background-color: #a7eaf9;
-        border-radius: 10px;
-        position: relative;
-    }
+.search{
+    outline: none;
+}
 
-    .main-section{
-        background-color:#4db0e5;
-        min-height: 85vh;
-        border-radius: 10px;
+.visit-card {
+    width: 250px;
+    user-select: auto;
+    height: max-content;
+}
+
+i {
+    pointer-events: none;
+}
+
+.edit-visit-btn {
+    opacity: 0.7;
+}
+
+.edit-visit-btn:hover {
+    opacity: 1;
+}
+
+.show-more-btn {
+    opacity: 0.8;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: var(--bs-accordion-btn-icon);
+}
+
+.accordion-button:not(.collapsed) {
+    color: inherit; 
+}
+
+.accordion-button {
+    background-color: #ffffff8a;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.card-list-item {
+    background-color: var(--bs-accordion-active-bg);
+    opacity: 0.8;
+}
+
+#sorting-form select {
+    width: 100px;
+}
+
+body {
+    background: url(https://i0.wp.com/montanafreepress.org/wp-content/uploads/2022/04/AdobeStock_256618260-scaled.jpeg?fit=1200%2C800&ssl=1);
+    background-position: center;
+    background-size: cover;
+    background-attachment:fixed;
+    background-repeat: no-repeat;
+}
+
+main {
+    margin-top: 109px;
+}
+
+@media screen and (min-width: 993px) {
+    main {
+        
+        margin-top: 62px;
+    }
     
-    }
- 
-    .flex-container-form{
-        width: 200px;
-        gap: 10px;
-    }
+}
 
-    .search{
-        outline: none;
-    }
-
-    .valid-form{
-        position: absolute;
-        top: 105px;
-        right: 23px;
-    }
-
-    .visit-card {
-        width: 250px;
-    }
-    .visits-done{
-        font-weight: 600;
-        text-transform: uppercase;
-    }
+.main-cards {
+    height: 91vh;
+}
