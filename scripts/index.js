@@ -9,8 +9,6 @@ import searchFilter from './functions/search-filter.js';
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 let visitsCollection = [];    // масив усіх візитів
 
-const sortingForm = document.querySelector('#sorting-form');
-console.log(sortingForm);
 // змінні щоб їх було видно для всіх функцій нижче Типу глобальні змінні, але ще в процесі тестування і можливо їх не буде в фінальному білді
 let entryModal; // обєкт з вікном входу
 let keyToken; // сюди записується токен  Наступні функції запиту на сервер (для отримання карток чи ін) слід викликати з перевіркою if(keyToken)
