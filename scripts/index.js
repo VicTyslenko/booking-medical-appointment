@@ -24,10 +24,10 @@ window.addEventListener("load", () => { // функція, яка виконує
         document.querySelector('#sorting-form').classList.remove('hidden');
 
         visitsCollection = JSON.parse(localStorage.getItem('allVisits')) 
-        searchFilter(visitsCollection)
         
         renderCards(visitsCollection);
         noItems(visitsCollection);
+        searchFilter(visitsCollection);
 
     } 
 });
@@ -187,5 +187,6 @@ document.addEventListener('click', async (e) => {
         e.target.closest('.visit-card').classList.toggle('card-z-index')
     }
 })
+
 
 dragAndDrop()

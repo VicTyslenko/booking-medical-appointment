@@ -9,6 +9,8 @@ const inputTitle = document.getElementById('input-title');
 const sortingForm = document.querySelector('#sorting-form');
 
 
+// Функцiя фiльтрацiй по параметрам вводу
+
 function changeHandle(array){
     if(sortingForm.status.value === 'open'){
         // Терапевт фiльтр
@@ -107,8 +109,8 @@ cardsWrapper.insertAdjacentHTML('afterbegin','<h1 class="done-text"> All visits 
 
 
 
+// Функцiя перевiрки змiн у полях вводу
 export default function searchFilter(array){
-  
    
      inputTitle.addEventListener('input',()=>{
         changeHandle(array)
