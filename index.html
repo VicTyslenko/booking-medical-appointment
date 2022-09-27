@@ -21,13 +21,13 @@
                 <a href="#" target="_blank"><img width="75px" class="me-lg-4" src="./img/main-logo.png" alt="main logo"></a>
                 <form id="sorting-form" class="main-form hidden col-12 col-md-auto order-1 order-lg-1 flex-grow-1 py-2 mx-lg-4">
                     <div class="d-flex align-items-center">
-                        <input type="text" class="form-control form-control-sm search flex-fill" id="" placeholder="Search by title">
-                        <select class="form-select form-select-sm flex-fill" aria-label="Status">
+                        <input id="input-title" type="text" class="form-control form-control-sm search flex-fill" name ='title' placeholder="Search by title">
+                        <select name="status" id="status" class="form-select form-select-sm flex-fill" aria-label="Status">
                             <option selected value="all">Status</option>
                             <option value="open">Open</option>
                             <option value="done">Done</option>
                         </select>
-                        <select id="sorting-urgency" class="form-select form-select-sm flex-fill urgency-select" aria-label="Urgency">
+                        <select id="sorting-urgency"name='urgency' class="form-select form-select-sm flex-fill urgency-select" aria-label="Urgency">
                             <option selected value="all">Urgency</option>
                             <option value="high">High</option>
                             <option value="middle">Middle</option>

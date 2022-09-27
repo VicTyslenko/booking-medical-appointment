@@ -1,7 +1,7 @@
 // import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from '../functions/send-request.js';
 // import { keyToken, API } from '../index.js';
 
-const cardsWrapper = document.querySelector('.main-cards');
+ export const cardsWrapper = document.querySelector('.main-cards');
 const noItem = document.createElement('div');
 //Основний клас карток візитів
 export class Visit {

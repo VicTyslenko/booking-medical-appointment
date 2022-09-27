@@ -3,13 +3,11 @@ import {Modal, ModalLogin, ModalAddCard, ModalEditCard} from './classes/modal.js
 import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
 import dragAndDrop from './functions/drag-and-drop.js';
-
+import searchFilter from './functions/search-filter.js';
 
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 let visitsCollection = [];    // масив усіх візитів
-
-
 
 // змінні щоб їх було видно для всіх функцій нижче Типу глобальні змінні, але ще в процесі тестування і можливо їх не буде в фінальному білді
 let entryModal; // обєкт з вікном входу
@@ -29,6 +27,7 @@ window.addEventListener("load", () => { // функція, яка виконує
         
         renderCards(visitsCollection);
         noItems(visitsCollection);
+        searchFilter(visitsCollection);
 
     } 
 });
@@ -36,7 +35,9 @@ window.addEventListener("load", () => { // функція, яка виконує
 // Загальний обробник подій
 // Вішаємо один обробник кліків, який просто перевіряє event.targer і залежно від цього виконує потрібні функції
 document.addEventListener('click', async (e) => {
-    if (e.target.id === 'entry-btn') {              // якщо нажати кнопку входу
+    e.preventDefault();
+    if (e.target.id === 'entry-btn') {
+                  // якщо нажати кнопку входу
         entryModal = new ModalLogin();
         entryModal.render();
     } else if (e.target.id === 'login-btn') {       //якщо нажати кнопку на формі відправки логіна та пароля
@@ -186,5 +187,6 @@ document.addEventListener('click', async (e) => {
         e.target.closest('.visit-card').classList.toggle('card-z-index')
     }
 })
+
 
 dragAndDrop()
