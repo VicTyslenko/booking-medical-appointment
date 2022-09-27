@@ -97,8 +97,9 @@ else if(sortingForm.title.value === 'Cardiologist' || sortingForm.title.value ==
         }
 }
 else if(sortingForm.status.value === 'done'){
-alert('done')
-// noItems(array)
+// alert('done')
+cardsWrapper.innerHTML =''
+cardsWrapper.insertAdjacentHTML('afterbegin','<h1 class="done-text"> All visits are done</h1>')
 }
 
 // console.log(sortingForm.title.value);
