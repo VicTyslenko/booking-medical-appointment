@@ -5,7 +5,8 @@
 const noItem = document.createElement('div');
 //Основний клас карток візитів
 export class Visit {
-    constructor({id, doctor, purpose, description, urgency, fullName}) {
+    constructor({id, doctor, purpose, description, urgency, fullName, status}) {
+        this.status = status;
         this.id = id;
         this.doctor = doctor;
         this.purpose = purpose;
@@ -18,13 +19,17 @@ export class Visit {
     //Відображення карток на сторінці
     render(parent) {
         this.card.insertAdjacentHTML('beforeend', `
-        <div id="card-action" class="d-flex justify-content-end align-items-center">
-            <button type="button" class="btn edit-visit-btn" id="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>
-            <button type="button" class="deleteBtn btn-close me-2" aria-label="Close" id="deleteBtn"></button>
+        <div id="card-action" class="d-flex align-items-center card-action${this.status}">
+            <button type="button" class="btn btn${this.status}" id="statusDone">Done</button>
+            <div class="d-flex align-items-center">
+                <button type="button" class="btn edit-visit-btn" id="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button type="button" class="deleteBtn btn-close me-2" aria-label="Close" id="deleteBtn"></button>
+            </div>
         </div>
         <div class="card-body pb-0">
             <h5 class="card-title">${this.fullName}</h5>
             <h6 class="card-subtitle mb-2 text-light"><i class="fa-solid fa-user-doctor text-light"></i> ${this.doctor}</h6>
+            <span class='card-status'>Status: ${this.status}</span>
             <div class="accordion accordion-flush" id="accordionFlush">
                 <button id="showMore" class="accordion-button collapsed rounded-top show-more-btn mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${this.id}" aria-expanded="false" aria-controls="flush-collapseOne">
                     Show more
@@ -51,8 +56,8 @@ export class Visit {
 
 //Дочірній клас візиту Дантист
 export class VisitDentist extends Visit {
-    constructor({id, doctor, purpose, description, urgency, fullName, dateOfLastVisit}) {
-        super({id, doctor, purpose, description, urgency, fullName});
+    constructor({status, id, doctor, purpose, description, urgency, fullName, dateOfLastVisit}) {
+        super({status,id, doctor, purpose, description, urgency, fullName});
         this.dateOfLastVisit = dateOfLastVisit;
     }
     //Відображення Дантиста на сторінці
@@ -68,8 +73,8 @@ export class VisitDentist extends Visit {
 
 //Дочірній клас візиту Терапевт 
 export class VisitTherapist extends Visit {
-    constructor({id, doctor, purpose, description, urgency, fullName, age}) {
-        super({id, doctor, purpose, description, urgency, fullName});
+    constructor({status, id, doctor, purpose, description, urgency, fullName, age}) {
+        super({status,id, doctor, purpose, description, urgency, fullName});
         this.age = age;
     }
 
@@ -86,8 +91,8 @@ export class VisitTherapist extends Visit {
 
 //Дочірній клас візиту Кардіолога 
 export class VisitCardiologist extends Visit {
-    constructor({id, doctor, purpose, description, urgency, fullName, systolicPressure, diastolicPressure, bmi, cardiovascularDiseases, age}) {
-        super({id, doctor, purpose, description, urgency, fullName});
+    constructor({status, id, doctor, purpose, description, urgency, fullName, systolicPressure, diastolicPressure, bmi, cardiovascularDiseases, age}) {
+        super({status,id, doctor, purpose, description, urgency, fullName});
         this.systolicPressure = systolicPressure;
         this.diastolicPressure = diastolicPressure;
         this.bmi = bmi;

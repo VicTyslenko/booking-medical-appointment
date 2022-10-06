@@ -3,7 +3,7 @@ import {Modal, ModalLogin, ModalAddCard, ModalEditCard} from './classes/modal.js
 import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
 import dragAndDrop from './functions/drag-and-drop.js';
-import searchFilter from './functions/search-filter.js';
+import filter from './functions/filter.js';
 
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
@@ -27,7 +27,7 @@ window.addEventListener("load", () => { // функція, яка виконує
         
         renderCards(visitsCollection);
         noItems(visitsCollection);
-        searchFilter(visitsCollection);
+        filter(visitsCollection);
 
     } 
 });
@@ -79,7 +79,7 @@ document.addEventListener('click', async (e) => {
                 // розбираємо строку з localStorage для перетворення у масив з об'єктами та записуємо результат у visitsCollection
                 visitsCollection = JSON.parse(localStorage.getItem('allVisits'))
             });
-            
+            filter(visitsCollection)
             renderCards(visitsCollection);
             noItems(visitsCollection);
         }
@@ -98,6 +98,7 @@ document.addEventListener('click', async (e) => {
             let formData = new FormData(form)
             // обєкт із всіма заповненими полями форми
             let visitData = formToObj(formData); 
+            visitData.status = 'Open'
             // закриваємо модальне вікно
             newVisitModal.close();
             
@@ -144,6 +145,7 @@ document.addEventListener('click', async (e) => {
         if(form.checkValidity()) {
             let formData = new FormData(form)
             let visitData = formToObj(formData); 
+            visitData.status = 'Open'
             // закриваємо модальне вікно
             editVisitModal.close();
             
@@ -185,7 +187,24 @@ document.addEventListener('click', async (e) => {
     }  else if (e.target.id === 'showMore') {
         e.target.closest('.visit-card').classList.toggle('card-border-radius')
         e.target.closest('.visit-card').classList.toggle('card-z-index')
-    }
+    } else if (e.target.id === 'statusDone') {
+        const card = e.target.closest('.visit-card')
+        const cardAction = card.querySelector('#card-action')
+        const cardId = +card.getAttribute('data-id')
+        const cardStatus = card.querySelector('.card-status')
+        const visitData = visitsCollection.find(visit => visit.id === cardId)
+        visitData.status = 'Done'
+        
+        await editCard(API, keyToken, cardId, visitData).then(card => {
+            cardStatus.innerHTML = 'Status: Done'
+            e.target.classList.add('btnDone')
+            cardAction.classList.add('justify-content-end')
+            let index = visitsCollection.indexOf(card);
+                visitsCollection[index] = card;
+                localStorage['allVisits'] = JSON.stringify(visitsCollection);
+        })
+        }
+    
 })
 
 
