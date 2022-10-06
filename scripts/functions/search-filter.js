@@ -1,6 +1,6 @@
 
 //  Фiльтрацiя карток 
-import {cardsWrapper,VisitDentist,VisitCardiologist,VisitTherapist,renderCards, noItems}  from "../classes/cards.js";
+import {cardsWrapper,VisitDentist,VisitCardiologist,VisitTherapist,renderCards, noItems,renderNewCard}  from "../classes/cards.js";
 
 const status = document.getElementById('status')
 const urgency = document.getElementById('sorting-urgency')
@@ -99,9 +99,13 @@ else if(sortingForm.title.value === 'Cardiologist' || sortingForm.title.value ==
         }
 }
 else if(sortingForm.status.value === 'done'){
+   
 cardsWrapper.innerHTML =''
 cardsWrapper.insertAdjacentHTML('afterbegin','<h1 class="done-text"> All visits are done</h1>')
+
+// if()
 }
+
 
 
 }

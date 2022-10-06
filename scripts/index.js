@@ -1,6 +1,6 @@
 import {getToken, sendCard, deleteCard, getCards, getCard, editCard} from './functions/send-request.js';
 import {Modal, ModalLogin, ModalAddCard, ModalEditCard} from './classes/modal.js';
-import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard } from './classes/cards.js';
+import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard,cardsWrapper } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
 import dragAndDrop from './functions/drag-and-drop.js';
 import searchFilter from './functions/search-filter.js';
@@ -8,7 +8,7 @@ import searchFilter from './functions/search-filter.js';
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
 let visitsCollection = [];    // масив усіх візитів
-
+// 
 // змінні щоб їх було видно для всіх функцій нижче Типу глобальні змінні, але ще в процесі тестування і можливо їх не буде в фінальному білді
 let entryModal; // обєкт з вікном входу
 let keyToken; // сюди записується токен  Наступні функції запиту на сервер (для отримання карток чи ін) слід викликати з перевіркою if(keyToken)
@@ -85,7 +85,8 @@ document.addEventListener('click', async (e) => {
         }
 
         
-    } else if (e.target.id === 'visit-btn') {                // якщо натиснути кнопку виклику вікна створення нового візиту
+    } else if (e.target.id === 'visit-btn') {  
+        cardsWrapper.innerHTML = ''              // якщо натиснути кнопку виклику вікна створення нового візиту
         newVisitModal = new ModalAddCard();
         newVisitModal.render();
     } else if (e.target.id === 'create-btn') {                 // якщо натиснути кнопку створити новий візит
