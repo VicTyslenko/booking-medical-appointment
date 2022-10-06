@@ -20,7 +20,7 @@ export class Visit {
     render(parent) {
         this.card.insertAdjacentHTML('beforeend', `
         <div id="card-action" class="d-flex align-items-center card-action${this.status}">
-            <button type="button" class="btn btn${this.status}" id="statusDone">Done</button>
+            <button type="button" class="btn btn${this.status}"><span id="statusDone">Done</span></button>
             <div class="d-flex align-items-center">
                 <button type="button" class="btn edit-visit-btn" id="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>
                 <button type="button" class="deleteBtn btn-close me-2" aria-label="Close" id="deleteBtn"></button>
@@ -28,8 +28,7 @@ export class Visit {
         </div>
         <div class="card-body pb-0">
             <h5 class="card-title">${this.fullName}</h5>
-            <h6 class="card-subtitle mb-2 text-light"><i class="fa-solid fa-user-doctor text-light"></i> ${this.doctor}</h6>
-            <span class='card-status'>Status: ${this.status}</span>
+            <h6 class="card-subtitle mb-2 text-light"><i class="fa-solid fa-user-doctor text-light"></i> ${this.doctor} <span class='card-status'>/ Status: ${this.status}</span></h6> 
             <div class="accordion accordion-flush" id="accordionFlush">
                 <button id="showMore" class="accordion-button collapsed rounded-top show-more-btn mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${this.id}" aria-expanded="false" aria-controls="flush-collapseOne">
                     Show more

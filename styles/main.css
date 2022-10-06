@@ -131,3 +131,16 @@ main {
 .btnDone {
     display: none;
 }
+
+.btnOpen {
+    padding: 0;
+    margin-left: 8px;
+}
+
+.btnOpen:hover span{
+    color: #fff;
+}
+
+.card-status {
+    color: #000;
+}

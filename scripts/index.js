@@ -3,7 +3,7 @@ import {Modal, ModalLogin, ModalAddCard, ModalEditCard} from './classes/modal.js
 import {renderCards, Visit, VisitCardiologist, noItems, renderNewCard,cardsWrapper } from './classes/cards.js';
 import formToObj from './functions/form-to-obj.js';
 import dragAndDrop from './functions/drag-and-drop.js';
-import filter from './functions/filter.js';
+import searchFilter from './functions/search-filter.js';
 
 // тут будуть глобальні змінні
 const API = 'https://ajax.test-danit.com/api/v2/cards';
@@ -24,11 +24,9 @@ window.addEventListener("load", () => { // функція, яка виконує
         document.querySelector('#sorting-form').classList.remove('hidden');
 
         visitsCollection = JSON.parse(localStorage.getItem('allVisits')) 
-        
+        searchFilter(visitsCollection)
         renderCards(visitsCollection);
         noItems(visitsCollection);
-        filter(visitsCollection);
-
     } 
 });
     
@@ -79,14 +77,13 @@ document.addEventListener('click', async (e) => {
                 // розбираємо строку з localStorage для перетворення у масив з об'єктами та записуємо результат у visitsCollection
                 visitsCollection = JSON.parse(localStorage.getItem('allVisits'))
             });
-            filter(visitsCollection)
+            searchFilter(visitsCollection)
             renderCards(visitsCollection);
             noItems(visitsCollection);
         }
 
         
-    } else if (e.target.id === 'visit-btn') {  
-        cardsWrapper.innerHTML = ''              // якщо натиснути кнопку виклику вікна створення нового візиту
+    } else if (e.target.id === 'visit-btn') {              // якщо натиснути кнопку виклику вікна створення нового візиту
         newVisitModal = new ModalAddCard();
         newVisitModal.render();
     } else if (e.target.id === 'create-btn') {                 // якщо натиснути кнопку створити новий візит
