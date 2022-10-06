@@ -1,132 +1,53 @@
+import { renderCards, noItems } from "../classes/cards.js";
 
-//  Фiльтрацiя карток 
-import {cardsWrapper,VisitDentist,VisitCardiologist,VisitTherapist,renderCards, noItems,renderNewCard}  from "../classes/cards.js";
+export default function searchFilter (array) {
+    const form = document.querySelector('#sorting-form');
+    const cardsWrapper = document.querySelector('.main-cards');
+    const search = document.querySelector('.search')
+    const urgency = document.querySelector('#sorting-urgency')
+    const status = document.querySelector('#status')
+    console.log(status.value);
+    form.addEventListener('change', (event) => {
+        event.preventDefault();
+        console.log(event.target.value);
 
-const status = document.getElementById('status')
-const urgency = document.getElementById('sorting-urgency')
-const mainSection= document.querySelector('.main-section');
-const inputTitle = document.getElementById('input-title');
-const sortingForm = document.querySelector('#sorting-form');
-
-
-// Функцiя фiльтрацiй по параметрам вводу
-
-function changeHandle(array){
-    if(sortingForm.status.value === 'open'){
-        // Терапевт фiльтр
-        if(sortingForm.title.value === 'Therapist' || sortingForm.title.value === 'therapist'){
-            
-if(sortingForm.urgency.value === 'high'){
-    let filteredArray = array.filter(card => card.doctor === 'Therapist' && card.urgency === 'high')
-               cardsWrapper.innerHTML = '';
-               filteredArray.forEach(card => {
-                   const visit = new VisitTherapist(card)
-                   visit.render(cardsWrapper)
-               });
-} 
-else if(sortingForm.urgency.value === 'middle'){
-    let filteredArray = array.filter(card => card.doctor === 'Therapist' && card.urgency === 'middle')
-               cardsWrapper.innerHTML = '';
-               filteredArray.forEach(card => {
-                   const visit = new VisitTherapist(card)
-                   visit.render(cardsWrapper)
-               });
-}
- else if(sortingForm.urgency.value === 'low'){
-    let filteredArray = array.filter(card => card.doctor === 'Therapist' && card.urgency === 'low')
-               cardsWrapper.innerHTML = '';
-               filteredArray.forEach(card => {
-                   const visit = new VisitTherapist(card)
-                   visit.render(cardsWrapper)
-               });
-}
-}
-                //    Кардiолог фiльтр
-else if(sortingForm.title.value === 'Cardiologist' || sortingForm.title.value === 'cardiologist'){
-            
-    if(sortingForm.urgency.value === 'high'){
-        let filteredArray = array.filter(card => card.doctor === 'Cardiologist' && card.urgency === 'high')
-                   cardsWrapper.innerHTML = '';
-                   filteredArray.forEach(card => {
-                       const visit = new VisitCardiologist(card)
-                       visit.render(cardsWrapper)
-                   });
-    }
-    else if(sortingForm.urgency.value === 'middle'){
-        let filteredArray = array.filter(card => card.doctor === 'Cardiologist' && card.urgency === 'middle')
-                   cardsWrapper.innerHTML = '';
-                   filteredArray.forEach(card => {
-                       const visit = new VisitCardiologist(card)
-                       visit.render(cardsWrapper)
-                   });
-    }
-     else if(sortingForm.urgency.value === 'low'){
-        let filteredArray = array.filter(card => card.doctor === 'Cardiologist' && card.urgency === 'low')
-                   cardsWrapper.innerHTML = '';
-                   filteredArray.forEach(card => {
-                       const visit = new VisitCardiologist(card)
-                       visit.render(cardsWrapper)
-                   });
-    }
-    }
-                //    Дантист фiльтр
-    else if(sortingForm.title.value === 'Dentist' || sortingForm.title.value === 'dentist'){
-            
-        if(sortingForm.urgency.value === 'high'){
-            let filteredArray = array.filter(card => card.doctor === 'Dentist' && card.urgency === 'high')
-                       cardsWrapper.innerHTML = '';
-                       filteredArray.forEach(card => {
-                           const visit = new VisitDentist(card)
-                           visit.render(cardsWrapper)
-                       });
+        let filteredArr = [];
+        cardsWrapper.innerHTML = '';
+        if (!search.value && urgency.value === 'all' && status.value === 'all'){
+            noItems(array)
+            renderCards(array);
+        } else if(search.value && urgency.value === 'all' && status.value === 'all') {
+            array.forEach(visit => {
+                const obj = Object.values(visit)
+                for (let value of obj) {
+                    if(value === search.value) {
+                        filteredArr.push(visit)
+                    }
+                }
+            })
+            renderCards(filteredArr);
+        } else if (!search.value && urgency.value && status.value === 'all') {
+            filteredArr = array.filter(visit => visit.urgency === urgency.value)
+            renderCards(filteredArr);
+        } else if (search.value && urgency.value && status.value === 'all') {
+            filteredArr = array.filter(visit => (visit.fullName === search.value || visit.doctor === search.value) && visit.urgency === urgency.value)
+            renderCards(filteredArr);
+        } else if (!search.value && urgency.value === 'all' && status.value) {
+            filteredArr = array.filter(visit => visit.status === status.value)
+            renderCards(filteredArr);
+        } else if (search.value && urgency.value === 'all' && status.value) {
+            filteredArr = array.filter(visit => (visit.fullName === search.value || visit.doctor === search.value) && visit.status === status.value)
+            renderCards(filteredArr);
+        } else if (search.value && urgency.value && status.value) {
+            filteredArr = array.filter(visit => (visit.fullName === search.value || visit.doctor === search.value) && visit.status === status.value && visit.urgency === urgency.value)
+            renderCards(filteredArr);
+        } else if (!search.value && urgency.value && status.value) {
+            filteredArr = array.filter(visit => visit.status === status.value && visit.urgency === urgency.value)
+            renderCards(filteredArr);
         }
-        else if(sortingForm.urgency.value === 'middle'){
-            let filteredArray = array.filter(card => card.doctor === 'Dentist' && card.urgency === 'middle')
-                       cardsWrapper.innerHTML = '';
-                       filteredArray.forEach(card => {
-                           const visit = new VisitDentist(card)
-                           visit.render(cardsWrapper)
-                       });
-        }
-         else if(sortingForm.urgency.value === 'low'){
-            let filteredArray = array.filter(card => card.doctor === 'Dentist' && card.urgency === 'low')
-                       cardsWrapper.innerHTML = '';
-                       filteredArray.forEach(card => {
-                           const visit = new VisitDentist(card)
-                           visit.render(cardsWrapper)
-                       });
-        }
-        }
+        noItems(filteredArr)
+    })
 }
-else if(sortingForm.status.value === 'done'){
-   
-cardsWrapper.innerHTML =''
-cardsWrapper.insertAdjacentHTML('afterbegin','<h1 class="done-text"> All visits are done</h1>')
-
-// if()
-}
-
-
-
-}
-  
-
-
-
-// Функцiя перевiрки змiн у полях вводу
-export default function searchFilter(array){
-   
-     inputTitle.addEventListener('input',()=>{
-        changeHandle(array)
-     })
-        status.addEventListener('change',()=>{
-            changeHandle(array)
-        })
-        urgency.addEventListener('change',()=>{
-            changeHandle(array)
-        })
-    
-    };
    
 
 

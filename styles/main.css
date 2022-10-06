@@ -119,3 +119,28 @@ main {
 .card-z-index {
     z-index: 99;
 }
+
+.card-actionDone {
+    justify-content: end;
+}
+
+.card-actionOpen {
+    justify-content: space-between;
+}
+
+.btnDone {
+    display: none;
+}
+
+.btnOpen {
+    padding: 0;
+    margin-left: 8px;
+}
+
+.btnOpen:hover span{
+    color: #fff;
+}
+
+.card-status {
+    color: #000;
+}

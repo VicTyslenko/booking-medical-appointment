@@ -24,11 +24,9 @@ window.addEventListener("load", () => { // функція, яка виконує
         document.querySelector('#sorting-form').classList.remove('hidden');
 
         visitsCollection = JSON.parse(localStorage.getItem('allVisits')) 
-        
+        searchFilter(visitsCollection)
         renderCards(visitsCollection);
         noItems(visitsCollection);
-        searchFilter(visitsCollection);
-
     } 
 });
     
@@ -79,14 +77,13 @@ document.addEventListener('click', async (e) => {
                 // розбираємо строку з localStorage для перетворення у масив з об'єктами та записуємо результат у visitsCollection
                 visitsCollection = JSON.parse(localStorage.getItem('allVisits'))
             });
-            
+            searchFilter(visitsCollection)
             renderCards(visitsCollection);
             noItems(visitsCollection);
         }
 
         
-    } else if (e.target.id === 'visit-btn') {  
-        cardsWrapper.innerHTML = ''              // якщо натиснути кнопку виклику вікна створення нового візиту
+    } else if (e.target.id === 'visit-btn') {              // якщо натиснути кнопку виклику вікна створення нового візиту
         newVisitModal = new ModalAddCard();
         newVisitModal.render();
     } else if (e.target.id === 'create-btn') {                 // якщо натиснути кнопку створити новий візит
@@ -99,6 +96,7 @@ document.addEventListener('click', async (e) => {
             let formData = new FormData(form)
             // обєкт із всіма заповненими полями форми
             let visitData = formToObj(formData); 
+            visitData.status = 'Open'
             // закриваємо модальне вікно
             newVisitModal.close();
             
@@ -145,6 +143,7 @@ document.addEventListener('click', async (e) => {
         if(form.checkValidity()) {
             let formData = new FormData(form)
             let visitData = formToObj(formData); 
+            visitData.status = 'Open'
             // закриваємо модальне вікно
             editVisitModal.close();
             
@@ -186,7 +185,24 @@ document.addEventListener('click', async (e) => {
     }  else if (e.target.id === 'showMore') {
         e.target.closest('.visit-card').classList.toggle('card-border-radius')
         e.target.closest('.visit-card').classList.toggle('card-z-index')
-    }
+    } else if (e.target.id === 'statusDone') {
+        const card = e.target.closest('.visit-card')
+        const cardAction = card.querySelector('#card-action')
+        const cardId = +card.getAttribute('data-id')
+        const cardStatus = card.querySelector('.card-status')
+        const visitData = visitsCollection.find(visit => visit.id === cardId)
+        visitData.status = 'Done'
+        
+        await editCard(API, keyToken, cardId, visitData).then(card => {
+            cardStatus.innerHTML = 'Status: Done'
+            e.target.classList.add('btnDone')
+            cardAction.classList.add('justify-content-end')
+            let index = visitsCollection.indexOf(card);
+                visitsCollection[index] = card;
+                localStorage['allVisits'] = JSON.stringify(visitsCollection);
+        })
+        }
+    
 })
 
 
