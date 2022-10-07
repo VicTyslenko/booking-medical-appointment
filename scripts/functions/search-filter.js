@@ -1,57 +1,65 @@
 import { renderCards, noItems } from "../classes/cards.js";
 
+
+
 export default function searchFilter (array) {
     const form = document.querySelector('#sorting-form');
     const cardsWrapper = document.querySelector('.main-cards');
     const search = document.querySelector('.search')
     const urgency = document.querySelector('#sorting-urgency')
     const status = document.querySelector('#status')
-    console.log(status.value);
-    form.addEventListener('change', (event) => {
-        event.preventDefault();
-        console.log(event.target.value);
-
-        let filteredArr = [];
-        cardsWrapper.innerHTML = '';
-        if (!search.value && urgency.value === 'all' && status.value === 'all'){
-            noItems(array)
-            renderCards(array);
-        } else if(search.value && urgency.value === 'all' && status.value === 'all') {
-            array.forEach(visit => {
-                const obj = Object.values(visit)
-                for (let value of obj) {
-                    if(value === search.value) {
-                        filteredArr.push(visit)
-                    }
-                }
-            })
-            noItems(filteredArr)
-            renderCards(filteredArr);
-        } else if (!search.value && urgency.value && status.value === 'all') {
-            filteredArr = array.filter(visit => visit.urgency === urgency.value)
-            renderCards(filteredArr);
-            noItems(filteredArr)
-        } else if (search.value && urgency.value && status.value === 'all') {
-            filteredArr = array.filter(visit => (visit.fullName === search.value || visit.doctor === search.value) && visit.urgency === urgency.value)
-            renderCards(filteredArr);
-            noItems(filteredArr)
-        } else if (!search.value && urgency.value === 'all' && status.value) {
-            filteredArr = array.filter(visit => visit.status === status.value)
-            renderCards(filteredArr);
-            noItems(filteredArr)
-        } else if (search.value && urgency.value === 'all' && status.value) {
-            filteredArr = array.filter(visit => (visit.fullName === search.value || visit.doctor === search.value) && visit.status === status.value)
-            renderCards(filteredArr);
-            noItems(filteredArr)
-        } else if (search.value && urgency.value && status.value) {
-            filteredArr = array.filter(visit => (visit.fullName === search.value || visit.doctor === search.value) && visit.status === status.value && visit.urgency === urgency.value)
-            renderCards(filteredArr);
-            noItems(filteredArr)
-        } else if (!search.value && urgency.value && status.value) {
-            filteredArr = array.filter(visit => visit.status === status.value && visit.urgency === urgency.value)
-            renderCards(filteredArr);
-            noItems(filteredArr)
+    
+    const textFieldFilter = (array) => {                // фільтрує масив відповідно до даних в текстовому полі
+        if (search.value === '') {                      // якщо в полі пусто, то повертає масив без змін
+            return array;
+        } else {                                        // якщо є значення, звіряє його з полями fullName, doctor, purpose та description
+            let filteredArr;
+            filteredArr = array.filter(visit => 
+                visit.fullName.toLowerCase().includes(search.value.toLocaleLowerCase()) || 
+                visit.doctor.toLowerCase().includes(search.value.toLocaleLowerCase()) || 
+                visit.purpose.toLowerCase().includes(search.value.toLocaleLowerCase()) ||
+                visit.description.toLowerCase().includes(search.value.toLocaleLowerCase())
+            );
+            return filteredArr;
         }
+    }
+
+    const urgencyFieldFilter = (array) => {             // фільтрує масив відповідно до даних в полі urgency
+        let filteredArr;
+        if (urgency.value !== 'all') {                    
+            filteredArr = array.filter(visit => visit.urgency === urgency.value)
+        } else {                                        // якщо нічого не вибрано, повертає масив без змін
+            return array
+        }
+        return filteredArr;
+    }
+
+    const statusFieldFilter = (array) => {              // фільтрує масив відповідно до даних в полі status
+        let filteredArr;
+        if (status.value !== 'all') {
+            filteredArr = array.filter(visit => visit.status === status.value)
+        } else {                                        // якщо нічого не вибрано, повертає масив без змін
+            return array
+        }
+        return filteredArr;
+    }
+
+    form.addEventListener('input', (event) => {         // замінив подію change на input щоб відбувались зміни одразу, не чекаючи зміни фокусу
+        event.preventDefault();
+        // console.log(event.target.value);
+
+        let filteredArr = array;                        
+        cardsWrapper.innerHTML = '';
+
+        // перевіряємо кожне з полів щоразу як відбувається подія
+        // таким чином всі раніше змінені значення залишаються
+        filteredArr = textFieldFilter(filteredArr);
+        filteredArr = statusFieldFilter(filteredArr);
+        filteredArr = urgencyFieldFilter(filteredArr);
+
+        noItems(filteredArr);
+        renderCards(filteredArr);
+
     })
 }
    

@@ -33,7 +33,7 @@ window.addEventListener("load", () => { // функція, яка виконує
 // Загальний обробник подій
 // Вішаємо один обробник кліків, який просто перевіряє event.targer і залежно від цього виконує потрібні функції
 document.addEventListener('click', async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (e.target.id === 'entry-btn') {
                   // якщо нажати кнопку входу
         entryModal = new ModalLogin();
@@ -104,8 +104,7 @@ document.addEventListener('click', async (e) => {
             await sendCard(API, keyToken, visitData).then(card => {
                 visitsCollection.push(card);
                 localStorage['allVisits'] = JSON.stringify(visitsCollection); // перезаписуємо в localStorage наші зміни
-                console.log(visitsCollection);
-
+                
                 // Функція що відображає візит на сторінці 
                 renderNewCard(card);
             });

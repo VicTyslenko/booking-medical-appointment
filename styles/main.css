@@ -74,13 +74,13 @@ body {
 }
 
 main {
-    margin-top: 109px;
+    margin-top: 130px;
 }
 
 @media screen and (min-width: 993px) {
     main {
         
-        margin-top: 62px;
+        margin-top: 83px;
     }
     
 }
