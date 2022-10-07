@@ -20,7 +20,7 @@ export class Visit {
     render(parent) {
         this.card.insertAdjacentHTML('beforeend', `
         <div id="card-action" class="d-flex align-items-center card-action${this.status}">
-            <button type="button" class="btn btn${this.status}"><span id="statusDone">Done</span></button>
+            <button type="button" class="btn btn${this.status}"><span id="statusDone"><i class="fa-solid fa-check"></i> Done</span></button>
             <div class="d-flex align-items-center">
                 <button type="button" class="btn edit-visit-btn" id="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>
                 <button type="button" class="deleteBtn btn-close me-2" aria-label="Close" id="deleteBtn"></button>
