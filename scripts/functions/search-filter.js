@@ -25,27 +25,33 @@ export default function searchFilter (array) {
                     }
                 }
             })
+            noItems(filteredArr)
             renderCards(filteredArr);
         } else if (!search.value && urgency.value && status.value === 'all') {
             filteredArr = array.filter(visit => visit.urgency === urgency.value)
             renderCards(filteredArr);
+            noItems(filteredArr)
         } else if (search.value && urgency.value && status.value === 'all') {
             filteredArr = array.filter(visit => (visit.fullName === search.value || visit.doctor === search.value) && visit.urgency === urgency.value)
             renderCards(filteredArr);
+            noItems(filteredArr)
         } else if (!search.value && urgency.value === 'all' && status.value) {
             filteredArr = array.filter(visit => visit.status === status.value)
             renderCards(filteredArr);
+            noItems(filteredArr)
         } else if (search.value && urgency.value === 'all' && status.value) {
             filteredArr = array.filter(visit => (visit.fullName === search.value || visit.doctor === search.value) && visit.status === status.value)
             renderCards(filteredArr);
+            noItems(filteredArr)
         } else if (search.value && urgency.value && status.value) {
             filteredArr = array.filter(visit => (visit.fullName === search.value || visit.doctor === search.value) && visit.status === status.value && visit.urgency === urgency.value)
             renderCards(filteredArr);
+            noItems(filteredArr)
         } else if (!search.value && urgency.value && status.value) {
             filteredArr = array.filter(visit => visit.status === status.value && visit.urgency === urgency.value)
             renderCards(filteredArr);
+            noItems(filteredArr)
         }
-        noItems(filteredArr)
     })
 }
    
