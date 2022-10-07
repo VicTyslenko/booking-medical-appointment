@@ -15,10 +15,10 @@ export default function searchFilter (array) {
         } else {                                        // якщо є значення, звіряє його з полями fullName, doctor, purpose та description
             let filteredArr;
             filteredArr = array.filter(visit => 
-                visit.fullName.toLowerCase().includes(search.value.toLocaleLowerCase()) || 
-                visit.doctor.toLowerCase().includes(search.value.toLocaleLowerCase()) || 
-                visit.purpose.toLowerCase().includes(search.value.toLocaleLowerCase()) ||
-                visit.description.toLowerCase().includes(search.value.toLocaleLowerCase())
+                visit.fullName.toLowerCase().includes(search.value.toLowerCase()) || 
+                visit.doctor.toLowerCase().includes(search.value.toLowerCase()) || 
+                visit.purpose.toLowerCase().includes(search.value.toLowerCase()) ||
+                visit.description.toLowerCase().includes(search.value.toLowerCase())
             );
             return filteredArr;
         }
@@ -46,7 +46,7 @@ export default function searchFilter (array) {
 
     form.addEventListener('input', (event) => {         // замінив подію change на input щоб відбувались зміни одразу, не чекаючи зміни фокусу
         event.preventDefault();
-        // console.log(event.target.value);
+        console.log(array);
 
         let filteredArr = array;                        
         cardsWrapper.innerHTML = '';
