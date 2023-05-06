@@ -29,9 +29,14 @@ Team:
 - Code review and commenting 
 - Final general design
 
-Oleh Verbynskyi:
+Victor Tyslenko:
 - Functions for working with API
 - Classes and methods for Modal windows
+- Basic general design
+- Serch/filter functions
+- Filter form design
+
+Oleh Verbynskyi:
 - Modal windows design 
 - Forms validation
 
@@ -41,8 +46,5 @@ Denys Herashchenko:
 - Local storage logic
 - Drag'n'Drop
 
-Victor Tyslenko:
-- Basic general design
-- Serch/filter functions
-- Filter form design
+
 
