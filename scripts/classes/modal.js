@@ -1,11 +1,13 @@
 export class Modal {
-    constructor(title, body) {
-        this.title = title;
-        this.body = body;
-    }
+  constructor(title, body) {
+    this.title = title;
+    this.body = body;
+  }
 
-    render () {
-        document.body.insertAdjacentHTML('beforeend', `
+  render() {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `
         <div class="modal" tabindex="-1" id="myModal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -20,34 +22,34 @@ export class Modal {
                 </div>
             </div>
         </div>
-        `);
-        // додаємо в об'єкт класу змінну (з документації bootstrap), яка керує модальним вікном
-        this.modal = new bootstrap.Modal('#myModal', { 
-            keyboard: false
-        });
-        // викликаємо модальне вікно
-        this.modal.show();
-        // видалення елементу вікна з DOM після його закривання
-        this.modal._element.addEventListener('hidden.bs.modal', event => event.target.remove());
-    }
-    
-    close() {
-        // метод закривання вікна
-        this.modal.hide();
-    }
+        `
+    );
+    // додаємо в об'єкт класу змінну (з документації bootstrap), яка керує модальним вікном
+    this.modal = new bootstrap.Modal("#myModal", {
+      keyboard: false,
+    });
+    // викликаємо модальне вікно
+    this.modal.show();
+    // видалення елементу вікна з DOM після його закривання
+    this.modal._element.addEventListener("hidden.bs.modal", (event) => event.target.remove());
+  }
 
-    invalid() {
-        document.querySelector('.invalid-message').innerHTML= 'Invalid login or password!';
-    }
+  close() {
+    // метод закривання вікна
+    this.modal.hide();
+  }
+
+  invalid() {
+    document.querySelector(".invalid-message").innerHTML = "Invalid login or password!";
+  }
 }
 
-
 export class ModalLogin extends Modal {
-    constructor (email = '', password = '', title = 'Enter your login and password') {
-        super(title)
-        this.email = email;
-        this.password = password;
-        this.body = `
+  constructor(email = "", password = "", title = "Enter your login and password") {
+    super(title);
+    this.email = email;
+    this.password = password;
+    this.body = `
         <form id="login-form">
             <div class="mb-3 form-floating">
                 <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="name@example.com" required value="${this.email}">
@@ -57,20 +59,20 @@ export class ModalLogin extends Modal {
                 <input type="password" class="form-control" id="inputPassword" value="${this.password}" placeholder="password" required autocomplete="on">
                 <label for="inputPassword" class="form-label">Password</label>
             </div>
+            <div class="mb-3 d-flex justify-content-space-between">New button just for testing...</div>
             <div class="mb-3 d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="submit" id="login-btn" class="btn btn-primary ms-3">Log in</button>
             </div>
         </form>
-        `
-    }
+        `;
+  }
 }
 
-
 export class ModalAddCard extends Modal {
-    constructor (title = 'Create new visit') {
-        super(title);
-        this.body = `
+  constructor(title = "Create new visit") {
+    super(title);
+    this.body = `
         <form id="newVisitForm" class="g-3 needs-validation" novalidate>
             <!-- always visible -->
             <div class="mb-2 col-12">
@@ -131,29 +133,29 @@ export class ModalAddCard extends Modal {
                 <button type="submit" id="create-btn" class="btn btn-primary ms-3 hidden">Create new visit</button>
             </div>
         </form>
-        `
-    }
+        `;
+  }
 
-    render () {
-        super.render();
+  render() {
+    super.render();
 
-        // шукаємо форму
-        const form = document.querySelector('#newVisitForm');
-        // шукаємо прихований блок
-        const allDoctorsBlock = form.querySelector('#forAllDoctors');
-         // шукаємо блок з додатковими полями залежно від лікаря
-        const additionalBlock = form.querySelector('#additional');
+    // шукаємо форму
+    const form = document.querySelector("#newVisitForm");
+    // шукаємо прихований блок
+    const allDoctorsBlock = form.querySelector("#forAllDoctors");
+    // шукаємо блок з додатковими полями залежно від лікаря
+    const additionalBlock = form.querySelector("#additional");
 
-        const saveBtn = form.querySelector('#create-btn');
-        // навішуємо обробник на форму і по вибору лікаря відкриваємо потрібні поля
-        form.addEventListener('change', (e) => {
-            if(e.target === form.querySelector('#selectDoctor')) {
-                // відслідковуємо зміну в select 
-                if(e.target.value === 'Cardiologist') {
-                    allDoctorsBlock.classList.remove('hidden');
-                    saveBtn.classList.remove('hidden');
-                    // додаємо у форму блок інпутів для кардіолога
-                    additionalBlock.innerHTML = `
+    const saveBtn = form.querySelector("#create-btn");
+    // навішуємо обробник на форму і по вибору лікаря відкриваємо потрібні поля
+    form.addEventListener("change", (e) => {
+      if (e.target === form.querySelector("#selectDoctor")) {
+        // відслідковуємо зміну в select
+        if (e.target.value === "Cardiologist") {
+          allDoctorsBlock.classList.remove("hidden");
+          saveBtn.classList.remove("hidden");
+          // додаємо у форму блок інпутів для кардіолога
+          additionalBlock.innerHTML = `
                         <!-- Cardoilogist -->
                         <div class="col-md-6 col-sm-12">
                             <div class="mb-2 form-floating">
@@ -189,11 +191,11 @@ export class ModalAddCard extends Modal {
                                 </div>
                             </div>
                         </div>
-                    `
-                } else if(e.target.value === 'Dentist') {
-                    allDoctorsBlock.classList.remove('hidden');
-                    saveBtn.classList.remove('hidden');
-                    additionalBlock.innerHTML = `
+                    `;
+        } else if (e.target.value === "Dentist") {
+          allDoctorsBlock.classList.remove("hidden");
+          saveBtn.classList.remove("hidden");
+          additionalBlock.innerHTML = `
                         <!-- Dentist -->
                         <div class="col-12">
                             <div class="mb-2 form-floating">
@@ -204,11 +206,11 @@ export class ModalAddCard extends Modal {
                                 </div>
                             </div>
                         </div>
-                    `
-                } else if(e.target.value === 'Therapist') {
-                    allDoctorsBlock.classList.remove('hidden');
-                    saveBtn.classList.remove('hidden');
-                    additionalBlock.innerHTML = `
+                    `;
+        } else if (e.target.value === "Therapist") {
+          allDoctorsBlock.classList.remove("hidden");
+          saveBtn.classList.remove("hidden");
+          additionalBlock.innerHTML = `
                     <!-- Therapist -->
                     <div class="col-12">
                         <div class="mb-2 form-floating">
@@ -219,30 +221,45 @@ export class ModalAddCard extends Modal {
                             </div>
                         </div>
                     </div>
-                    `
-                }
-            }
-        })
-    }
-   
+                    `;
+        }
+      }
+    });
+  }
 }
 
 export class ModalEditCard extends Modal {
-    constructor ({id, doctor, purpose, description, urgency, fullName, dateOfLastVisit = '', age = '', systolicPressure = '', diastolicPressure = '', bmi = '', cardiovascularDiseases = '' }, title = 'Edit visit') {
-        super(title);
-        this.id = id;
-        this.doctor = doctor;
-        this.purpose = purpose;
-        this.urgency = urgency;
-        this.description = description;
-        this.fullName = fullName;
-        this.dateOfLastVisit = dateOfLastVisit;
-        this.age = age;
-        this.systolicPressure = systolicPressure;
-        this.diastolicPressure = diastolicPressure;
-        this.bmi = bmi;
-        this.cardiovascularDiseases = cardiovascularDiseases;
-        this.body = `
+  constructor(
+    {
+      id,
+      doctor,
+      purpose,
+      description,
+      urgency,
+      fullName,
+      dateOfLastVisit = "",
+      age = "",
+      systolicPressure = "",
+      diastolicPressure = "",
+      bmi = "",
+      cardiovascularDiseases = "",
+    },
+    title = "Edit visit"
+  ) {
+    super(title);
+    this.id = id;
+    this.doctor = doctor;
+    this.purpose = purpose;
+    this.urgency = urgency;
+    this.description = description;
+    this.fullName = fullName;
+    this.dateOfLastVisit = dateOfLastVisit;
+    this.age = age;
+    this.systolicPressure = systolicPressure;
+    this.diastolicPressure = diastolicPressure;
+    this.bmi = bmi;
+    this.cardiovascularDiseases = cardiovascularDiseases;
+    this.body = `
         <form id="editVisitForm" class="g-3 needs-validation" novalidate>
             <!-- always visible -->
             <div class="mb-2 col-12">
@@ -302,27 +319,25 @@ export class ModalEditCard extends Modal {
                 <button type="submit" id="saveChanges-btn" class="btn btn-primary ms-3">Save changes</button>
             </div>
         </form>
-        `
-    }
+        `;
+  }
 
-    render () {
-        super.render();
+  render() {
+    super.render();
 
-        // шукаємо форму
-        const form = document.querySelector('#editVisitForm');
-        
-         // шукаємо блок з додатковими полями залежно від лікаря
-        const additionalBlock = form.querySelector('#additional');
+    // шукаємо форму
+    const form = document.querySelector("#editVisitForm");
 
-       
-        // навішуємо обробник на форму і по вибору лікаря відкриваємо потрібні поля
-        form.addEventListener('change', (e) => {
-            if(e.target === form.querySelector('#selectDoctor')) {
-                // відслідковуємо зміну в select 
-                if(e.target.value === 'Cardiologist') {
-                    
-                    // додаємо у форму блок інпутів для кардіолога
-                    additionalBlock.innerHTML = `
+    // шукаємо блок з додатковими полями залежно від лікаря
+    const additionalBlock = form.querySelector("#additional");
+
+    // навішуємо обробник на форму і по вибору лікаря відкриваємо потрібні поля
+    form.addEventListener("change", (e) => {
+      if (e.target === form.querySelector("#selectDoctor")) {
+        // відслідковуємо зміну в select
+        if (e.target.value === "Cardiologist") {
+          // додаємо у форму блок інпутів для кардіолога
+          additionalBlock.innerHTML = `
                         <!-- Cardoilogist -->
                         <div class="col-md-6 col-sm-12">
                             <div class="mb-2 form-floating">
@@ -358,11 +373,9 @@ export class ModalEditCard extends Modal {
                                 </div>
                             </div>
                         </div>
-                    `
-                } else if(e.target.value === 'Dentist') {
-                    
-                    
-                    additionalBlock.innerHTML = `
+                    `;
+        } else if (e.target.value === "Dentist") {
+          additionalBlock.innerHTML = `
                         <!-- Dentist -->
                         <div class="col-12">
                             <div class="mb-2 form-floating">
@@ -373,11 +386,9 @@ export class ModalEditCard extends Modal {
                                 </div>
                             </div>
                         </div>
-                    `
-                } else if(e.target.value === 'Therapist') {
-                    
-                    
-                    additionalBlock.innerHTML = `
+                    `;
+        } else if (e.target.value === "Therapist") {
+          additionalBlock.innerHTML = `
                     <!-- Therapist -->
                     <div class="col-12">
                         <div class="mb-2 form-floating">
@@ -388,22 +399,18 @@ export class ModalEditCard extends Modal {
                             </div>
                         </div>
                     </div>
-                    `
-                }
-            }
-        });
+                    `;
+        }
+      }
+    });
 
-        let doctorSelector = form.querySelector('#selectDoctor');
-        // присвоюємо селекту значення
-        doctorSelector.value = this.doctor;
-        // генерація події change, щоб у формі одразу відображалось потрібне додаткове поле поле
-        doctorSelector.dispatchEvent(new Event('change', {bubbles: true}));
-        
-        form.querySelector('#select-urgency').value = this.urgency;
-        console.log();
+    let doctorSelector = form.querySelector("#selectDoctor");
+    // присвоюємо селекту значення
+    doctorSelector.value = this.doctor;
+    // генерація події change, щоб у формі одразу відображалось потрібне додаткове поле поле
+    doctorSelector.dispatchEvent(new Event("change", { bubbles: true }));
 
-        
-        
-    }
-   
+    form.querySelector("#select-urgency").value = this.urgency;
+    console.log();
+  }
 }
