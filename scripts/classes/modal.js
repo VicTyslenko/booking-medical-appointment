@@ -60,7 +60,7 @@ export class ModalLogin extends Modal {
                 <label for="inputPassword" class="form-label">Password</label>
             </div>
          
-            <div class="mb-3 d-flex justify-content-space-between">
+            <div class="mb-3 d-flex justify-content-between">
                <p>Register</p>
                 <div class="mb-3 d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
