@@ -59,11 +59,15 @@ export class ModalLogin extends Modal {
                 <input type="password" class="form-control" id="inputPassword" value="${this.password}" placeholder="password" required autocomplete="on">
                 <label for="inputPassword" class="form-label">Password</label>
             </div>
-            <div class="mb-3 d-flex justify-content-space-between">New button just for testing...</div>
-            <div class="mb-3 d-flex justify-content-end">
+         
+            <div class="mb-3 d-flex justify-content-space-between">
+               <p>Register</p>
+                <div class="mb-3 d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="submit" id="login-btn" class="btn btn-primary ms-3">Log in</button>
             </div>
+            </div>
+
         </form>
         `;
   }
