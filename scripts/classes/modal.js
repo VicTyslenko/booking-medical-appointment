@@ -61,7 +61,7 @@ export class ModalLogin extends Modal {
             </div>
          
             <div class="mb-3 d-flex justify-content-between">
-               <p>Register</p>
+         <a href="https://ajax.test-danit.com/front-pages/cards-register.html" class="text-decoration-none">Register</a>
                 <div class="mb-3 d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="submit" id="login-btn" class="btn btn-primary ms-3">Log in</button>
