@@ -1,79 +1,48 @@
 import { renderCards, noItems } from "../classes/cards.js";
 
-
-
-export default function searchFilter (array) {
+export default function searchFilter(array) {
     const form = document.querySelector('#sorting-form');
     const cardsWrapper = document.querySelector('.main-cards');
-    const search = document.querySelector('.search')
-    const urgency = document.querySelector('#sorting-urgency')
-    const status = document.querySelector('#status')
-    
-    const textFieldFilter = (array) => {                // фільтрує масив відповідно до даних в текстовому полі
-        if (search.value === '') {                      // якщо в полі пусто, то повертає масив без змін
-            return array;
-        } else {                                        // якщо є значення, звіряє його з полями fullName, doctor, purpose та description
-            let filteredArr;
-            filteredArr = array.filter(visit => 
-                visit.fullName.toLowerCase().includes(search.value.toLowerCase()) || 
-                visit.doctor.toLowerCase().includes(search.value.toLowerCase()) || 
-                visit.purpose.toLowerCase().includes(search.value.toLowerCase()) ||
-                visit.description.toLowerCase().includes(search.value.toLowerCase())
-            );
-            return filteredArr;
-        }
-    }
+    const search = document.querySelector('.search');
+    const urgency = document.querySelector('#sorting-urgency');
+    const status = document.querySelector('#status');
 
-    const urgencyFieldFilter = (array) => {             // фільтрує масив відповідно до даних в полі urgency
-        let filteredArr;
-        if (urgency.value !== 'all') {                    
-            filteredArr = array.filter(visit => visit.urgency === urgency.value)
-        } else {                                        // якщо нічого не вибрано, повертає масив без змін
-            return array
-        }
-        return filteredArr;
-    }
+    // Filters by text input — matches fullName, doctor, purpose, or description
+    const textFieldFilter = (arr) => {
+        if (search.value === '') return arr;
+        const query = search.value.toLowerCase();
+        return arr.filter(visit =>
+            visit.fullName.toLowerCase().includes(query) ||
+            visit.doctor.toLowerCase().includes(query) ||
+            visit.purpose.toLowerCase().includes(query) ||
+            visit.description.toLowerCase().includes(query)
+        );
+    };
 
-    const statusFieldFilter = (array) => {              // фільтрує масив відповідно до даних в полі status
-        let filteredArr;
-        if (status.value !== 'all') {
-            filteredArr = array.filter(visit => visit.status === status.value)
-        } else {                                        // якщо нічого не вибрано, повертає масив без змін
-            return array
-        }
-        return filteredArr;
-    }
+    // Filters by urgency dropdown
+    const urgencyFieldFilter = (arr) => {
+        if (urgency.value === 'all') return arr;
+        return arr.filter(visit => visit.urgency === urgency.value);
+    };
 
-    form.addEventListener('input', (event) => {         // замінив подію change на input щоб відбувались зміни одразу, не чекаючи зміни фокусу
+    // Filters by status dropdown
+    const statusFieldFilter = (arr) => {
+        if (status.value === 'all') return arr;
+        return arr.filter(visit => visit.status === status.value);
+    };
+
+    // Re-render cards on every input change so all active filters apply simultaneously
+    form.addEventListener('input', (event) => {
         event.preventDefault();
-        console.log(array);
 
-        let filteredArr = array;                        
         cardsWrapper.innerHTML = '';
 
-        // перевіряємо кожне з полів щоразу як відбувається подія
-        // таким чином всі раніше змінені значення залишаються
-        filteredArr = textFieldFilter(filteredArr);
-        filteredArr = statusFieldFilter(filteredArr);
-        filteredArr = urgencyFieldFilter(filteredArr);
+        let filtered = array;
+        filtered = textFieldFilter(filtered);
+        filtered = statusFieldFilter(filtered);
+        filtered = urgencyFieldFilter(filtered);
 
-        noItems(filteredArr);
-        renderCards(filteredArr);
-
-    })
+        noItems(filtered);
+        renderCards(filtered);
+    });
 }
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
