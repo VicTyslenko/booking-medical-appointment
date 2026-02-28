@@ -1,9 +1,7 @@
-// import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from '../functions/send-request.js';
-// import { keyToken, API } from '../index.js';
-
- export const cardsWrapper = document.querySelector('.main-cards');
+export const cardsWrapper = document.querySelector('.main-cards');
 const noItem = document.createElement('div');
-//Основний клас карток візитів
+
+// Base class for all appointment visit cards
 export class Visit {
     constructor({id, doctor, purpose, description, urgency, fullName, status}) {
         this.status = status;
@@ -16,7 +14,7 @@ export class Visit {
         this.card = document.createElement('div')
     }
 
-    //Відображення карток на сторінці
+    // Renders the card into the given parent element
     render(parent) {
         this.card.insertAdjacentHTML('beforeend', `
         <div id="card-action" class="d-flex align-items-center card-action${this.status}">
@@ -43,7 +41,7 @@ export class Visit {
              </div>
         </div>
         `)
-       
+
         this.cardList = this.card.querySelector('.card-list')
         this.card.dataset.id = this.id;
         this.card.id = 'visit-card'
@@ -53,34 +51,31 @@ export class Visit {
     }
 }
 
-//Дочірній клас візиту Дантист
+// Dentist appointment card — adds date of last visit field
 export class VisitDentist extends Visit {
     constructor({status, id, doctor, purpose, description, urgency, fullName, dateOfLastVisit}) {
-        super({status,id, doctor, purpose, description, urgency, fullName});
+        super({status, id, doctor, purpose, description, urgency, fullName});
         this.dateOfLastVisit = dateOfLastVisit;
     }
-    //Відображення Дантиста на сторінці
+
     render(parent) {
         super.render(parent);
-        
         this.card.classList.add('bg-dentist')
         this.card.querySelector('.accordion-collapse').classList.add('bg-dentist')
         this.cardList.insertAdjacentHTML("beforeend", `<li class="card-list-item list-group-item">Date of last visit: <br>${this.dateOfLastVisit}</li>`)
-         parent.append(this.card);
+        parent.append(this.card);
     }
 }
 
-//Дочірній клас візиту Терапевт 
+// Therapist appointment card — adds patient age field
 export class VisitTherapist extends Visit {
     constructor({status, id, doctor, purpose, description, urgency, fullName, age}) {
-        super({status,id, doctor, purpose, description, urgency, fullName});
+        super({status, id, doctor, purpose, description, urgency, fullName});
         this.age = age;
     }
 
-    //Відображення Терапевтa на сторінці
     render(parent) {
         super.render(parent);
-
         this.card.classList.add('bg-therapist')
         this.card.querySelector('.accordion-collapse').classList.add('bg-therapist')
         this.cardList.insertAdjacentHTML("beforeend", `<li class="card-list-item list-group-item">Age: ${this.age}</li>`)
@@ -88,10 +83,10 @@ export class VisitTherapist extends Visit {
     }
 }
 
-//Дочірній клас візиту Кардіолога 
+// Cardiologist appointment card — adds pressure, BMI, age, and cardiovascular disease fields
 export class VisitCardiologist extends Visit {
     constructor({status, id, doctor, purpose, description, urgency, fullName, systolicPressure, diastolicPressure, bmi, cardiovascularDiseases, age}) {
-        super({status,id, doctor, purpose, description, urgency, fullName});
+        super({status, id, doctor, purpose, description, urgency, fullName});
         this.systolicPressure = systolicPressure;
         this.diastolicPressure = diastolicPressure;
         this.bmi = bmi;
@@ -99,7 +94,6 @@ export class VisitCardiologist extends Visit {
         this.age = age;
     }
 
-    //Відображення Кардіолога на сторінці
     render(parent) {
         super.render(parent);
         this.card.classList.add('bg-cardiologist')
@@ -113,9 +107,10 @@ export class VisitCardiologist extends Visit {
         parent.append(this.card);
     }
 }
-// Функція для відображення тексту при відсутності карток
+
+// Shows an empty-state message when there are no cards to display
 export function noItems(cardsArray) {
-    if(cardsArray.length === 0) {
+    if (cardsArray.length === 0) {
         noItem.innerHTML = `
         <p id="empty" class="text-white fw-bold fs-1">No items have been added</p>
         `;
@@ -123,37 +118,27 @@ export function noItems(cardsArray) {
     }
 }
 
-// Функція відображення усіх карток користувача з сервера
+// Renders all cards from the provided array into the cards wrapper
 export function renderCards(cardsArray) {
-    // console.log(cardsArray);
+    cardsArray.forEach(visit => {
+        if (visit.doctor === "Dentist") {
+            new VisitDentist(visit).render(cardsWrapper);
+        } else if (visit.doctor === "Cardiologist") {
+            new VisitCardiologist(visit).render(cardsWrapper);
+        } else if (visit.doctor === "Therapist") {
+            new VisitTherapist(visit).render(cardsWrapper);
+        }
+    });
+}
 
-        cardsArray.forEach(visit => {
-            if (visit.doctor === "Dentist") {
-                const visitCard = new VisitDentist(visit);
-                visitCard.render(cardsWrapper);
-            } else if (visit.doctor === "Cardiologist") {
-                const visitCard = new VisitCardiologist(visit);
-                visitCard.render(cardsWrapper);
-            } else if (visit.doctor === "Therapist") {
-                const visitCard = new VisitTherapist(visit);
-                visitCard.render(cardsWrapper);
-            }
-        });
-    
-};
-
+// Renders a single newly created or updated card and removes the empty-state message
 export function renderNewCard(card) {
     if (card.doctor === "Dentist") {
-        const visitCard = new VisitDentist(card);
-        visitCard.render(cardsWrapper);
-        noItem.remove();
+        new VisitDentist(card).render(cardsWrapper);
     } else if (card.doctor === "Cardiologist") {
-        const visitCard = new VisitCardiologist(card);
-        visitCard.render(cardsWrapper);
-        noItem.remove();
+        new VisitCardiologist(card).render(cardsWrapper);
     } else if (card.doctor === "Therapist") {
-        const visitCard = new VisitTherapist(card);
-        visitCard.render(cardsWrapper);
-        noItem.remove();
+        new VisitTherapist(card).render(cardsWrapper);
     }
+    noItem.remove();
 }
