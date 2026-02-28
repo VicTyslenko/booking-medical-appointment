@@ -1,210 +1,189 @@
-import { getToken, sendCard, deleteCard, getCards, getCard, editCard } from "./functions/send-request.js";
-import { Modal, ModalLogin, ModalAddCard, ModalEditCard } from "./classes/modal.js";
-import { renderCards, Visit, VisitCardiologist, noItems, renderNewCard, cardsWrapper } from "./classes/cards.js";
+import { getToken, sendCard, deleteCard, getCards, editCard } from "./functions/send-request.js";
+import { ModalLogin, ModalAddCard, ModalEditCard } from "./classes/modal.js";
+import { renderCards, noItems, renderNewCard } from "./classes/cards.js";
 import formToObj from "./functions/form-to-obj.js";
 import dragAndDrop from "./functions/drag-and-drop.js";
 import searchFilter from "./functions/search-filter.js";
 
-// тут будуть глобальні змінні
 const API = "https://ajax.test-danit.com/api/v2/cards";
-let visitsCollection = []; // масив усіх візитів
-//
-// змінні щоб їх було видно для всіх функцій нижче Типу глобальні змінні, але ще в процесі тестування і можливо їх не буде в фінальному білді
-let entryModal; // обєкт з вікном входу
-let keyToken; // сюди записується токен  Наступні функції запиту на сервер (для отримання карток чи ін) слід викликати з перевіркою if(keyToken)
-let newVisitModal; // обєкт з вікном створення нового візиту
-let editVisitModal; // обєкт з вікном редагування візиту
+let visitsCollection = [];
 
-window.addEventListener("load", () => {
-  // функція, яка виконується після завантаження сторінки
-  keyToken = localStorage.getItem("token");
-  if (keyToken) {
-    document.querySelector("#entry-btn").classList.add("hidden");
-    document.querySelector("#visit-btn").classList.remove("hidden");
-    document.querySelector("#logout-btn").classList.remove("hidden");
-    document.querySelector("#sorting-form").classList.remove("hidden");
+let entryModal;
+let keyToken;
+let newVisitModal;
+let editVisitModal;
 
-    visitsCollection = JSON.parse(localStorage.getItem("allVisits"));
-    searchFilter(visitsCollection);
-    renderCards(visitsCollection);
-    noItems(visitsCollection);
+// --- UI helpers ---
+
+function showAuthenticatedUI() {
+  document.querySelector("#entry-btn").classList.add("hidden");
+  document.querySelector("#visit-btn").classList.remove("hidden");
+  document.querySelector("#logout-btn").classList.remove("hidden");
+  document.querySelector("#sorting-form").classList.remove("hidden");
+}
+
+// --- Event handlers ---
+
+function handleLoginBtnClick() {
+  entryModal = new ModalLogin();
+  entryModal.render();
+}
+
+async function handleLoginSubmit(e) {
+  e.preventDefault();
+  const login = document.querySelector("#inputEmail").value;
+  const password = document.querySelector("#inputPassword").value;
+
+  if (!login.includes("@") || !password) {
+    entryModal.invalid();
+    return;
   }
-});
 
-// Загальний обробник подій
-// Вішаємо один обробник кліків, який просто перевіряє event.targer і залежно від цього виконує потрібні функції
-document.addEventListener("click", async (e) => {
-  // e.preventDefault();
-  if (e.target.id === "entry-btn") {
-    // якщо нажати кнопку входу
-    entryModal = new ModalLogin();
-    entryModal.render();
-  } else if (e.target.id === "login-btn") {
-    //якщо нажати кнопку на формі відправки логіна та пароля
-    e.preventDefault();
-    let login = document.querySelector("#inputEmail").value;
-    let password = document.querySelector("#inputPassword").value;
-    // проста валідація введених даних
-    if (login.includes("@") && password) {
-      // якщо дані пройшли валідацію, запит на сервер для отримання токена
-      await getToken(API, login, password)
-        .then((token) => {
-          if (token && typeof token !== "object") {
-            // перевірка на зміст токена
-            localStorage.setItem("token", token); // зберегли токен у локальному сховищі
-            keyToken = localStorage.getItem("token"); // дістали токен зі сховища та записали у змінну
-            entryModal.close(); // видаляємо модальне вікно
-          } else {
-            // якщо невірний логін або пароль
-            // показуємо попередження
-            entryModal.invalid();
-          }
-        })
-        .catch((e) => console.log(e.message)); // тут буде обробка помилки
+  try {
+    const token = await getToken(API, login, password);
+    if (token && typeof token !== "object") {
+      localStorage.setItem("token", token);
+      keyToken = localStorage.getItem("token");
+      entryModal.close();
     } else {
-      // якщо введено не коректні дані, можна буде потім виводити це повідомлення в межах модального вікна
       entryModal.invalid();
     }
-    // if(typeof keyToken === 'string') {  // поправив перевірку, бо попередня не працювала
-    if (keyToken) {
-      // можна так, бо localStorage повертає по дефолту строку
-      // міняємо кнопки
-      document.querySelector("#entry-btn").classList.add("hidden");
-      document.querySelector("#visit-btn").classList.remove("hidden");
-      document.querySelector("#logout-btn").classList.remove("hidden");
-      // показуємо форму пошуку
-      document.querySelector("#sorting-form").classList.remove("hidden");
-
-      // отримання всіх карток
-      await getCards(API, keyToken).then((cardsList) => {
-        localStorage.setItem("allVisits", JSON.stringify(cardsList)); // явно переводимо масив візитів у строку інакше буде [object Object]
-        // розбираємо строку з localStorage для перетворення у масив з об'єктами та записуємо результат у visitsCollection
-        visitsCollection = JSON.parse(localStorage.getItem("allVisits"));
-      });
-      searchFilter(visitsCollection);
-      renderCards(visitsCollection);
-      noItems(visitsCollection);
-    }
-  } else if (e.target.id === "visit-btn") {
-    // якщо натиснути кнопку виклику вікна створення нового візиту
-    newVisitModal = new ModalAddCard();
-    newVisitModal.render();
-  } else if (e.target.id === "create-btn") {
-    // якщо натиснути кнопку створити новий візит
-    e.preventDefault();
-    const form = document.querySelector("#newVisitForm");
-    form.classList.add("was-validated"); // клас bs5 для красивих стилів під час валідації
-    // перевіряємо чи всі необхідні поля заповнено
-    if (form.checkValidity()) {
-      // отримуємо дані з форми
-      let formData = new FormData(form);
-      // обєкт із всіма заповненими полями форми
-      let visitData = formToObj(formData);
-      visitData.status = "Open";
-      // закриваємо модальне вікно
-      newVisitModal.close();
-
-      // відправляємо створений візит на сервер
-      await sendCard(API, keyToken, visitData).then((card) => {
-        visitsCollection.push(card);
-        localStorage["allVisits"] = JSON.stringify(visitsCollection); // перезаписуємо в localStorage наші зміни
-
-        // Функція що відображає візит на сторінці
-        renderNewCard(card);
-      });
-    }
-  } else if (e.target.id === "deleteBtn") {
-    // якщо натиснути кнопку видалення візиту
-    const card = e.target.closest(".visit-card");
-    const cardId = card.getAttribute("data-id");
-    await deleteCard(API, keyToken, cardId).then((response) => {
-      if (response) {
-        visitsCollection.forEach((data) => {
-          const cardIndex = visitsCollection.indexOf(data);
-          if (data.id == cardId) {
-            visitsCollection.splice(cardIndex, 1);
-            localStorage["allVisits"] = JSON.stringify(visitsCollection); // перезаписуємо в localStorage наші зміни
-            console.log(visitsCollection);
-          }
-        });
-        card.remove();
-        noItems(visitsCollection);
-      }
-    });
-  } else if (e.target.id === "editBtn") {
-    // якщо натиснути кнопку редагування візиту
-    // Фільтруємо масив візитів по id і отримуємо на виході обєкт візиту, по картці якого клікнули
-    let visit = visitsCollection.filter((visit) => visit.id === +e.target.closest(".visit-card").dataset.id)[0];
-
-    editVisitModal = new ModalEditCard(visit);
-    editVisitModal.render();
-  } else if (e.target.id === "saveChanges-btn") {
-    // якщо натиснути кнопку зберегти зміни під час редагування
-    e.preventDefault();
-    const form = document.querySelector("#editVisitForm");
-    form.classList.add("was-validated");
-    // валідація форми
-    if (form.checkValidity()) {
-      let formData = new FormData(form);
-      let visitData = formToObj(formData);
-      visitData.status = "Open";
-      // закриваємо модальне вікно
-      editVisitModal.close();
-
-      // відправляємо зміни на сервер
-      await editCard(API, keyToken, editVisitModal.id, visitData).then((card) => {
-        // Код що заміняє візит на редагований в масиві
-        // Наче працює як очікувалось, за можливості пошукати простішу альтернативу
-        let editedVidit = visitsCollection.find((visit) => visit.id === card.id);
-        let index = visitsCollection.indexOf(editedVidit);
-        visitsCollection[index] = card;
-
-        localStorage["allVisits"] = JSON.stringify(visitsCollection); // перезаписуємо в localStorage наші зміни
-
-        /*
-                // Спосіб замінення редагованої картки перерендером всіх карток
-                // Так зберігається порядок карток і виглядає красивіше
-                document.querySelector('.main-cards').innerHTML = '';
-                renderCards(visitsCollection);
-                 */
-
-        // Спосіб замінення редагованої картки без перерендеру всіх карток
-        // Так не збивається Drag'n'Drop
-
-        // видалення відредагованої картки з дом
-        document.querySelectorAll(".visit-card").forEach((el) => {
-          if (+el.dataset.id === card.id) {
-            el.remove();
-          }
-        });
-
-        // відображення в дом
-        renderNewCard(card);
-      });
-    }
-  } else if (e.target.id === "logout-btn") {
-    localStorage.clear(); //стираємо дані з локального сховища
-    location.reload(); //оновлюємо сторінку
-  } else if (e.target.id === "showMore") {
-    e.target.closest(".visit-card").classList.toggle("card-border-radius");
-    e.target.closest(".visit-card").classList.toggle("card-z-index");
-  } else if (e.target.id === "statusDone") {
-    const card = e.target.closest(".visit-card");
-    const cardAction = card.querySelector("#card-action");
-    const cardId = +card.getAttribute("data-id");
-    const cardStatus = card.querySelector(".card-status");
-    const visitData = visitsCollection.find((visit) => visit.id === cardId);
-    visitData.status = "Done";
-
-    await editCard(API, keyToken, cardId, visitData).then((card) => {
-      cardStatus.innerHTML = "Status: Done";
-      e.target.classList.add("btnDone");
-      cardAction.classList.add("justify-content-end");
-      let index = visitsCollection.indexOf(card);
-      visitsCollection[index] = card;
-      localStorage["allVisits"] = JSON.stringify(visitsCollection);
-    });
+  } catch (err) {
+    console.error(err.message);
   }
+
+  if (!keyToken) return;
+
+  showAuthenticatedUI();
+
+  const cardsList = await getCards(API, keyToken);
+  localStorage.setItem("allVisits", JSON.stringify(cardsList));
+  visitsCollection = JSON.parse(localStorage.getItem("allVisits"));
+
+  searchFilter(visitsCollection);
+  renderCards(visitsCollection);
+  noItems(visitsCollection);
+}
+
+function handleNewVisitBtnClick() {
+  newVisitModal = new ModalAddCard();
+  newVisitModal.render();
+}
+
+async function handleCreateVisit(e) {
+  e.preventDefault();
+  const form = document.querySelector("#newVisitForm");
+  form.classList.add("was-validated");
+  if (!form.checkValidity()) return;
+
+  const visitData = formToObj(new FormData(form));
+  visitData.status = "Open";
+  newVisitModal.close();
+
+  const card = await sendCard(API, keyToken, visitData);
+  visitsCollection.push(card);
+  localStorage["allVisits"] = JSON.stringify(visitsCollection);
+  renderNewCard(card);
+}
+
+async function handleDeleteCard(e) {
+  const card = e.target.closest(".visit-card");
+  const cardId = card.getAttribute("data-id");
+
+  const response = await deleteCard(API, keyToken, cardId);
+  if (!response) return;
+
+  const cardIndex = visitsCollection.findIndex((v) => v.id == cardId);
+  if (cardIndex !== -1) {
+    visitsCollection.splice(cardIndex, 1);
+    localStorage["allVisits"] = JSON.stringify(visitsCollection);
+  }
+  card.remove();
+  noItems(visitsCollection);
+}
+
+function handleEditBtnClick(e) {
+  const visit = visitsCollection.find(
+    (v) => v.id === +e.target.closest(".visit-card").dataset.id
+  );
+  editVisitModal = new ModalEditCard(visit);
+  editVisitModal.render();
+}
+
+async function handleSaveChanges(e) {
+  e.preventDefault();
+  const form = document.querySelector("#editVisitForm");
+  form.classList.add("was-validated");
+  if (!form.checkValidity()) return;
+
+  const visitData = formToObj(new FormData(form));
+  visitData.status = "Open";
+  editVisitModal.close();
+
+  const card = await editCard(API, keyToken, editVisitModal.id, visitData);
+
+  const index = visitsCollection.findIndex((v) => v.id === card.id);
+  visitsCollection[index] = card;
+  localStorage["allVisits"] = JSON.stringify(visitsCollection);
+
+  document.querySelectorAll(".visit-card").forEach((el) => {
+    if (+el.dataset.id === card.id) el.remove();
+  });
+  renderNewCard(card);
+}
+
+function handleLogout() {
+  localStorage.clear();
+  location.reload();
+}
+
+function handleShowMore(e) {
+  e.target.closest(".visit-card").classList.toggle("card-border-radius");
+  e.target.closest(".visit-card").classList.toggle("card-z-index");
+}
+
+async function handleStatusDone(e) {
+  const card = e.target.closest(".visit-card");
+  const cardAction = card.querySelector("#card-action");
+  const cardId = +card.getAttribute("data-id");
+  const cardStatus = card.querySelector(".card-status");
+  const visitData = visitsCollection.find((v) => v.id === cardId);
+  visitData.status = "Done";
+
+  const updatedCard = await editCard(API, keyToken, cardId, visitData);
+  cardStatus.innerHTML = "Status: Done";
+  e.target.classList.add("btnDone");
+  cardAction.classList.add("justify-content-end");
+  const index = visitsCollection.findIndex((v) => v.id === cardId);
+  visitsCollection[index] = updatedCard;
+  localStorage["allVisits"] = JSON.stringify(visitsCollection);
+}
+
+// --- Initialisation ---
+
+window.addEventListener("load", () => {
+  keyToken = localStorage.getItem("token");
+  if (!keyToken) return;
+
+  showAuthenticatedUI();
+  visitsCollection = JSON.parse(localStorage.getItem("allVisits"));
+  searchFilter(visitsCollection);
+  renderCards(visitsCollection);
+  noItems(visitsCollection);
+});
+
+// Single delegated click handler — dispatches to named handlers above
+document.addEventListener("click", async (e) => {
+  if (e.target.id === "entry-btn")       return handleLoginBtnClick();
+  if (e.target.id === "login-btn")       return handleLoginSubmit(e);
+  if (e.target.id === "visit-btn")       return handleNewVisitBtnClick();
+  if (e.target.id === "create-btn")      return handleCreateVisit(e);
+  if (e.target.id === "deleteBtn")       return handleDeleteCard(e);
+  if (e.target.id === "editBtn")         return handleEditBtnClick(e);
+  if (e.target.id === "saveChanges-btn") return handleSaveChanges(e);
+  if (e.target.id === "logout-btn")      return handleLogout();
+  if (e.target.id === "showMore")        return handleShowMore(e);
+  if (e.target.id === "statusDone")      return handleStatusDone(e);
 });
 
 dragAndDrop();
