@@ -1,67 +1,66 @@
-// уніерсальна функція-запит
+// Universal HTTP request helper
 const sendRequest = async (API, point = '', method = 'GET', config) => {
     return await fetch(`${API}${point}`, {
         method,
         ...config
     }).then(response => {
-        if(response.ok) {
+        if (response.ok) {
             if (point === '/login') {
                 return response.text();
             } else {
                 return method === 'DELETE' ? response : response.json();
             }
         } else {
-            return new Error('Something goes wrong');
+            return new Error('Something went wrong');
         }
-    })
-}
-
-
-// функція авторизації, повертає проміс із токеном
-const getToken = (API, email, password) => sendRequest(API, '/login', 'POST',    {
-    headers: {
-        'Content-Type': 'application/json'
-      },
-    body: JSON.stringify({ email: `${email}`, password: `${password}`})
     });
+};
 
-// функція відправки новоствореної картки на сервер, повертає проміс із об'єктом картки включно з id
-const sendCard = (API, token, cardData) => sendRequest(API, '', 'POST', {  //cardData is an object {}
+// Returns a promise that resolves to an auth token string
+const getToken = (API, email, password) => sendRequest(API, '/login', 'POST', {
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-        },
-    body: JSON.stringify(cardData)
-    });
+    },
+    body: JSON.stringify({ email, password }),
+});
 
-// функція видалення картки з сервера, повертає responce. Можна перевіряти responce.ok або responce.status 
-const deleteCard = (API, token, cardId) => sendRequest(API, `/${cardId}`, 'DELETE', {  
+// Creates a new card on the server; resolves to the created card object (including its id)
+const sendCard = (API, token, cardData) => sendRequest(API, '', 'POST', {
     headers: {
-        'Authorization': `Bearer ${token}`
-        }
-    });
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(cardData),
+});
 
-// функція отримання всіх карток з сервера, повертає проміс із масивом об'єктів. 
+// Deletes a card by id; resolves to the raw Response (check response.ok for success)
+const deleteCard = (API, token, cardId) => sendRequest(API, `/${cardId}`, 'DELETE', {
+    headers: {
+        'Authorization': `Bearer ${token}`,
+    },
+});
+
+// Fetches all cards for the authenticated user; resolves to an array of card objects
 const getCards = (API, token) => sendRequest(API, ...[,,], {
     headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+        'Authorization': `Bearer ${token}`,
+    },
+});
 
-// функція отримання конкретної картки з сервера, повертає проміс із об'єктом.     
+// Fetches a single card by id; resolves to a card object
 const getCard = (API, token, cardId) => sendRequest(API, `/${cardId}`, ...[,], {
     headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+        'Authorization': `Bearer ${token}`,
+    },
+});
 
-// функція редагування картки, повертає проміс із об'єктом зміненої картки 
-const editCard = (API, token, cardId, cardData) => sendRequest(API, `/${cardId}`, 'PUT', {  
+// Updates a card by id; resolves to the updated card object
+const editCard = (API, token, cardId, cardData) => sendRequest(API, `/${cardId}`, 'PUT', {
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-        },
-    body: JSON.stringify(cardData)
-    });
+        'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(cardData),
+});
 
-    export {getToken, sendCard, deleteCard, getCards, getCard, editCard};
+export { getToken, sendCard, deleteCard, getCards, getCard, editCard };
